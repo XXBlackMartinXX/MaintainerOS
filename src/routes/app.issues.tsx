@@ -24,6 +24,7 @@ import { DataSourceBadge } from "@/components/data-source-badge";
 import { SyncNowButton } from "@/components/sync-now-button";
 import { EmptyRepositoryState, EmptySyncedDataState } from "@/components/empty-states";
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
+import { useHasSession } from "@/hooks/use-has-session";
 import { fetchIssues, fetchLabels } from "@/lib/github.functions";
 import { triageIssue, listTriageForRepo, updateTriageDraft, getAiStatus } from "@/lib/ai.functions";
 import {
@@ -94,14 +95,18 @@ function IssuesPage() {
   const publishLabelsFn = useServerFn(publishIssueLabels);
   const listEventsFn = useServerFn(listPublishEventsForSource);
 
+  const hasSession = useHasSession();
+
   const aiStatusQ = useQuery({
     queryKey: ["ai-status"],
     queryFn: () => aiStatusFn(),
+    enabled: hasSession === true,
   });
 
   const permsQ = useQuery({
     queryKey: ["github-perms"],
     queryFn: () => permsFn(),
+    enabled: hasSession === true,
   });
 
   const issuesQ = useQuery({

@@ -23,6 +23,7 @@ import { DataSourceBadge } from "@/components/data-source-badge";
 import { RepoSelector } from "@/components/repo-selector";
 import { EmptyRepositoryState } from "@/components/empty-states";
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
+import { useHasSession } from "@/hooks/use-has-session";
 import {
   generateDocumentation,
   listDocumentationDrafts,
@@ -49,6 +50,7 @@ type DraftRow = {
 
 function DocsPage() {
   const { selected, isLoading: repoLoading, hasConnectedRepo } = useSelectedRepo();
+  const hasSession = useHasSession();
   const [docType, setDocType] = useState<DocType>("readme_suggestions");
   const [activeDraftId, setActiveDraftId] = useState<string | null>(null);
   const [editedBody, setEditedBody] = useState<string>("");
@@ -63,7 +65,7 @@ function DocsPage() {
   const updateFn = useServerFn(updateDocumentationDraft);
   const deleteFn = useServerFn(deleteDocumentationDraft);
 
-  const aiStatusQ = useQuery({ queryKey: ["docs-ai-status"], queryFn: () => aiStatusFn() });
+  const aiStatusQ = useQuery({ queryKey: ["docs-ai-status"], queryFn: () => aiStatusFn(), enabled: hasSession === true });
   const draftsQ = useQuery({
     queryKey: ["docs-drafts", selected?.id, docType],
     queryFn: () => listFn({ data: { repository_id: selected!.id, doc_type: docType } }),

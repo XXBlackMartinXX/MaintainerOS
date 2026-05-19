@@ -10,6 +10,7 @@ import { RepoSelector } from "@/components/repo-selector";
 import { DataSourceBadge } from "@/components/data-source-badge";
 import { EmptyRepositoryState } from "@/components/empty-states";
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
+import { useHasSession } from "@/hooks/use-has-session";
 import {
   listPrSummariesForRepo,
   generateChangelog,
@@ -44,6 +45,7 @@ type DraftRow = {
 
 function ChangelogPage() {
   const { selected, hasConnectedRepo, isLoading: reposLoading } = useSelectedRepo();
+  const hasSession = useHasSession();
   const qc = useQueryClient();
   const summariesFn = useServerFn(listPrSummariesForRepo);
   const generateFn = useServerFn(generateChangelog);
@@ -64,7 +66,7 @@ function ChangelogPage() {
     queryFn: () => draftsFn({ data: { repository_id: selected!.id } }),
     enabled: !!selected,
   });
-  const permsQ = useQuery({ queryKey: ["github-perms"], queryFn: () => permsFn() });
+  const permsQ = useQuery({ queryKey: ["github-perms"], queryFn: () => permsFn(), enabled: hasSession === true });
 
   const summaries = summariesQ.data?.summaries ?? [];
   const approved = summaries.filter((s) => s.approval_status === "approved");

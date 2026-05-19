@@ -7,6 +7,7 @@ import { Loader2, ChevronRight, X, Github, ExternalLink, ChevronDown } from "luc
 import { PageHeader } from "@/components/ui-bits";
 import { listAuditLogs } from "@/lib/ai.functions";
 import { getPublishEventForAudit } from "@/lib/github-publish.functions";
+import { useHasSession } from "@/hooks/use-has-session";
 
 export const Route = createFileRoute("/app/actions")({ component: ActionsPage });
 
@@ -97,11 +98,13 @@ function sourceFromMetadata(
 
 function ActionsPage() {
   const fn = useServerFn(listAuditLogs);
+  const hasSession = useHasSession();
   const [filter, setFilter] = useState<string>("all");
   const logsQ = useQuery({
     queryKey: ["audit-logs", filter],
     queryFn: () =>
       fn({ data: { action_prefix: filter === "all" ? undefined : filter, limit: 300 } }),
+    enabled: hasSession === true,
   });
   const [selected, setSelected] = useState<LogRow | null>(null);
 

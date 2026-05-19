@@ -8,13 +8,20 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/app")({
   beforeLoad: async () => {
-    const { data } = await supabase.auth.getSession();
-    // Allow demo mode visitors without a session
-    if (
-      !data.session &&
-      typeof window !== "undefined" &&
-      window.localStorage.getItem("mos.demoMode") !== "1"
-    ) {
+    // SSR: skip auth gate, let the client decide.
+    if (typeof window === "undefined") return;
+    // Demo-mode visitors are always allowed.
+    if (window.localStorage.getItem("mos.demoMode") === "1") return;
+    try {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        throw redirect({ to: "/login" });
+      }
+    } catch (err) {
+      // Re-throw router redirects; swallow Supabase init errors so a missing
+      // backend doesn't blank the whole app — surface a friendly state instead.
+      if (err && typeof err === "object" && "isRedirect" in err) throw err;
+      console.error("[app] auth check failed; redirecting to /login", err);
       throw redirect({ to: "/login" });
     }
   },
