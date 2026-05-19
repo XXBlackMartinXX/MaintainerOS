@@ -86,6 +86,15 @@ function LoginPage() {
             </div>
           </div>
         )}
+        {oauthError && (
+          <div className="mt-4 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-left text-xs text-destructive">
+            <p className="font-medium">Sign-in failed</p>
+            <p className="mt-1 text-destructive/90 break-words">{oauthError}</p>
+            <Link to="/setup" className="mt-2 inline-block underline">
+              Open setup diagnostics
+            </Link>
+          </div>
+        )}
         {configured && (
           <p className="mt-3 text-[11px] text-muted-foreground">
             If sign-in fails, ensure the GitHub provider is enabled in Supabase Auth and the
