@@ -113,3 +113,38 @@ See [SECURITY.md](./SECURITY.md) for responsible disclosure.
 ## License
 
 [MIT](./LICENSE)
+
+## AI issue triage (Slice 4)
+
+MaintainerOS uses the **Lovable AI Gateway** (server-side, via
+`LOVABLE_API_KEY`) to generate **editable triage drafts** for live GitHub
+issues. The browser never sees the AI key.
+
+### Behavior
+- Click **Analyze** on any issue (or **Analyze visible** for a batch) to
+  generate a structured triage draft.
+- The draft includes type, severity, priority, complexity, confidence,
+  suggested labels, sentiment, duplicate likelihood, recommended next
+  action, an editable suggested maintainer reply, and risk / safety notes.
+- Every draft is labeled **AI draft** in the UI. The model is recorded.
+- Drafts are **copy-only** in this slice. MaintainerOS **does not post to
+  GitHub** automatically. You approve, edit, reject, or copy the reply
+  yourself.
+
+### Safety principles
+The triage system prompt instructs the model to:
+- assist maintainers, not make final moderation/security decisions
+- never infer sensitive personal traits about contributors
+- never recommend punitive action automatically
+- use cautious "review recommended" language for security or abuse signals
+- return valid structured JSON only, with `unknown` enum values when
+  confidence is low
+
+### Audit logging
+Every AI action is written to `audit_logs` and surfaced on **AI Action
+Log**: `ai.triage.generated`, `ai.triage.approve`, `ai.triage.edit`,
+`ai.triage.reject`, `ai.triage.copy`, `ai.triage.failed`.
+
+### Configuration
+If `LOVABLE_API_KEY` is missing, the Analyze buttons are disabled and a
+configuration warning is shown. No fake AI output is ever displayed.
