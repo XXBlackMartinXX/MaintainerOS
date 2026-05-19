@@ -15,9 +15,22 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [oauthError, setOauthError] = useState<string | null>(null);
   const configured = isSupabaseConfigured();
 
   useEffect(() => {
+    // Surface OAuth errors that Supabase appends to the URL hash on failure.
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash.startsWith("#")
+        ? window.location.hash.slice(1)
+        : "";
+      const params = new URLSearchParams(hash);
+      const err = params.get("error_description") || params.get("error");
+      if (err) {
+        setOauthError(decodeURIComponent(err.replace(/\+/g, " ")));
+        history.replaceState(null, "", window.location.pathname);
+      }
+    }
     const sb = getSupabase();
     if (!sb) return;
     sb.auth.getSession().then(({ data }) => {
