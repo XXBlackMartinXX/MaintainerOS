@@ -12,12 +12,8 @@
 /** Browser-safe public configuration (build-time inlined by Vite). */
 export const clientEnv = {
   supabaseUrl: import.meta.env.VITE_SUPABASE_URL as string | undefined,
-  supabasePublishableKey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as
-    | string
-    | undefined,
-  supabaseProjectId: import.meta.env.VITE_SUPABASE_PROJECT_ID as
-    | string
-    | undefined,
+  supabasePublishableKey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined,
+  supabaseProjectId: import.meta.env.VITE_SUPABASE_PROJECT_ID as string | undefined,
 };
 
 /** Optional client features. Useful for hiding UI when not configured. */
@@ -82,16 +78,14 @@ export function hasFeature(feature: ServerFeature, env = serverEnv()): boolean {
 export function requireFeature(feature: ServerFeature, env = serverEnv()): void {
   if (hasFeature(feature, env)) return;
   const msg: Record<ServerFeature, string> = {
-    supabase:
-      "Lovable Cloud is not configured. Missing SUPABASE_URL or SUPABASE_PUBLISHABLE_KEY.",
+    supabase: "Lovable Cloud is not configured. Missing SUPABASE_URL or SUPABASE_PUBLISHABLE_KEY.",
     "supabase-admin":
       "Server-side database access is not configured. Missing SUPABASE_SERVICE_ROLE_KEY.",
     "github-oauth":
       "GitHub sign-in is not configured. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in your Supabase Auth provider settings.",
     "ai-gateway":
       "Lovable AI Gateway is not configured. Set LOVABLE_API_KEY in your Lovable Cloud secrets.",
-    "github-write":
-      "GitHub write actions require GitHub OAuth to be configured.",
+    "github-write": "GitHub write actions require GitHub OAuth to be configured.",
   };
   throw new Error(msg[feature]);
 }
