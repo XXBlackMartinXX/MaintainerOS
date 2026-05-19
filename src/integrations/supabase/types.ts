@@ -111,6 +111,51 @@ export type Database = {
           },
         ]
       }
+      issue_triage_results: {
+        Row: {
+          approval_status: string
+          created_at: string
+          id: string
+          input_body: string | null
+          input_title: string
+          issue_id: string
+          model: string
+          repository_id: string
+          result: Json
+          suggested_reply: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_status?: string
+          created_at?: string
+          id?: string
+          input_body?: string | null
+          input_title: string
+          issue_id: string
+          model: string
+          repository_id: string
+          result?: Json
+          suggested_reply?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_status?: string
+          created_at?: string
+          id?: string
+          input_body?: string | null
+          input_title?: string
+          issue_id?: string
+          model?: string
+          repository_id?: string
+          result?: Json
+          suggested_reply?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       issues: {
         Row: {
           author_avatar: string | null
