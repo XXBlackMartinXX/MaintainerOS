@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Sparkles, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase } from "@/integrations/supabase/safe-client";
 import { useServerFn } from "@tanstack/react-start";
 import { persistGithubToken, getOnboardingStatus } from "@/lib/github.functions";
 import { toast } from "sonner";
