@@ -165,7 +165,7 @@ function DocsPage() {
         description="Generate editable Markdown drafts of the docs every healthy open-source project needs. All drafts are clearly labeled AI draft."
         actions={
           <div className="flex items-center gap-2">
-            <DataSourceBadge source={selected ? "live" : "demo"} />
+            <DataSourceBadge variant={selected ? "live" : "demo"} />
             <RepoSelector />
           </div>
         }
