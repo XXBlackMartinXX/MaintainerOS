@@ -7,21 +7,37 @@ dashboard for issues, pull requests, contributors, repo health, and AI drafts
 for triage, summaries, and changelogs. Every AI output is a **draft** — nothing
 is posted to GitHub without your explicit approval.
 
-> **Status:** v0.3 — live GitHub OAuth, repository sync, and live data on
-> the Issues, Pull Requests, Contributors, and Repo Health pages. Real AI
-> triage is the next slice.
+> **Status:** pre-1.0. Functionally complete across the core maintainer
+> workflow: live GitHub sync, AI issue triage, AI PR summaries, AI changelog
+> drafts, AI documentation drafts, approval-gated GitHub publishing, audit
+> log, demo mode, and a Trust Center. This project does not claim production
+> adoption, downloads, stars, or paying users.
+
+## Screenshots
+
+Screenshot placeholders — replace before publishing publicly:
+
+- `docs/screenshots/dashboard.png`
+- `docs/screenshots/issue-triage.png`
+- `docs/screenshots/pr-summaries.png`
+- `docs/screenshots/audit-log.png`
 
 ## Implemented today
 
 - GitHub OAuth via Lovable Cloud (Supabase Auth)
-- Repository connection + on-demand sync (issues, PRs, contributors, labels, commits)
-- Live Issues page (search, filters, sort, stale detection)
-- Live Pull Requests page (search, state/merged filters, sort, large-diff warnings)
-- Live Contributors page (distribution chart, top contributors, privacy-respecting wording)
-- Live Repo Health score with transparent breakdown and recommended actions
-- Dashboard sync-status panel with last-sync time, counts, error surfacing, and a Sync now button
-- Clear `Live GitHub data`, `Partial data`, and `Demo data` badges everywhere
-- Polished shell for changelog, docs, security, moderation, roadmap, and AI action log (preview)
+- Repository connection + on-demand sync (issues, PRs, contributors, labels, releases)
+- Live Issues, Pull Requests, Contributors, and Repo Health pages
+- AI issue triage (type, severity, priority, labels, suggested reply) — drafts only
+- AI PR summaries with risk, breaking-change detection, changelog entry — drafts only
+- AI changelog generator grouped by Added / Changed / Fixed — drafts only
+- AI documentation generator (README, CONTRIBUTING, SECURITY, …) — drafts only
+- Approval-gated GitHub write actions: issue replies, label apply, PR comments, draft releases
+- Duplicate-post protection backed by `github_publish_events`
+- AI Action Log with filter chips and publish-event enrichment
+- Demo mode with global banner and disabled publish/sync controls
+- First-run product tour (skippable, restartable from Settings)
+- Trust Center and internal QA checklist pages
+- Clear `Live GitHub data`, `Partial data`, `Demo data`, `AI draft` labels everywhere
 
 ## Ethics
 
