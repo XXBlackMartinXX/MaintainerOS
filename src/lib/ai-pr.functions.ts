@@ -94,7 +94,10 @@ export const summarizePullRequest = createServerFn({ method: "POST" })
       });
       const parsed = prSummarySchema.safeParse(extractJson(raw));
       if (!parsed.success) {
-        await logAudit(userId, "ai.pr_summary.failed", "pull_request", pr.id, { reason: "schema", model });
+        await logAudit(userId, "ai.pr_summary.failed", "pull_request", pr.id, {
+          reason: "schema",
+          model,
+        });
         throw new Error("AI returned invalid structured output");
       }
       const result = parsed.data;
@@ -138,10 +141,13 @@ export const summarizePullRequest = createServerFn({ method: "POST" })
       return { ok: true, id: up.id, result, model };
     } catch (err) {
       const code =
-        err instanceof AIConfigError ? "ai.config_missing"
-        : err instanceof AICreditsError ? "ai.credits_exhausted"
-        : err instanceof AIRateLimitError ? "ai.rate_limited"
-        : "ai.error";
+        err instanceof AIConfigError
+          ? "ai.config_missing"
+          : err instanceof AICreditsError
+            ? "ai.credits_exhausted"
+            : err instanceof AIRateLimitError
+              ? "ai.rate_limited"
+              : "ai.error";
       await logAudit(userId, "ai.pr_summary.failed", "pull_request", pr.id, {
         code,
         message: (err as Error).message,
@@ -309,10 +315,13 @@ export const generateChangelog = createServerFn({ method: "POST" })
       };
     } catch (err) {
       const code =
-        err instanceof AIConfigError ? "ai.config_missing"
-        : err instanceof AICreditsError ? "ai.credits_exhausted"
-        : err instanceof AIRateLimitError ? "ai.rate_limited"
-        : "ai.error";
+        err instanceof AIConfigError
+          ? "ai.config_missing"
+          : err instanceof AICreditsError
+            ? "ai.credits_exhausted"
+            : err instanceof AIRateLimitError
+              ? "ai.rate_limited"
+              : "ai.error";
       await logAudit(userId, "ai.changelog.failed", "repository", data.repository_id, {
         code,
         message: (err as Error).message,

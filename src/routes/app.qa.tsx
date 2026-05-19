@@ -70,7 +70,9 @@ function QAPage() {
                   ) : (
                     <Square className="size-4 text-muted-foreground" />
                   )}
-                  <span className={checked ? "line-through text-muted-foreground" : ""}>{label}</span>
+                  <span className={checked ? "line-through text-muted-foreground" : ""}>
+                    {label}
+                  </span>
                 </button>
               </li>
             );

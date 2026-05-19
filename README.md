@@ -137,6 +137,7 @@ MaintainerOS uses the **Lovable AI Gateway** (server-side, via
 issues. The browser never sees the AI key.
 
 ### Behavior
+
 - Click **Analyze** on any issue (or **Analyze visible** for a batch) to
   generate a structured triage draft.
 - The draft includes type, severity, priority, complexity, confidence,
@@ -148,7 +149,9 @@ issues. The browser never sees the AI key.
   yourself.
 
 ### Safety principles
+
 The triage system prompt instructs the model to:
+
 - assist maintainers, not make final moderation/security decisions
 - never infer sensitive personal traits about contributors
 - never recommend punitive action automatically
@@ -157,11 +160,13 @@ The triage system prompt instructs the model to:
   confidence is low
 
 ### Audit logging
+
 Every AI action is written to `audit_logs` and surfaced on **AI Action
 Log**: `ai.triage.generated`, `ai.triage.approve`, `ai.triage.edit`,
 `ai.triage.reject`, `ai.triage.copy`, `ai.triage.failed`.
 
 ### Configuration
+
 If `LOVABLE_API_KEY` is missing, the Analyze buttons are disabled and a
 configuration warning is shown. No fake AI output is ever displayed.
 
@@ -172,6 +177,7 @@ become the source of truth for AI-generated release notes. Nothing is posted
 to GitHub by this app.
 
 ### PR summaries
+
 - `Analyze` on any row generates a structured draft (change type, risk,
   breaking-change likelihood, suggested review focus, testing/security notes,
   release-note candidate, missing context, safety notes).
@@ -182,6 +188,7 @@ to GitHub by this app.
   in `audit_logs` (`ai.pr_summary.*`).
 
 ### Changelog generation
+
 - `/app/changelog` calls the AI gateway with **only approved PR summaries**
   as source material. Approved-count badge shows whether output is `live`,
   `partial`, or `preview only`.
@@ -191,11 +198,13 @@ to GitHub by this app.
   as `ai.release_draft.*`. Drafts are stored in the `release_drafts` table.
 
 ### Tables added
+
 - `pull_request_ai_summaries` — one editable AI draft per (PR, user).
 - `release_drafts` — generated changelogs (version, title, markdown, structured result).
 - Both use RLS scoped to the owning user.
 
 ### Prompts and safety
+
 - The PR prompt forbids claims that a PR is safe, correct, or mergeable
   without evidence, and forces the model to list `missingContext`.
 - The changelog prompt forbids inventing changes that are not present in the
@@ -210,6 +219,7 @@ public write is **explicit, confirmed, approval-gated, duplicate-protected,
 and audited**. Nothing is posted automatically.
 
 ### Required GitHub OAuth scopes
+
 - `repo` — required to comment on issues, comment on pull requests, apply
   labels, and create draft releases on private repositories.
 - `public_repo` — sufficient for the same actions on public repositories.
@@ -218,6 +228,7 @@ If write scopes are missing, the Settings page shows a "Reconnect GitHub"
 prompt and all Post / Apply / Create buttons stay disabled.
 
 ### How approval-gated publishing works
+
 1. AI generates a draft (issue reply, suggested labels, PR summary, or
    release notes).
 2. A maintainer reviews, edits, and **approves** the draft.
@@ -227,6 +238,7 @@ prompt and all Post / Apply / Create buttons stay disabled.
 5. The maintainer confirms. The server function posts to GitHub.
 
 ### Supported publish actions
+
 - **Issue comment publishing** — posts the approved AI reply as a GitHub
   issue comment.
 - **Issue label application** — applies labels to the issue. Only labels
@@ -238,6 +250,7 @@ prompt and all Post / Apply / Create buttons stay disabled.
   `draft: true`. MaintainerOS **never** publishes a non-draft release.
 
 ### Duplicate-post protection
+
 Before every publish, the server checks `github_publish_events` for a
 prior `success` event with the same `(source_type, source_id, target)`. If
 one exists, the API returns `alreadyPosted: true` with the previous GitHub
@@ -245,7 +258,9 @@ URL. The UI then requires explicit re-confirmation; the re-post is audited
 as `*.reposted` and shown as "duplicate confirmed" in the AI Action Log.
 
 ### Audit logging
+
 Every publish attempt writes both:
+
 - an `audit_logs` entry (`github.<resource>.<attempted|success|failed|reposted>`), and
 - a row in `github_publish_events` with status, target, GitHub URL on
   success, and sanitised error message on failure.
@@ -256,12 +271,14 @@ error, and raw metadata in the advanced section. Tokens and bearer
 credentials are never written to either table.
 
 ### How to disable write actions
+
 - **Per session**: sign out of GitHub or revoke the MaintainerOS OAuth app
   from your GitHub account settings.
 - **Per workspace**: reconnect with a token that lacks `repo` /
   `public_repo`. The Settings page will show write actions as disabled.
 
 ### Safety policy
+
 - No automatic posting of any kind.
 - No automatic label application.
 - No published releases — `draft: true` is hardcoded server-side.
@@ -271,15 +288,14 @@ credentials are never written to either table.
 
 ### Troubleshooting
 
-| Symptom | Likely cause / fix |
-| --- | --- |
-| "Your GitHub session is missing write scope" | OAuth token lacks `repo` / `public_repo`. Go to Settings → Reconnect GitHub. |
-| "Repository access denied" (HTTP 403/404) | Your GitHub account is not a collaborator on the target repo, or org SSO is not authorised for the token. |
-| "Already posted to GitHub" notice | Duplicate-post protection found a previous successful publish. Click "Post again" to confirm a re-post. |
-| GitHub rate limit (HTTP 403 with `rate limit`) | Wait until the reset window. Authenticated requests get 5,000/hour per token. |
-| "No approved draft to publish" | The draft is still `pending` or was `rejected`. Approve or edit it first. |
-| "Release tag already exists" (HTTP 422) | GitHub rejected the release because the tag is in use. Change the version on the changelog draft before creating the release. |
-
+| Symptom                                        | Likely cause / fix                                                                                                            |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| "Your GitHub session is missing write scope"   | OAuth token lacks `repo` / `public_repo`. Go to Settings → Reconnect GitHub.                                                  |
+| "Repository access denied" (HTTP 403/404)      | Your GitHub account is not a collaborator on the target repo, or org SSO is not authorised for the token.                     |
+| "Already posted to GitHub" notice              | Duplicate-post protection found a previous successful publish. Click "Post again" to confirm a re-post.                       |
+| GitHub rate limit (HTTP 403 with `rate limit`) | Wait until the reset window. Authenticated requests get 5,000/hour per token.                                                 |
+| "No approved draft to publish"                 | The draft is still `pending` or was `rejected`. Approve or edit it first.                                                     |
+| "Release tag already exists" (HTTP 422)        | GitHub rejected the release because the tag is in use. Change the version on the changelog draft before creating the release. |
 
 ## Documentation Generator (Slice 7)
 
@@ -292,6 +308,7 @@ SECURITY.md, CODE_OF_CONDUCT.md, GitHub issue template, GitHub pull request
 template, maintainer guide, release process guide, new contributor onboarding.
 
 ### Workflow
+
 1. Open **Documentation** and pick a doc type.
 2. Click **Generate draft**. Lovable AI Gateway (server-side only) produces an
    editable Markdown draft, confidence score, missing-context list, safety
@@ -300,7 +317,7 @@ template, maintainer guide, release process guide, new contributor onboarding.
 4. Approve or Reject. All actions are logged in the AI Action Log.
 5. **Copy Markdown** and paste into your repo. MaintainerOS does **not** commit
    docs to GitHub in this slice — buttons labelled
-   *"Create PR with this doc — coming soon"* and *"Commit file to GitHub — coming soon"*
+   _"Create PR with this doc — coming soon"_ and _"Commit file to GitHub — coming soon"_
    are placeholders for the future workflow.
 
 If `LOVABLE_API_KEY` is missing, generation is disabled and the page shows
@@ -309,8 +326,8 @@ setup instructions.
 ## Security Readiness Dashboard
 
 The **Security** page is a practical readiness review, not a vulnerability
-scanner. Each signal uses cautious badges: *Looks ready*, *Review recommended*,
-*Missing data*, *Not configured*. We never claim a project is "secure" or
+scanner. Each signal uses cautious badges: _Looks ready_, _Review recommended_,
+_Missing data_, _Not configured_. We never claim a project is "secure" or
 "insecure" — those words require evidence MaintainerOS does not have.
 
 Signals: SECURITY.md draft presence, dependency metadata availability, release
@@ -319,8 +336,9 @@ disclosure guidance, code-owner guidance, public write-action safety, AI
 publishing safety, recent sync freshness.
 
 ### Limitations
+
 - Repository file contents (SECURITY.md, CODEOWNERS, dependency manifests) are
-  **not** read in this slice — those checks show *Missing data* until you
+  **not** read in this slice — those checks show _Missing data_ until you
   generate a draft or wire up file inspection.
 - No CVE database lookup. No supply-chain analysis.
 - The optional AI security guidance is a copy-only draft. Nothing is published.
@@ -341,7 +359,6 @@ and committing.
 A future slice will add an opt-in PR workflow that opens a real pull request
 against the repo with generated docs. Until then, the manual copy workflow
 above is the only supported path.
-
 
 ## Demo mode
 

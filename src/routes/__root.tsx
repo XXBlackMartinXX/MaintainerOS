@@ -80,7 +80,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "MaintainerOS gives maintainers AI-powered issue triage, PR summaries, changelogs, contributor insights, and repo health analytics in one focused dashboard.",
       },
       { name: "author", content: "MaintainerOS" },
-      { property: "og:title", content: "MaintainerOS — AI operations center for open-source maintainers" },
+      {
+        property: "og:title",
+        content: "MaintainerOS — AI operations center for open-source maintainers",
+      },
       {
         property: "og:description",
         content:

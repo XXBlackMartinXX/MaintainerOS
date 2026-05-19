@@ -20,18 +20,18 @@ Browser ──► TanStack Start app ──► createServerFn handlers ──►
 
 ## Key modules
 
-| Path | Purpose |
-| --- | --- |
-| `src/lib/github.functions.ts` | Public-facing read sync server fns (repos, issues, PRs, contributors). |
-| `src/lib/github/*.server.ts` | Server-only GitHub REST client and write helpers. |
-| `src/lib/ai/provider.server.ts` | Server-only Lovable AI Gateway wrapper with retry + timeout + Zod validation. |
-| `src/lib/ai/prompts/*` | Per-feature prompt templates (issue triage, PR summary, changelog, docs). |
-| `src/lib/ai.functions.ts` | Server fns for AI issue triage. |
-| `src/lib/ai-pr.functions.ts` | Server fns for AI PR summaries and changelog drafts. |
-| `src/lib/docs.functions.ts` | Server fns for documentation generation and readiness signals. |
-| `src/lib/github-publish.functions.ts` | Server fns for confirmed GitHub write actions. |
-| `src/components/publish-confirm-dialog.tsx` | Reusable confirmation dialog for any GitHub write. |
-| `src/routes/app.*.tsx` | Authenticated app routes (dashboard, triage, pulls, changelog, docs, …). |
+| Path                                        | Purpose                                                                       |
+| ------------------------------------------- | ----------------------------------------------------------------------------- |
+| `src/lib/github.functions.ts`               | Public-facing read sync server fns (repos, issues, PRs, contributors).        |
+| `src/lib/github/*.server.ts`                | Server-only GitHub REST client and write helpers.                             |
+| `src/lib/ai/provider.server.ts`             | Server-only Lovable AI Gateway wrapper with retry + timeout + Zod validation. |
+| `src/lib/ai/prompts/*`                      | Per-feature prompt templates (issue triage, PR summary, changelog, docs).     |
+| `src/lib/ai.functions.ts`                   | Server fns for AI issue triage.                                               |
+| `src/lib/ai-pr.functions.ts`                | Server fns for AI PR summaries and changelog drafts.                          |
+| `src/lib/docs.functions.ts`                 | Server fns for documentation generation and readiness signals.                |
+| `src/lib/github-publish.functions.ts`       | Server fns for confirmed GitHub write actions.                                |
+| `src/components/publish-confirm-dialog.tsx` | Reusable confirmation dialog for any GitHub write.                            |
+| `src/routes/app.*.tsx`                      | Authenticated app routes (dashboard, triage, pulls, changelog, docs, …).      |
 
 ## Data flow
 

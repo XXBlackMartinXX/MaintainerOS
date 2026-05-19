@@ -5,8 +5,18 @@ import { useServerFn } from "@tanstack/react-start";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import {
-  Search, MessageSquare, Loader2, Sparkles, X, Copy, Check, XCircle,
-  AlertTriangle, Pencil, Send, Tag,
+  Search,
+  MessageSquare,
+  Loader2,
+  Sparkles,
+  X,
+  Copy,
+  Check,
+  XCircle,
+  AlertTriangle,
+  Pencil,
+  Send,
+  Tag,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui-bits";
 import { RepoSelector } from "@/components/repo-selector";
@@ -64,7 +74,9 @@ const severityClass: Record<string, string> = {
 
 function Chip({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <span className={`text-[10px] rounded border px-1.5 py-0.5 font-medium ${className}`}>{children}</span>
+    <span className={`text-[10px] rounded border px-1.5 py-0.5 font-medium ${className}`}>
+      {children}
+    </span>
   );
 }
 
@@ -143,7 +155,11 @@ function IssuesPage() {
     const needle = q.trim().toLowerCase();
     const list = issues.filter((i) => {
       if (state !== "all" && i.state !== state) return false;
-      if (labelFilter !== "all" && !((i.labels as IssueLabel[] | null) ?? []).some((l) => l?.name === labelFilter)) return false;
+      if (
+        labelFilter !== "all" &&
+        !((i.labels as IssueLabel[] | null) ?? []).some((l) => l?.name === labelFilter)
+      )
+        return false;
       if (authorFilter !== "all" && i.author_login !== authorFilter) return false;
       if (staleOnly && !isStale(i.updated_at)) return false;
       if (needle) {
@@ -189,9 +205,15 @@ function IssuesPage() {
   }
 
   async function runBulk() {
-    if (!aiConfigured) { toast.error("AI is not configured."); return; }
+    if (!aiConfigured) {
+      toast.error("AI is not configured.");
+      return;
+    }
     const targets = filtered.filter((i) => !triageByIssue.has(i.id));
-    if (targets.length === 0) { toast.message("All visible issues are already analyzed."); return; }
+    if (targets.length === 0) {
+      toast.message("All visible issues are already analyzed.");
+      return;
+    }
     const ok = window.confirm(
       `Analyze ${targets.length} visible issues with AI? This will use AI gateway credits. Run sequentially.`,
     );
@@ -199,8 +221,11 @@ function IssuesPage() {
     setBulkRunning(true);
     setBulkProgress({ done: 0, total: targets.length });
     for (let i = 0; i < targets.length; i++) {
-      try { await runTriage(targets[i].id, false); }
-      catch { /* surfaced via toast */ }
+      try {
+        await runTriage(targets[i].id, false);
+      } catch {
+        /* surfaced via toast */
+      }
       setBulkProgress({ done: i + 1, total: targets.length });
     }
     setBulkRunning(false);
@@ -208,10 +233,10 @@ function IssuesPage() {
   }
 
   const selectedIssue = useMemo(
-    () => (selectedIssueId ? issues.find((i) => i.id === selectedIssueId) ?? null : null),
+    () => (selectedIssueId ? (issues.find((i) => i.id === selectedIssueId) ?? null) : null),
     [selectedIssueId, issues],
   );
-  const selectedTriage = selectedIssueId ? triageByIssue.get(selectedIssueId) ?? null : null;
+  const selectedTriage = selectedIssueId ? (triageByIssue.get(selectedIssueId) ?? null) : null;
 
   const header = (
     <PageHeader
@@ -228,10 +253,23 @@ function IssuesPage() {
   );
 
   if (reposLoading) {
-    return <div>{header}<div className="panel rounded-xl p-10 text-center text-sm text-muted-foreground"><Loader2 className="size-4 animate-spin inline mr-2" />Loading repositories…</div></div>;
+    return (
+      <div>
+        {header}
+        <div className="panel rounded-xl p-10 text-center text-sm text-muted-foreground">
+          <Loader2 className="size-4 animate-spin inline mr-2" />
+          Loading repositories…
+        </div>
+      </div>
+    );
   }
   if (!hasConnectedRepo) {
-    return <div>{header}<EmptyRepositoryState /></div>;
+    return (
+      <div>
+        {header}
+        <EmptyRepositoryState />
+      </div>
+    );
   }
 
   return (
@@ -244,7 +282,8 @@ function IssuesPage() {
           <div>
             <p className="font-medium text-warning">AI triage is not configured</p>
             <p className="text-muted-foreground text-xs mt-0.5">
-              Add a <code className="font-mono">LOVABLE_API_KEY</code> server secret to enable AI issue triage. The Analyze buttons are disabled in the meantime.
+              Add a <code className="font-mono">LOVABLE_API_KEY</code> server secret to enable AI
+              issue triage. The Analyze buttons are disabled in the meantime.
             </p>
           </div>
         </div>
@@ -253,15 +292,49 @@ function IssuesPage() {
       <div className="panel rounded-xl p-3 mb-4 flex flex-col md:flex-row md:items-center gap-2">
         <div className="relative flex-1">
           <Search className="size-3.5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search title, number, author…"
-            className="w-full pl-8 pr-3 py-2 rounded-md border border-border bg-surface text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search title, number, author…"
+            className="w-full pl-8 pr-3 py-2 rounded-md border border-border bg-surface text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          />
         </div>
-        <Select value={state} onChange={(v) => setState(v as StateFilter)} options={[["all","All states"],["open","Open"],["closed","Closed"]]} />
-        <Select value={labelFilter} onChange={setLabelFilter} options={[["all","All labels"], ...labels.map((l) => [l, l] as [string,string])]} />
-        <Select value={authorFilter} onChange={setAuthorFilter} options={[["all","All authors"], ...authors.map((a) => [a, a] as [string,string])]} />
-        <Select value={sort} onChange={(v) => setSort(v as SortKey)} options={[["updated","Recently updated"],["newest","Newest"],["oldest","Oldest"],["comments","Most commented"]]} />
+        <Select
+          value={state}
+          onChange={(v) => setState(v as StateFilter)}
+          options={[
+            ["all", "All states"],
+            ["open", "Open"],
+            ["closed", "Closed"],
+          ]}
+        />
+        <Select
+          value={labelFilter}
+          onChange={setLabelFilter}
+          options={[["all", "All labels"], ...labels.map((l) => [l, l] as [string, string])]}
+        />
+        <Select
+          value={authorFilter}
+          onChange={setAuthorFilter}
+          options={[["all", "All authors"], ...authors.map((a) => [a, a] as [string, string])]}
+        />
+        <Select
+          value={sort}
+          onChange={(v) => setSort(v as SortKey)}
+          options={[
+            ["updated", "Recently updated"],
+            ["newest", "Newest"],
+            ["oldest", "Oldest"],
+            ["comments", "Most commented"],
+          ]}
+        />
         <label className="inline-flex items-center gap-2 text-xs text-muted-foreground px-2">
-          <input type="checkbox" className="accent-primary" checked={staleOnly} onChange={(e) => setStaleOnly(e.target.checked)} />
+          <input
+            type="checkbox"
+            className="accent-primary"
+            checked={staleOnly}
+            onChange={(e) => setStaleOnly(e.target.checked)}
+          />
           Stale (&gt;60d)
         </label>
         <button
@@ -269,19 +342,30 @@ function IssuesPage() {
           disabled={!aiConfigured || bulkRunning || filtered.length === 0}
           className="ml-auto inline-flex items-center gap-1.5 rounded-md border border-border bg-primary text-primary-foreground px-3 py-1.5 text-xs font-medium disabled:opacity-50"
         >
-          {bulkRunning ? <Loader2 className="size-3 animate-spin" /> : <Sparkles className="size-3" />}
-          {bulkRunning ? `Analyzing ${bulkProgress.done}/${bulkProgress.total}…` : "Analyze visible"}
+          {bulkRunning ? (
+            <Loader2 className="size-3 animate-spin" />
+          ) : (
+            <Sparkles className="size-3" />
+          )}
+          {bulkRunning
+            ? `Analyzing ${bulkProgress.done}/${bulkProgress.total}…`
+            : "Analyze visible"}
         </button>
       </div>
 
       {issuesQ.isLoading ? (
-        <div className="panel rounded-xl p-10 text-center text-sm text-muted-foreground"><Loader2 className="size-4 animate-spin inline mr-2" />Loading issues…</div>
+        <div className="panel rounded-xl p-10 text-center text-sm text-muted-foreground">
+          <Loader2 className="size-4 animate-spin inline mr-2" />
+          Loading issues…
+        </div>
       ) : issues.length === 0 ? (
         <EmptySyncedDataState repositoryId={selected!.id} resource="issues" />
       ) : (
         <div className="panel rounded-xl overflow-hidden">
           <div className="px-4 py-3 border-b border-border flex items-center justify-between text-xs text-muted-foreground">
-            <span>{filtered.length} of {issues.length} issues</span>
+            <span>
+              {filtered.length} of {issues.length} issues
+            </span>
             <span>{triageRows.length} analyzed</span>
           </div>
           <ul>
@@ -291,53 +375,105 @@ function IssuesPage() {
               const isAnalyzing = analyzing.has(i.id);
               const status: string = isAnalyzing ? "analyzing" : t ? "analyzed" : "not analyzed";
               return (
-                <li key={i.id} className="px-4 py-3 border-b border-border last:border-0 hover:bg-accent/30 cursor-pointer"
-                  onClick={() => setSelectedIssueId(i.id)}>
+                <li
+                  key={i.id}
+                  className="px-4 py-3 border-b border-border last:border-0 hover:bg-accent/30 cursor-pointer"
+                  onClick={() => setSelectedIssueId(i.id)}
+                >
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-mono text-xs text-muted-foreground">#{i.number}</span>
-                    <Chip className={i.state === "open" ? "border-success/30 bg-success/10 text-success" : "border-muted bg-muted text-muted-foreground"}>{i.state}</Chip>
-                    {isStale(i.updated_at) && <Chip className="border-warning/30 bg-warning/10 text-warning">stale</Chip>}
+                    <Chip
+                      className={
+                        i.state === "open"
+                          ? "border-success/30 bg-success/10 text-success"
+                          : "border-muted bg-muted text-muted-foreground"
+                      }
+                    >
+                      {i.state}
+                    </Chip>
+                    {isStale(i.updated_at) && (
+                      <Chip className="border-warning/30 bg-warning/10 text-warning">stale</Chip>
+                    )}
                     <span className="text-sm font-medium truncate">{i.title}</span>
                   </div>
                   <div className="mt-1.5 flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
                     <span>{i.author_login ?? "unknown"}</span>
-                    {i.updated_at && <span>· updated {formatDistanceToNow(new Date(i.updated_at), { addSuffix: true })}</span>}
-                    <span className="inline-flex items-center gap-1"><MessageSquare className="size-3" />{i.comments ?? 0}</span>
+                    {i.updated_at && (
+                      <span>
+                        · updated {formatDistanceToNow(new Date(i.updated_at), { addSuffix: true })}
+                      </span>
+                    )}
+                    <span className="inline-flex items-center gap-1">
+                      <MessageSquare className="size-3" />
+                      {i.comments ?? 0}
+                    </span>
                     {ils.slice(0, 3).map((l) => (
-                      <span key={l.name} className="rounded-full border border-border bg-surface px-1.5 py-0.5 text-[10px]">{l.name}</span>
+                      <span
+                        key={l.name}
+                        className="rounded-full border border-border bg-surface px-1.5 py-0.5 text-[10px]"
+                      >
+                        {l.name}
+                      </span>
                     ))}
                   </div>
                   <div className="mt-2 flex items-center gap-2 flex-wrap">
-                    <Chip className={
-                      status === "analyzed" ? "border-success/30 bg-success/10 text-success" :
-                      status === "analyzing" ? "border-primary/30 bg-primary/10 text-primary" :
-                      "border-border bg-surface text-muted-foreground"
-                    }>
-                      {status === "analyzing" && <Loader2 className="size-2.5 animate-spin inline mr-1" />}
+                    <Chip
+                      className={
+                        status === "analyzed"
+                          ? "border-success/30 bg-success/10 text-success"
+                          : status === "analyzing"
+                            ? "border-primary/30 bg-primary/10 text-primary"
+                            : "border-border bg-surface text-muted-foreground"
+                      }
+                    >
+                      {status === "analyzing" && (
+                        <Loader2 className="size-2.5 animate-spin inline mr-1" />
+                      )}
                       {status}
                     </Chip>
                     {t && (
                       <>
-                        <Chip className="border-border bg-surface text-foreground">type: {t.result.issueType}</Chip>
-                        <Chip className={severityClass[t.result.severity] ?? severityClass.unknown}>severity: {t.result.severity}</Chip>
-                        <Chip className="border-border bg-surface text-foreground">priority: {t.result.priority}</Chip>
-                        <Chip className="border-border bg-surface text-muted-foreground">confidence: {Math.round((t.result.confidence ?? 0) * 100)}%</Chip>
-                        <Chip className="border-primary/30 bg-primary/10 text-primary">AI draft</Chip>
+                        <Chip className="border-border bg-surface text-foreground">
+                          type: {t.result.issueType}
+                        </Chip>
+                        <Chip className={severityClass[t.result.severity] ?? severityClass.unknown}>
+                          severity: {t.result.severity}
+                        </Chip>
+                        <Chip className="border-border bg-surface text-foreground">
+                          priority: {t.result.priority}
+                        </Chip>
+                        <Chip className="border-border bg-surface text-muted-foreground">
+                          confidence: {Math.round((t.result.confidence ?? 0) * 100)}%
+                        </Chip>
+                        <Chip className="border-primary/30 bg-primary/10 text-primary">
+                          AI draft
+                        </Chip>
                       </>
                     )}
                     <button
-                      onClick={(e) => { e.stopPropagation(); runTriage(i.id, !!t); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        runTriage(i.id, !!t);
+                      }}
                       disabled={!aiConfigured || isAnalyzing}
                       className="ml-auto inline-flex items-center gap-1 rounded-md border border-border bg-surface px-2 py-1 text-[11px] hover:bg-accent disabled:opacity-50"
                     >
-                      {isAnalyzing ? <Loader2 className="size-3 animate-spin" /> : <Sparkles className="size-3" />}
+                      {isAnalyzing ? (
+                        <Loader2 className="size-3 animate-spin" />
+                      ) : (
+                        <Sparkles className="size-3" />
+                      )}
                       {t ? "Reanalyze" : "Analyze"}
                     </button>
                   </div>
                 </li>
               );
             })}
-            {filtered.length === 0 && <li className="px-4 py-8 text-center text-sm text-muted-foreground">No issues match the current filters.</li>}
+            {filtered.length === 0 && (
+              <li className="px-4 py-8 text-center text-sm text-muted-foreground">
+                No issues match the current filters.
+              </li>
+            )}
           </ul>
         </div>
       )}
@@ -357,7 +493,9 @@ function IssuesPage() {
             await qc.invalidateQueries({ queryKey: ["triage", selected?.id] });
           }}
           publishComment={async (triageId, allowRepost) =>
-            publishCommentFn({ data: { triage_id: triageId, confirm: true, allow_repost: allowRepost } })
+            publishCommentFn({
+              data: { triage_id: triageId, confirm: true, allow_repost: allowRepost },
+            })
           }
           publishLabels={async (triageId, labels) =>
             publishLabelsFn({ data: { triage_id: triageId, labels, confirm: true } })
@@ -371,11 +509,26 @@ function IssuesPage() {
   );
 }
 
-type PublishResult = { ok: boolean; githubUrl?: string | null; alreadyPosted?: boolean; previousUrl?: string | null };
+type PublishResult = {
+  ok: boolean;
+  githubUrl?: string | null;
+  alreadyPosted?: boolean;
+  previousUrl?: string | null;
+};
 
 function TriagePanel({
-  issue, triage, onClose, onAnalyze, analyzing, aiConfigured, onUpdate,
-  perms, repoLabels, publishComment, publishLabels, listEvents,
+  issue,
+  triage,
+  onClose,
+  onAnalyze,
+  analyzing,
+  aiConfigured,
+  onUpdate,
+  perms,
+  repoLabels,
+  publishComment,
+  publishLabels,
+  listEvents,
 }: {
   issue: { id: string; number: number; title: string };
   triage: TriageRow | null;
@@ -383,8 +536,18 @@ function TriagePanel({
   onAnalyze: () => void;
   analyzing: boolean;
   aiConfigured: boolean;
-  onUpdate: (payload: { triage_id: string; suggested_reply?: string; approval_status?: "pending"|"approved"|"edited"|"rejected"; action?: "approve"|"edit"|"reject"|"copy" }) => Promise<void>;
-  perms?: { hasToken: boolean; canCommentIssues: boolean; canManageLabels: boolean; scopes: string[] };
+  onUpdate: (payload: {
+    triage_id: string;
+    suggested_reply?: string;
+    approval_status?: "pending" | "approved" | "edited" | "rejected";
+    action?: "approve" | "edit" | "reject" | "copy";
+  }) => Promise<void>;
+  perms?: {
+    hasToken: boolean;
+    canCommentIssues: boolean;
+    canManageLabels: boolean;
+    scopes: string[];
+  };
   repoLabels: string[];
   publishComment: (triageId: string, allowRepost: boolean) => Promise<PublishResult>;
   publishLabels: (triageId: string, labels: string[]) => Promise<PublishResult>;
@@ -392,7 +555,10 @@ function TriagePanel({
 }) {
   const [reply, setReply] = useState(triage?.suggested_reply ?? "");
   const [editing, setEditing] = useState(false);
-  useEffect(() => { setReply(triage?.suggested_reply ?? ""); setEditing(false); }, [triage?.id, triage?.suggested_reply]);
+  useEffect(() => {
+    setReply(triage?.suggested_reply ?? "");
+    setEditing(false);
+  }, [triage?.id, triage?.suggested_reply]);
 
   const eventsQ = useQuery({
     queryKey: ["publish-events", "issue_triage", triage?.id],
@@ -436,13 +602,18 @@ function TriagePanel({
   return (
     <div className="fixed inset-0 z-40 flex justify-end" onClick={onClose}>
       <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
-      <aside className="relative z-10 h-full w-full max-w-xl overflow-y-auto border-l border-border bg-surface shadow-xl" onClick={(e) => e.stopPropagation()}>
+      <aside
+        className="relative z-10 h-full w-full max-w-xl overflow-y-auto border-l border-border bg-surface shadow-xl"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-surface/95 px-4 py-3 backdrop-blur">
           <div className="min-w-0">
             <div className="text-xs text-muted-foreground">Issue #{issue.number}</div>
             <h2 className="text-sm font-semibold truncate">{issue.title}</h2>
           </div>
-          <button onClick={onClose} className="rounded-md p-1.5 hover:bg-accent"><X className="size-4" /></button>
+          <button onClick={onClose} className="rounded-md p-1.5 hover:bg-accent">
+            <X className="size-4" />
+          </button>
         </div>
 
         <div className="p-4 space-y-4">
@@ -455,188 +626,274 @@ function TriagePanel({
                 disabled={!aiConfigured || analyzing}
                 className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-50"
               >
-                {analyzing ? <Loader2 className="size-3 animate-spin" /> : <Sparkles className="size-3" />}
+                {analyzing ? (
+                  <Loader2 className="size-3 animate-spin" />
+                ) : (
+                  <Sparkles className="size-3" />
+                )}
                 Generate AI draft
               </button>
-              {!aiConfigured && <p className="mt-2 text-[11px] text-warning">AI is not configured.</p>}
+              {!aiConfigured && (
+                <p className="mt-2 text-[11px] text-warning">AI is not configured.</p>
+              )}
             </div>
           ) : (
             r && (
-            <>
-              <div className="flex items-center gap-2 flex-wrap">
-                <Chip className="border-primary/30 bg-primary/10 text-primary">AI draft · {triage.model}</Chip>
-                <Chip className="border-border bg-surface text-muted-foreground">status: {triage.approval_status}</Chip>
-                {commentEvent && <PublishStatusBadge status="success" />}
-              </div>
-
-              <Section title="Summary"><p className="text-sm">{r.summary || "—"}</p></Section>
-
-              <div className="grid grid-cols-2 gap-3">
-                <Field label="Type" value={r.issueType} />
-                <Field label="Severity" value={r.severity} />
-                <Field label="Priority" value={r.priority} />
-                <Field label="Complexity" value={r.complexity} />
-                <Field label="Confidence" value={`${Math.round(r.confidence * 100)}%`} />
-                <Field label="Duplicate likelihood" value={`${Math.round(r.duplicateLikelihood * 100)}%`} />
-                <Field label="Sentiment" value={r.sentiment} />
-                <Field label="Action needed" value={r.maintainerActionNeeded ? "Yes" : "No"} />
-              </div>
-
-              <Section title="Recommended next action">
-                <p className="text-sm">{r.recommendedNextAction || "—"}</p>
-              </Section>
-
-              <Section title="Suggested maintainer reply (editable draft)">
-                <textarea
-                  value={reply}
-                  onChange={(e) => { setReply(e.target.value); setEditing(true); }}
-                  rows={8}
-                  className="w-full rounded-md border border-border bg-background p-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-ring"
-                />
-                <p className="mt-1 text-[11px] text-muted-foreground">AI draft. Review before sharing. MaintainerOS does not post to GitHub automatically.</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  <button onClick={async () => {
-                    await navigator.clipboard.writeText(reply);
-                    toast.success("Reply copied to clipboard");
-                    await onUpdate({ triage_id: triage.id, action: "copy" });
-                  }} className="inline-flex items-center gap-1 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs hover:bg-accent">
-                    <Copy className="size-3" /> Copy reply
-                  </button>
-                  <button onClick={async () => {
-                    await onUpdate({ triage_id: triage.id, suggested_reply: reply, approval_status: editing ? "edited" : "approved", action: editing ? "edit" : "approve" });
-                    toast.success(editing ? "Draft saved as edited" : "Draft approved");
-                  }} className="inline-flex items-center gap-1 rounded-md border border-success/40 bg-success/10 text-success px-2.5 py-1.5 text-xs hover:bg-success/15">
-                    {editing ? <Pencil className="size-3" /> : <Check className="size-3" />} {editing ? "Save edit" : "Approve draft"}
-                  </button>
-                  <button onClick={async () => {
-                    await onUpdate({ triage_id: triage.id, approval_status: "rejected", action: "reject" });
-                    toast.message("Draft rejected");
-                  }} className="inline-flex items-center gap-1 rounded-md border border-destructive/40 bg-destructive/10 text-destructive px-2.5 py-1.5 text-xs hover:bg-destructive/15">
-                    <XCircle className="size-3" /> Reject draft
-                  </button>
+              <>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Chip className="border-primary/30 bg-primary/10 text-primary">
+                    AI draft · {triage.model}
+                  </Chip>
+                  <Chip className="border-border bg-surface text-muted-foreground">
+                    status: {triage.approval_status}
+                  </Chip>
+                  {commentEvent && <PublishStatusBadge status="success" />}
                 </div>
-              </Section>
 
-              {/* Publish to GitHub */}
-              <Section title="Publish to GitHub">
-                {!isApproved && (
-                  <p className="text-xs text-muted-foreground">Approve or edit the draft to enable publishing.</p>
-                )}
-                {isApproved && perms && !perms.canCommentIssues && (
-                  <GitHubPermissionWarning missing="post issue comments" hasToken={perms.hasToken} />
-                )}
-                {commentEvent && (
-                  <div className="mb-2">
-                    <AlreadyPublishedNotice
-                      event={commentEvent}
-                      onRepublish={() => { setCommentRepost(true); setCommentDialogOpen(true); }}
-                    />
-                  </div>
-                )}
-                <button
-                  onClick={() => { setCommentRepost(!!commentEvent); setCommentDialogOpen(true); }}
-                  disabled={!canPostComment}
-                  className="inline-flex items-center gap-1.5 rounded-md bg-primary text-primary-foreground px-3 py-1.5 text-xs font-medium disabled:opacity-50"
-                >
-                  <Send className="size-3" /> {commentEvent ? "Post reply again to GitHub" : "Post reply to GitHub"}
-                </button>
-              </Section>
+                <Section title="Summary">
+                  <p className="text-sm">{r.summary || "—"}</p>
+                </Section>
 
-              {/* Labels */}
-              {r.suggestedLabels.length > 0 && (
-                <Section title="Suggested labels">
-                  <div className="flex flex-wrap gap-1.5 mb-2">
-                    {r.suggestedLabels.map((l) => {
-                      const exists = repoLabelSet.has(l);
-                      const active = selectedLabels.includes(l);
-                      return (
-                        <button
-                          key={l}
-                          onClick={() => exists && toggleLabel(l)}
-                          disabled={!exists}
-                          className={`rounded-full border px-2 py-0.5 text-[11px] transition-colors ${
-                            active
-                              ? "border-primary/50 bg-primary/15 text-primary"
-                              : exists
-                                ? "border-border bg-surface hover:bg-accent"
-                                : "border-warning/40 bg-warning/10 text-warning cursor-not-allowed"
-                          }`}
-                          title={exists ? "Click to toggle" : "Label does not exist in this repo"}
-                        >
-                          <Tag className="size-2.5 inline mr-1" />
-                          {l}{!exists && " (missing)"}
-                        </button>
-                      );
-                    })}
+                <div className="grid grid-cols-2 gap-3">
+                  <Field label="Type" value={r.issueType} />
+                  <Field label="Severity" value={r.severity} />
+                  <Field label="Priority" value={r.priority} />
+                  <Field label="Complexity" value={r.complexity} />
+                  <Field label="Confidence" value={`${Math.round(r.confidence * 100)}%`} />
+                  <Field
+                    label="Duplicate likelihood"
+                    value={`${Math.round(r.duplicateLikelihood * 100)}%`}
+                  />
+                  <Field label="Sentiment" value={r.sentiment} />
+                  <Field label="Action needed" value={r.maintainerActionNeeded ? "Yes" : "No"} />
+                </div>
+
+                <Section title="Recommended next action">
+                  <p className="text-sm">{r.recommendedNextAction || "—"}</p>
+                </Section>
+
+                <Section title="Suggested maintainer reply (editable draft)">
+                  <textarea
+                    value={reply}
+                    onChange={(e) => {
+                      setReply(e.target.value);
+                      setEditing(true);
+                    }}
+                    rows={8}
+                    className="w-full rounded-md border border-border bg-background p-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-ring"
+                  />
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    AI draft. Review before sharing. MaintainerOS does not post to GitHub
+                    automatically.
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <button
+                      onClick={async () => {
+                        await navigator.clipboard.writeText(reply);
+                        toast.success("Reply copied to clipboard");
+                        await onUpdate({ triage_id: triage.id, action: "copy" });
+                      }}
+                      className="inline-flex items-center gap-1 rounded-md border border-border bg-surface px-2.5 py-1.5 text-xs hover:bg-accent"
+                    >
+                      <Copy className="size-3" /> Copy reply
+                    </button>
+                    <button
+                      onClick={async () => {
+                        await onUpdate({
+                          triage_id: triage.id,
+                          suggested_reply: reply,
+                          approval_status: editing ? "edited" : "approved",
+                          action: editing ? "edit" : "approve",
+                        });
+                        toast.success(editing ? "Draft saved as edited" : "Draft approved");
+                      }}
+                      className="inline-flex items-center gap-1 rounded-md border border-success/40 bg-success/10 text-success px-2.5 py-1.5 text-xs hover:bg-success/15"
+                    >
+                      {editing ? <Pencil className="size-3" /> : <Check className="size-3" />}{" "}
+                      {editing ? "Save edit" : "Approve draft"}
+                    </button>
+                    <button
+                      onClick={async () => {
+                        await onUpdate({
+                          triage_id: triage.id,
+                          approval_status: "rejected",
+                          action: "reject",
+                        });
+                        toast.message("Draft rejected");
+                      }}
+                      className="inline-flex items-center gap-1 rounded-md border border-destructive/40 bg-destructive/10 text-destructive px-2.5 py-1.5 text-xs hover:bg-destructive/15"
+                    >
+                      <XCircle className="size-3" /> Reject draft
+                    </button>
                   </div>
-                  {missingSuggested.length > 0 && (
-                    <p className="text-[11px] text-warning mb-2">
-                      {missingSuggested.length} suggested label{missingSuggested.length === 1 ? "" : "s"} don't exist in this repo. MaintainerOS will not create new labels automatically.
+                </Section>
+
+                {/* Publish to GitHub */}
+                <Section title="Publish to GitHub">
+                  {!isApproved && (
+                    <p className="text-xs text-muted-foreground">
+                      Approve or edit the draft to enable publishing.
                     </p>
                   )}
-                  {isApproved && perms && !perms.canManageLabels && (
-                    <GitHubPermissionWarning missing="manage labels" hasToken={perms.hasToken} />
+                  {isApproved && perms && !perms.canCommentIssues && (
+                    <GitHubPermissionWarning
+                      missing="post issue comments"
+                      hasToken={perms.hasToken}
+                    />
                   )}
-                  {labelsEvent && (
+                  {commentEvent && (
                     <div className="mb-2">
                       <AlreadyPublishedNotice
-                        event={labelsEvent}
-                        republishLabel="Apply labels again"
-                        onRepublish={() => setLabelDialogOpen(true)}
+                        event={commentEvent}
+                        onRepublish={() => {
+                          setCommentRepost(true);
+                          setCommentDialogOpen(true);
+                        }}
                       />
                     </div>
                   )}
                   <button
-                    onClick={() => setLabelDialogOpen(true)}
-                    disabled={!canApplyLabels}
-                    className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent disabled:opacity-50"
+                    onClick={() => {
+                      setCommentRepost(!!commentEvent);
+                      setCommentDialogOpen(true);
+                    }}
+                    disabled={!canPostComment}
+                    className="inline-flex items-center gap-1.5 rounded-md bg-primary text-primary-foreground px-3 py-1.5 text-xs font-medium disabled:opacity-50"
                   >
-                    <Tag className="size-3" /> Apply selected labels ({selectedLabels.length})
+                    <Send className="size-3" />{" "}
+                    {commentEvent ? "Post reply again to GitHub" : "Post reply to GitHub"}
                   </button>
                 </Section>
-              )}
 
-              {r.riskNotes.length > 0 && <Section title="Risk notes"><ul className="list-disc pl-5 text-sm space-y-1">{r.riskNotes.map((n, i) => <li key={i}>{n}</li>)}</ul></Section>}
-              {r.safetyNotes.length > 0 && <Section title="Safety notes (review recommended)"><ul className="list-disc pl-5 text-sm space-y-1 text-warning">{r.safetyNotes.map((n, i) => <li key={i}>{n}</li>)}</ul></Section>}
+                {/* Labels */}
+                {r.suggestedLabels.length > 0 && (
+                  <Section title="Suggested labels">
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {r.suggestedLabels.map((l) => {
+                        const exists = repoLabelSet.has(l);
+                        const active = selectedLabels.includes(l);
+                        return (
+                          <button
+                            key={l}
+                            onClick={() => exists && toggleLabel(l)}
+                            disabled={!exists}
+                            className={`rounded-full border px-2 py-0.5 text-[11px] transition-colors ${
+                              active
+                                ? "border-primary/50 bg-primary/15 text-primary"
+                                : exists
+                                  ? "border-border bg-surface hover:bg-accent"
+                                  : "border-warning/40 bg-warning/10 text-warning cursor-not-allowed"
+                            }`}
+                            title={exists ? "Click to toggle" : "Label does not exist in this repo"}
+                          >
+                            <Tag className="size-2.5 inline mr-1" />
+                            {l}
+                            {!exists && " (missing)"}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {missingSuggested.length > 0 && (
+                      <p className="text-[11px] text-warning mb-2">
+                        {missingSuggested.length} suggested label
+                        {missingSuggested.length === 1 ? "" : "s"} don't exist in this repo.
+                        MaintainerOS will not create new labels automatically.
+                      </p>
+                    )}
+                    {isApproved && perms && !perms.canManageLabels && (
+                      <GitHubPermissionWarning missing="manage labels" hasToken={perms.hasToken} />
+                    )}
+                    {labelsEvent && (
+                      <div className="mb-2">
+                        <AlreadyPublishedNotice
+                          event={labelsEvent}
+                          republishLabel="Apply labels again"
+                          onRepublish={() => setLabelDialogOpen(true)}
+                        />
+                      </div>
+                    )}
+                    <button
+                      onClick={() => setLabelDialogOpen(true)}
+                      disabled={!canApplyLabels}
+                      className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent disabled:opacity-50"
+                    >
+                      <Tag className="size-3" /> Apply selected labels ({selectedLabels.length})
+                    </button>
+                  </Section>
+                )}
 
-              <button onClick={onAnalyze} disabled={!aiConfigured || analyzing} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent disabled:opacity-50">
-                {analyzing ? <Loader2 className="size-3 animate-spin" /> : <Sparkles className="size-3" />} Reanalyze
-              </button>
+                {r.riskNotes.length > 0 && (
+                  <Section title="Risk notes">
+                    <ul className="list-disc pl-5 text-sm space-y-1">
+                      {r.riskNotes.map((n, i) => (
+                        <li key={i}>{n}</li>
+                      ))}
+                    </ul>
+                  </Section>
+                )}
+                {r.safetyNotes.length > 0 && (
+                  <Section title="Safety notes (review recommended)">
+                    <ul className="list-disc pl-5 text-sm space-y-1 text-warning">
+                      {r.safetyNotes.map((n, i) => (
+                        <li key={i}>{n}</li>
+                      ))}
+                    </ul>
+                  </Section>
+                )}
 
-              <PublishConfirmDialog
-                open={commentDialogOpen}
-                onOpenChange={(v) => { setCommentDialogOpen(v); if (!v) setCommentRepost(false); }}
-                kind="issue_comment"
-                previousUrl={commentRepost ? commentEvent?.github_url : null}
-                preview={<pre className="whitespace-pre-wrap font-mono text-xs">{reply}</pre>}
-                onConfirm={async () => {
-                  const res = await publishComment(triage.id, commentRepost);
-                  await eventsQ.refetch();
-                  return res;
-                }}
-              />
-              <PublishConfirmDialog
-                open={labelDialogOpen}
-                onOpenChange={setLabelDialogOpen}
-                kind="issue_labels"
-                previousUrl={labelsEvent ? labelsEvent.github_url : null}
-                preview={
-                  <div className="flex flex-wrap gap-1.5">
-                    {selectedLabels.map((l) => (
-                      <span key={l} className="rounded-full border border-primary/40 bg-primary/10 text-primary px-2 py-0.5 text-[11px]">
-                        {l}
-                      </span>
-                    ))}
-                  </div>
-                }
-                disabled={selectedLabels.length === 0}
-                onConfirm={async () => {
-                  const res = await publishLabels(triage.id, selectedLabels);
-                  await eventsQ.refetch();
-                  return res;
-                }}
-              />
-            </>
+                <button
+                  onClick={onAnalyze}
+                  disabled={!aiConfigured || analyzing}
+                  className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent disabled:opacity-50"
+                >
+                  {analyzing ? (
+                    <Loader2 className="size-3 animate-spin" />
+                  ) : (
+                    <Sparkles className="size-3" />
+                  )}{" "}
+                  Reanalyze
+                </button>
+
+                <PublishConfirmDialog
+                  open={commentDialogOpen}
+                  onOpenChange={(v) => {
+                    setCommentDialogOpen(v);
+                    if (!v) setCommentRepost(false);
+                  }}
+                  kind="issue_comment"
+                  previousUrl={commentRepost ? commentEvent?.github_url : null}
+                  preview={<pre className="whitespace-pre-wrap font-mono text-xs">{reply}</pre>}
+                  onConfirm={async () => {
+                    const res = await publishComment(triage.id, commentRepost);
+                    await eventsQ.refetch();
+                    return res;
+                  }}
+                />
+                <PublishConfirmDialog
+                  open={labelDialogOpen}
+                  onOpenChange={setLabelDialogOpen}
+                  kind="issue_labels"
+                  previousUrl={labelsEvent ? labelsEvent.github_url : null}
+                  preview={
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedLabels.map((l) => (
+                        <span
+                          key={l}
+                          className="rounded-full border border-primary/40 bg-primary/10 text-primary px-2 py-0.5 text-[11px]"
+                        >
+                          {l}
+                        </span>
+                      ))}
+                    </div>
+                  }
+                  disabled={selectedLabels.length === 0}
+                  onConfirm={async () => {
+                    const res = await publishLabels(triage.id, selectedLabels);
+                    await eventsQ.refetch();
+                    return res;
+                  }}
+                />
+              </>
             )
           )}
         </div>
@@ -648,7 +905,9 @@ function TriagePanel({
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">{title}</h3>
+      <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+        {title}
+      </h3>
       {children}
     </div>
   );
@@ -663,10 +922,26 @@ function Field({ label, value }: { label: string; value: string }) {
   );
 }
 
-function Select({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: [string, string][] }) {
+function Select({
+  value,
+  onChange,
+  options,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  options: [string, string][];
+}) {
   return (
-    <select value={value} onChange={(e) => onChange(e.target.value)} className="rounded-md border border-border bg-surface px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring">
-      {options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className="rounded-md border border-border bg-surface px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+    >
+      {options.map(([v, l]) => (
+        <option key={v} value={v}>
+          {l}
+        </option>
+      ))}
     </select>
   );
 }

@@ -14,7 +14,12 @@ import {
 import { triageResultSchema, approvalStatuses } from "./ai/schemas";
 import { TRIAGE_SYSTEM_PROMPT, buildTriageUserPrompt } from "./ai/prompts/issue-triage";
 
-async function logAudit(userId: string, action: string, targetId: string | null, metadata: Record<string, unknown> = {}) {
+async function logAudit(
+  userId: string,
+  action: string,
+  targetId: string | null,
+  metadata: Record<string, unknown> = {},
+) {
   await supabaseAdmin.from("audit_logs").insert({
     user_id: userId,
     action,
@@ -34,7 +39,9 @@ export const getAiStatus = createServerFn({ method: "GET" })
 /** Run AI triage for one issue and persist the draft. */
 export const triageIssue = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) => z.object({ issue_id: z.string().uuid(), reanalyze: z.boolean().optional() }).parse(d))
+  .inputValidator((d) =>
+    z.object({ issue_id: z.string().uuid(), reanalyze: z.boolean().optional() }).parse(d),
+  )
   .handler(async ({ data, context }) => {
     const userId = context.userId;
     const { supabase } = context;
@@ -147,11 +154,17 @@ export const triageIssue = createServerFn({ method: "POST" })
       return { ok: true, id: triageId, result, model };
     } catch (err) {
       const code =
-        err instanceof AIConfigError ? "ai.config_missing"
-        : err instanceof AICreditsError ? "ai.credits_exhausted"
-        : err instanceof AIRateLimitError ? "ai.rate_limited"
-        : "ai.error";
-      await logAudit(userId, "ai.triage.failed", issue.id, { code, message: (err as Error).message });
+        err instanceof AIConfigError
+          ? "ai.config_missing"
+          : err instanceof AICreditsError
+            ? "ai.credits_exhausted"
+            : err instanceof AIRateLimitError
+              ? "ai.rate_limited"
+              : "ai.error";
+      await logAudit(userId, "ai.triage.failed", issue.id, {
+        code,
+        message: (err as Error).message,
+      });
       throw err;
     }
   });
@@ -162,7 +175,9 @@ export const listTriageForRepo = createServerFn({ method: "GET" })
   .handler(async ({ data, context }) => {
     const { data: rows, error } = await context.supabase
       .from("issue_triage_results")
-      .select("id, issue_id, model, result, suggested_reply, approval_status, created_at, updated_at")
+      .select(
+        "id, issue_id, model, result, suggested_reply, approval_status, created_at, updated_at",
+      )
       .eq("repository_id", data.repository_id)
       .order("updated_at", { ascending: false });
     if (error) throw new Error(error.message);
@@ -172,12 +187,14 @@ export const listTriageForRepo = createServerFn({ method: "GET" })
 export const updateTriageDraft = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({
-      triage_id: z.string().uuid(),
-      suggested_reply: z.string().max(4000).optional(),
-      approval_status: z.enum(approvalStatuses).optional(),
-      action: z.enum(["approve","edit","reject","copy"]).optional(),
-    }).parse(d),
+    z
+      .object({
+        triage_id: z.string().uuid(),
+        suggested_reply: z.string().max(4000).optional(),
+        approval_status: z.enum(approvalStatuses).optional(),
+        action: z.enum(["approve", "edit", "reject", "copy"]).optional(),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const userId = context.userId;
@@ -206,11 +223,13 @@ export const updateTriageDraft = createServerFn({ method: "POST" })
 export const listAuditLogs = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({
-      repository_id: z.string().uuid().optional(),
-      action_prefix: z.string().max(40).optional(),
-      limit: z.number().int().min(1).max(500).default(200),
-    }).parse(d),
+    z
+      .object({
+        repository_id: z.string().uuid().optional(),
+        action_prefix: z.string().max(40).optional(),
+        limit: z.number().int().min(1).max(500).default(200),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     let query = context.supabase

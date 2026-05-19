@@ -109,11 +109,13 @@ export const getGithubWritePermissions = createServerFn({ method: "GET" })
 export const publishIssueComment = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({
-      triage_id: z.string().uuid(),
-      confirm: z.literal(true),
-      allow_repost: z.boolean().optional(),
-    }).parse(d),
+    z
+      .object({
+        triage_id: z.string().uuid(),
+        confirm: z.literal(true),
+        allow_repost: z.boolean().optional(),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const userId = context.userId;
@@ -158,43 +160,71 @@ export const publishIssueComment = createServerFn({ method: "POST" })
     const { scopes, hasToken } = await loadUserScopes(userId);
     const perms = evaluateWritePermissions(scopes, hasToken);
     if (!perms.canCommentIssues) {
-      throw new Error("Your GitHub session is missing write scope. Reconnect to grant repo access.");
+      throw new Error(
+        "Your GitHub session is missing write scope. Reconnect to grant repo access.",
+      );
     }
 
-    await logAudit(userId, prior ? "github.issue_comment.reposted" : "github.issue_comment.attempted", "issue", triage.issue_id, {
-      triage_id: triage.id, issue_number: issue.number,
-    });
+    await logAudit(
+      userId,
+      prior ? "github.issue_comment.reposted" : "github.issue_comment.attempted",
+      "issue",
+      triage.issue_id,
+      {
+        triage_id: triage.id,
+        issue_number: issue.number,
+      },
+    );
     await recordEvent({
-      userId, repositoryId: triage.repository_id, targetType: "issue",
-      targetId: String(issue.number), sourceType: "issue_triage", sourceId: triage.id,
+      userId,
+      repositoryId: triage.repository_id,
+      targetType: "issue",
+      targetId: String(issue.number),
+      sourceType: "issue_triage",
+      sourceId: triage.id,
       status: "attempted",
     });
 
     try {
       const token = await loadUserGithubToken(userId);
       const comment = await postIssueComment({
-        token, owner: repo.owner, name: repo.name, number: issue.number,
+        token,
+        owner: repo.owner,
+        name: repo.name,
+        number: issue.number,
         body: triage.suggested_reply,
       });
       await recordEvent({
-        userId, repositoryId: triage.repository_id, targetType: "issue",
-        targetId: String(issue.number), sourceType: "issue_triage", sourceId: triage.id,
-        status: "success", githubUrl: comment.html_url,
+        userId,
+        repositoryId: triage.repository_id,
+        targetType: "issue",
+        targetId: String(issue.number),
+        sourceType: "issue_triage",
+        sourceId: triage.id,
+        status: "success",
+        githubUrl: comment.html_url,
         metadata: { comment_id: comment.id },
       });
       await logAudit(userId, "github.issue_comment.success", "issue", triage.issue_id, {
-        triage_id: triage.id, github_url: comment.html_url,
+        triage_id: triage.id,
+        github_url: comment.html_url,
       });
       return { ok: true, githubUrl: comment.html_url } as const;
     } catch (err) {
       const message = (err as Error).message;
       await recordEvent({
-        userId, repositoryId: triage.repository_id, targetType: "issue",
-        targetId: String(issue.number), sourceType: "issue_triage", sourceId: triage.id,
-        status: "failed", errorMessage: message,
+        userId,
+        repositoryId: triage.repository_id,
+        targetType: "issue",
+        targetId: String(issue.number),
+        sourceType: "issue_triage",
+        sourceId: triage.id,
+        status: "failed",
+        errorMessage: message,
       });
       await logAudit(userId, "github.issue_comment.failed", "issue", triage.issue_id, {
-        triage_id: triage.id, error: message,
+        triage_id: triage.id,
+        error: message,
       });
       throw err;
     }
@@ -205,11 +235,13 @@ export const publishIssueComment = createServerFn({ method: "POST" })
 export const publishIssueLabels = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({
-      triage_id: z.string().uuid(),
-      labels: z.array(z.string().min(1).max(50)).min(1).max(20),
-      confirm: z.literal(true),
-    }).parse(d),
+    z
+      .object({
+        triage_id: z.string().uuid(),
+        labels: z.array(z.string().min(1).max(50)).min(1).max(20),
+        confirm: z.literal(true),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const userId = context.userId;
@@ -227,47 +259,75 @@ export const publishIssueLabels = createServerFn({ method: "POST" })
 
     const repo = await loadRepo(triage.repository_id);
     const { data: issue } = await supabaseAdmin
-      .from("issues").select("number").eq("id", triage.issue_id).maybeSingle();
+      .from("issues")
+      .select("number")
+      .eq("id", triage.issue_id)
+      .maybeSingle();
     if (!issue) throw new Error("Issue not found.");
 
     const { scopes, hasToken } = await loadUserScopes(userId);
     if (!evaluateWritePermissions(scopes, hasToken).canManageLabels) {
-      throw new Error("Your GitHub session is missing write scope. Reconnect to grant repo access.");
+      throw new Error(
+        "Your GitHub session is missing write scope. Reconnect to grant repo access.",
+      );
     }
 
     await recordEvent({
-      userId, repositoryId: triage.repository_id, targetType: "issue_labels",
-      targetId: String(issue.number), sourceType: "issue_triage", sourceId: triage.id,
-      status: "attempted", metadata: { labels: data.labels },
+      userId,
+      repositoryId: triage.repository_id,
+      targetType: "issue_labels",
+      targetId: String(issue.number),
+      sourceType: "issue_triage",
+      sourceId: triage.id,
+      status: "attempted",
+      metadata: { labels: data.labels },
     });
     await logAudit(userId, "github.issue_labels.attempted", "issue", triage.issue_id, {
-      triage_id: triage.id, labels: data.labels,
+      triage_id: triage.id,
+      labels: data.labels,
     });
 
     try {
       const token = await loadUserGithubToken(userId);
       const applied = await addIssueLabels({
-        token, owner: repo.owner, name: repo.name, number: issue.number, labels: data.labels,
+        token,
+        owner: repo.owner,
+        name: repo.name,
+        number: issue.number,
+        labels: data.labels,
       });
       const url = `${repo.html_url}/issues/${issue.number}`;
       await recordEvent({
-        userId, repositoryId: triage.repository_id, targetType: "issue_labels",
-        targetId: String(issue.number), sourceType: "issue_triage", sourceId: triage.id,
-        status: "success", githubUrl: url, metadata: { labels: applied.map((l) => l.name) },
+        userId,
+        repositoryId: triage.repository_id,
+        targetType: "issue_labels",
+        targetId: String(issue.number),
+        sourceType: "issue_triage",
+        sourceId: triage.id,
+        status: "success",
+        githubUrl: url,
+        metadata: { labels: applied.map((l) => l.name) },
       });
       await logAudit(userId, "github.issue_labels.success", "issue", triage.issue_id, {
-        triage_id: triage.id, applied: applied.map((l) => l.name),
+        triage_id: triage.id,
+        applied: applied.map((l) => l.name),
       });
       return { ok: true, applied: applied.map((l) => l.name), githubUrl: url } as const;
     } catch (err) {
       const message = (err as Error).message;
       await recordEvent({
-        userId, repositoryId: triage.repository_id, targetType: "issue_labels",
-        targetId: String(issue.number), sourceType: "issue_triage", sourceId: triage.id,
-        status: "failed", errorMessage: message,
+        userId,
+        repositoryId: triage.repository_id,
+        targetType: "issue_labels",
+        targetId: String(issue.number),
+        sourceType: "issue_triage",
+        sourceId: triage.id,
+        status: "failed",
+        errorMessage: message,
       });
       await logAudit(userId, "github.issue_labels.failed", "issue", triage.issue_id, {
-        triage_id: triage.id, error: message,
+        triage_id: triage.id,
+        error: message,
       });
       throw err;
     }
@@ -293,7 +353,11 @@ export function formatPrSummaryComment(args: {
     sections.push("### Summary", args.plainEnglishSummary, "");
   }
   if (args.suggestedReviewFocus?.length) {
-    sections.push("### Suggested review focus", ...args.suggestedReviewFocus.map((s) => `- ${s}`), "");
+    sections.push(
+      "### Suggested review focus",
+      ...args.suggestedReviewFocus.map((s) => `- ${s}`),
+      "",
+    );
   }
   if (args.testingNotes?.length) {
     sections.push("### Testing notes", ...args.testingNotes.map((s) => `- ${s}`), "");
@@ -311,11 +375,13 @@ export function formatPrSummaryComment(args: {
 export const publishPrSummary = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({
-      summary_id: z.string().uuid(),
-      confirm: z.literal(true),
-      allow_repost: z.boolean().optional(),
-    }).parse(d),
+    z
+      .object({
+        summary_id: z.string().uuid(),
+        confirm: z.literal(true),
+        allow_repost: z.boolean().optional(),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const userId = context.userId;
@@ -346,18 +412,24 @@ export const publishPrSummary = createServerFn({ method: "POST" })
 
     const repo = await loadRepo(summary.repository_id);
     const { data: pr } = await supabaseAdmin
-      .from("pull_requests").select("number").eq("id", summary.pull_request_id).maybeSingle();
+      .from("pull_requests")
+      .select("number")
+      .eq("id", summary.pull_request_id)
+      .maybeSingle();
     if (!pr) throw new Error("Pull request not found.");
 
     const { scopes, hasToken } = await loadUserScopes(userId);
     if (!evaluateWritePermissions(scopes, hasToken).canCommentPulls) {
-      throw new Error("Your GitHub session is missing write scope. Reconnect to grant repo access.");
+      throw new Error(
+        "Your GitHub session is missing write scope. Reconnect to grant repo access.",
+      );
     }
 
     const result = (summary.result ?? {}) as Record<string, unknown>;
     const arr = (k: string) => (Array.isArray(result[k]) ? (result[k] as string[]) : undefined);
     const body = formatPrSummaryComment({
-      plainEnglishSummary: typeof result.plainEnglishSummary === "string" ? result.plainEnglishSummary : undefined,
+      plainEnglishSummary:
+        typeof result.plainEnglishSummary === "string" ? result.plainEnglishSummary : undefined,
       suggestedReviewFocus: arr("suggestedReviewFocus"),
       testingNotes: arr("testingNotes"),
       securityNotes: arr("securityNotes"),
@@ -365,38 +437,63 @@ export const publishPrSummary = createServerFn({ method: "POST" })
     });
 
     await recordEvent({
-      userId, repositoryId: summary.repository_id, targetType: "pull_request",
-      targetId: String(pr.number), sourceType: "pr_summary", sourceId: summary.id,
+      userId,
+      repositoryId: summary.repository_id,
+      targetType: "pull_request",
+      targetId: String(pr.number),
+      sourceType: "pr_summary",
+      sourceId: summary.id,
       status: "attempted",
     });
-    await logAudit(userId, prior ? "github.pr_comment.reposted" : "github.pr_comment.attempted",
-      "pull_request", summary.pull_request_id, { summary_id: summary.id, pr_number: pr.number });
+    await logAudit(
+      userId,
+      prior ? "github.pr_comment.reposted" : "github.pr_comment.attempted",
+      "pull_request",
+      summary.pull_request_id,
+      { summary_id: summary.id, pr_number: pr.number },
+    );
 
     try {
       const token = await loadUserGithubToken(userId);
       // PR comments are posted via the issues endpoint
       const comment = await postIssueComment({
-        token, owner: repo.owner, name: repo.name, number: pr.number, body,
+        token,
+        owner: repo.owner,
+        name: repo.name,
+        number: pr.number,
+        body,
       });
       await recordEvent({
-        userId, repositoryId: summary.repository_id, targetType: "pull_request",
-        targetId: String(pr.number), sourceType: "pr_summary", sourceId: summary.id,
-        status: "success", githubUrl: comment.html_url,
+        userId,
+        repositoryId: summary.repository_id,
+        targetType: "pull_request",
+        targetId: String(pr.number),
+        sourceType: "pr_summary",
+        sourceId: summary.id,
+        status: "success",
+        githubUrl: comment.html_url,
         metadata: { comment_id: comment.id, body_length: body.length },
       });
       await logAudit(userId, "github.pr_comment.success", "pull_request", summary.pull_request_id, {
-        summary_id: summary.id, github_url: comment.html_url,
+        summary_id: summary.id,
+        github_url: comment.html_url,
       });
       return { ok: true, githubUrl: comment.html_url } as const;
     } catch (err) {
       const message = (err as Error).message;
       await recordEvent({
-        userId, repositoryId: summary.repository_id, targetType: "pull_request",
-        targetId: String(pr.number), sourceType: "pr_summary", sourceId: summary.id,
-        status: "failed", errorMessage: message,
+        userId,
+        repositoryId: summary.repository_id,
+        targetType: "pull_request",
+        targetId: String(pr.number),
+        sourceType: "pr_summary",
+        sourceId: summary.id,
+        status: "failed",
+        errorMessage: message,
       });
       await logAudit(userId, "github.pr_comment.failed", "pull_request", summary.pull_request_id, {
-        summary_id: summary.id, error: message,
+        summary_id: summary.id,
+        error: message,
       });
       throw err;
     }
@@ -407,11 +504,13 @@ export const publishPrSummary = createServerFn({ method: "POST" })
 export const publishReleaseDraft = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({
-      draft_id: z.string().uuid(),
-      confirm: z.literal(true),
-      allow_repost: z.boolean().optional(),
-    }).parse(d),
+    z
+      .object({
+        draft_id: z.string().uuid(),
+        confirm: z.literal(true),
+        allow_repost: z.boolean().optional(),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const userId = context.userId;
@@ -445,45 +544,73 @@ export const publishReleaseDraft = createServerFn({ method: "POST" })
     const repo = await loadRepo(draft.repository_id);
     const { scopes, hasToken } = await loadUserScopes(userId);
     if (!evaluateWritePermissions(scopes, hasToken).canCreateReleases) {
-      throw new Error("Your GitHub session is missing write scope. Reconnect to grant repo access.");
+      throw new Error(
+        "Your GitHub session is missing write scope. Reconnect to grant repo access.",
+      );
     }
 
     const tag = draft.version.startsWith("v") ? draft.version : `v${draft.version}`;
     const releaseName = draft.title || tag;
 
     await recordEvent({
-      userId, repositoryId: draft.repository_id, targetType: "release",
-      targetId: tag, sourceType: "release_draft", sourceId: draft.id,
-      status: "attempted", metadata: { tag, draft: true },
+      userId,
+      repositoryId: draft.repository_id,
+      targetType: "release",
+      targetId: tag,
+      sourceType: "release_draft",
+      sourceId: draft.id,
+      status: "attempted",
+      metadata: { tag, draft: true },
     });
-    await logAudit(userId, prior ? "github.release_draft.reposted" : "github.release_draft.attempted",
-      "release", draft.id, { tag });
+    await logAudit(
+      userId,
+      prior ? "github.release_draft.reposted" : "github.release_draft.attempted",
+      "release",
+      draft.id,
+      { tag },
+    );
 
     try {
       const token = await loadUserGithubToken(userId);
       const release = await createRelease({
-        token, owner: repo.owner, name: repo.name, tag_name: tag,
-        release_name: releaseName, body: draft.body_markdown,
+        token,
+        owner: repo.owner,
+        name: repo.name,
+        tag_name: tag,
+        release_name: releaseName,
+        body: draft.body_markdown,
       });
       await recordEvent({
-        userId, repositoryId: draft.repository_id, targetType: "release",
-        targetId: tag, sourceType: "release_draft", sourceId: draft.id,
-        status: "success", githubUrl: release.html_url,
+        userId,
+        repositoryId: draft.repository_id,
+        targetType: "release",
+        targetId: tag,
+        sourceType: "release_draft",
+        sourceId: draft.id,
+        status: "success",
+        githubUrl: release.html_url,
         metadata: { release_id: release.id, draft: release.draft, tag: release.tag_name },
       });
       await logAudit(userId, "github.release_draft.success", "release", draft.id, {
-        tag, github_url: release.html_url,
+        tag,
+        github_url: release.html_url,
       });
       return { ok: true, githubUrl: release.html_url, draft: release.draft } as const;
     } catch (err) {
       const message = (err as Error).message;
       await recordEvent({
-        userId, repositoryId: draft.repository_id, targetType: "release",
-        targetId: tag, sourceType: "release_draft", sourceId: draft.id,
-        status: "failed", errorMessage: message,
+        userId,
+        repositoryId: draft.repository_id,
+        targetType: "release",
+        targetId: tag,
+        sourceType: "release_draft",
+        sourceId: draft.id,
+        status: "failed",
+        errorMessage: message,
       });
       await logAudit(userId, "github.release_draft.failed", "release", draft.id, {
-        tag, error: message,
+        tag,
+        error: message,
       });
       throw err;
     }
@@ -494,10 +621,12 @@ export const publishReleaseDraft = createServerFn({ method: "POST" })
 export const listPublishEventsForSource = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({
-      source_type: z.enum(["issue_triage", "pr_summary", "release_draft"]),
-      source_id: z.string().uuid(),
-    }).parse(d),
+    z
+      .object({
+        source_type: z.enum(["issue_triage", "pr_summary", "release_draft"]),
+        source_id: z.string().uuid(),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const { data: rows, error } = await context.supabase
@@ -513,15 +642,19 @@ export const listPublishEventsForSource = createServerFn({ method: "GET" })
 export const getPublishEventForAudit = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({
-      source_type: z.enum(["issue_triage", "pr_summary", "release_draft"]),
-      source_id: z.string().uuid(),
-    }).parse(d),
+    z
+      .object({
+        source_type: z.enum(["issue_triage", "pr_summary", "release_draft"]),
+        source_id: z.string().uuid(),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const { data: row, error } = await context.supabase
       .from("github_publish_events")
-      .select("id, status, source_type, source_id, target_type, target_id, github_url, error_message, github_response_metadata, repository_id, user_id, created_at")
+      .select(
+        "id, status, source_type, source_id, target_type, target_id, github_url, error_message, github_response_metadata, repository_id, user_id, created_at",
+      )
       .eq("source_type", data.source_type)
       .eq("source_id", data.source_id)
       .order("created_at", { ascending: false })
@@ -534,12 +667,19 @@ export const getPublishEventForAudit = createServerFn({ method: "GET" })
 export const listPublishEventsForRepo = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({ repository_id: z.string().uuid(), limit: z.number().int().min(1).max(500).default(100) }).parse(d),
+    z
+      .object({
+        repository_id: z.string().uuid(),
+        limit: z.number().int().min(1).max(500).default(100),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const { data: rows, error } = await context.supabase
       .from("github_publish_events")
-      .select("id, status, source_type, source_id, target_type, target_id, github_url, error_message, created_at")
+      .select(
+        "id, status, source_type, source_id, target_type, target_id, github_url, error_message, created_at",
+      )
       .eq("repository_id", data.repository_id)
       .order("created_at", { ascending: false })
       .limit(data.limit);

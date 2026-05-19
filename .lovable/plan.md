@@ -39,6 +39,7 @@ settings            (user_id PK, ai_tone, security_sensitivity, auto_changelog, 
 ```
 
 RLS:
+
 - `profiles`, `settings`, `repository_memberships`, `sync_jobs`, `audit_logs`: user can read/write their own rows.
 - `repositories`, `issues`, `pull_requests`, `contributors`, `labels`, `commits`: readable only if user has a membership row for that `repository_id`.
 - `user_github_tokens`: NO policies — accessed only via service role on the server.
@@ -101,6 +102,7 @@ The `_authenticated` `beforeLoad` calls `supabase.auth.getUser()` and redirects 
 ## 8. Docs
 
 Update `README.md` + `.env.example` with:
+
 - Lovable Cloud auto-provisions Supabase; no manual setup needed in dev.
 - Self-host: enable GitHub provider in Supabase Auth, set callback URL to `<SUPABASE_URL>/auth/v1/callback`, list required scopes.
 - Migration files live in `supabase/migrations/`.

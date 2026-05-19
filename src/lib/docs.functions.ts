@@ -43,10 +43,12 @@ export const getDocsAiStatus = createServerFn({ method: "GET" })
 export const generateDocumentation = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({
-      repository_id: z.string().uuid(),
-      doc_type: z.enum(DOC_TYPES),
-    }).parse(d),
+    z
+      .object({
+        repository_id: z.string().uuid(),
+        doc_type: z.enum(DOC_TYPES),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const userId = context.userId;
@@ -54,7 +56,9 @@ export const generateDocumentation = createServerFn({ method: "POST" })
 
     const { data: repo, error: repoErr } = await supabase
       .from("repositories")
-      .select("id, full_name, description, primary_language, default_branch, visibility, stars, forks, open_issues")
+      .select(
+        "id, full_name, description, primary_language, default_branch, visibility, stars, forks, open_issues",
+      )
       .eq("id", data.repository_id)
       .maybeSingle();
     if (repoErr) throw new Error(repoErr.message);
@@ -104,7 +108,9 @@ export const generateDocumentation = createServerFn({ method: "POST" })
       const parsed = documentationResultSchema.safeParse(extractJson(raw));
       if (!parsed.success) {
         await logAudit(userId, "ai.docs.failed", null, {
-          reason: "schema", model, doc_type: data.doc_type,
+          reason: "schema",
+          model,
+          doc_type: data.doc_type,
         });
         throw new Error("AI returned invalid documentation output");
       }
@@ -128,18 +134,25 @@ export const generateDocumentation = createServerFn({ method: "POST" })
       if (insErr) throw new Error(insErr.message);
 
       await logAudit(userId, "ai.docs.generated", inserted.id, {
-        model, doc_type: data.doc_type, repository_id: repo.id,
+        model,
+        doc_type: data.doc_type,
+        repository_id: repo.id,
         confidence: result.confidence,
       });
       return { ok: true, id: inserted.id, result, model };
     } catch (err) {
       const code =
-        err instanceof AIConfigError ? "ai.config_missing"
-        : err instanceof AICreditsError ? "ai.credits_exhausted"
-        : err instanceof AIRateLimitError ? "ai.rate_limited"
-        : "ai.error";
+        err instanceof AIConfigError
+          ? "ai.config_missing"
+          : err instanceof AICreditsError
+            ? "ai.credits_exhausted"
+            : err instanceof AIRateLimitError
+              ? "ai.rate_limited"
+              : "ai.error";
       await logAudit(userId, "ai.docs.failed", null, {
-        code, message: (err as Error).message, doc_type: data.doc_type,
+        code,
+        message: (err as Error).message,
+        doc_type: data.doc_type,
       });
       throw err;
     }
@@ -148,15 +161,19 @@ export const generateDocumentation = createServerFn({ method: "POST" })
 export const listDocumentationDrafts = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({
-      repository_id: z.string().uuid(),
-      doc_type: z.enum(DOC_TYPES).optional(),
-    }).parse(d),
+    z
+      .object({
+        repository_id: z.string().uuid(),
+        doc_type: z.enum(DOC_TYPES).optional(),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     let query = context.supabase
       .from("documentation_drafts")
-      .select("id, doc_type, title, body_markdown, structured_result, model, approval_status, created_at, updated_at")
+      .select(
+        "id, doc_type, title, body_markdown, structured_result, model, approval_status, created_at, updated_at",
+      )
       .eq("repository_id", data.repository_id)
       .order("updated_at", { ascending: false });
     if (data.doc_type) query = query.eq("doc_type", data.doc_type);
@@ -168,17 +185,24 @@ export const listDocumentationDrafts = createServerFn({ method: "GET" })
 export const updateDocumentationDraft = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({
-      draft_id: z.string().uuid(),
-      body_markdown: z.string().max(40000).optional(),
-      title: z.string().max(200).optional(),
-      approval_status: z.enum(approvalStatuses).optional(),
-      action: z.enum(["approve","edit","reject","copy"]).optional(),
-    }).parse(d),
+    z
+      .object({
+        draft_id: z.string().uuid(),
+        body_markdown: z.string().max(40000).optional(),
+        title: z.string().max(200).optional(),
+        approval_status: z.enum(approvalStatuses).optional(),
+        action: z.enum(["approve", "edit", "reject", "copy"]).optional(),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const userId = context.userId;
-    const patch: { updated_at: string; body_markdown?: string; title?: string; approval_status?: string } = {
+    const patch: {
+      updated_at: string;
+      body_markdown?: string;
+      title?: string;
+      approval_status?: string;
+    } = {
       updated_at: new Date().toISOString(),
     };
     if (typeof data.body_markdown === "string") patch.body_markdown = data.body_markdown;

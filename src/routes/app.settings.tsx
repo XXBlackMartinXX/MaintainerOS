@@ -2,7 +2,15 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Github, ShieldCheck, ShieldAlert, Loader2, Sparkles, PlayCircle, AlertTriangle } from "lucide-react";
+import {
+  Github,
+  ShieldCheck,
+  ShieldAlert,
+  Loader2,
+  Sparkles,
+  PlayCircle,
+  AlertTriangle,
+} from "lucide-react";
 import { PageHeader, DemoBadge } from "@/components/ui-bits";
 import { Button } from "@/components/ui/button";
 import { getGithubWritePermissions } from "@/lib/github-publish.functions";
@@ -41,13 +49,18 @@ function SettingsPage() {
               MaintainerOS only writes to GitHub after you explicitly approve and confirm an action.
             </p>
             {perms?.githubLogin && (
-              <p className="text-xs mt-2">Connected as <span className="font-mono">{perms.githubLogin}</span></p>
+              <p className="text-xs mt-2">
+                Connected as <span className="font-mono">{perms.githubLogin}</span>
+              </p>
             )}
           </div>
           {permsQ.isLoading ? (
             <Loader2 className="size-4 animate-spin text-muted-foreground" />
           ) : (
-            <Link to="/login" className="inline-flex items-center gap-1 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent">
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-1 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent"
+            >
               <Github className="size-3" /> Reconnect GitHub
             </Link>
           )}
@@ -68,7 +81,8 @@ function SettingsPage() {
         )}
         {perms && !perms.canCommentIssues && (
           <p className="mt-3 text-xs text-warning">
-            Your current GitHub session is missing the <code className="font-mono">repo</code> scope. Reconnect to enable publish actions.
+            Your current GitHub session is missing the <code className="font-mono">repo</code>{" "}
+            scope. Reconnect to enable publish actions.
           </p>
         )}
       </div>
@@ -78,8 +92,15 @@ function SettingsPage() {
           <Radios value={tone} onChange={setTone} options={["concise", "friendly", "formal"]} />
         </Section>
 
-        <Section title="Security sensitivity" desc="Threshold for surfacing potential security issues.">
-          <Radios value={sensitivity} onChange={setSensitivity} options={["relaxed", "balanced", "strict"]} />
+        <Section
+          title="Security sensitivity"
+          desc="Threshold for surfacing potential security issues."
+        >
+          <Radios
+            value={sensitivity}
+            onChange={setSensitivity}
+            options={["relaxed", "balanced", "strict"]}
+          />
         </Section>
 
         <Section title="Auto-draft release notes" desc="Generate a draft when PRs are merged.">
@@ -94,7 +115,11 @@ function SettingsPage() {
           </label>
         </Section>
 
-        <Section title="Default labels" desc="Comma-separated. Suggested by AI when triaging." span={3}>
+        <Section
+          title="Default labels"
+          desc="Comma-separated. Suggested by AI when triaging."
+          span={3}
+        >
           <input
             value={labels}
             onChange={(e) => setLabels(e.target.value)}
@@ -102,7 +127,11 @@ function SettingsPage() {
           />
         </Section>
 
-        <Section title="Enable GitHub write actions" desc="When off, all publish buttons across the app are disabled." span={3}>
+        <Section
+          title="Enable GitHub write actions"
+          desc="When off, all publish buttons across the app are disabled."
+          span={3}
+        >
           <label className="flex items-center gap-2 text-sm">
             <input
               type="checkbox"
@@ -121,7 +150,8 @@ function SettingsPage() {
             <Sparkles className="size-4 text-primary" /> Demo mode
           </h3>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Browse MaintainerOS with illustrative sample data. Publishing and sync are disabled while active.
+            Browse MaintainerOS with illustrative sample data. Publishing and sync are disabled
+            while active.
           </p>
           <label className="mt-3 flex items-center gap-2 text-sm">
             <input
@@ -162,7 +192,8 @@ function SettingsPage() {
       </div>
 
       <p className="mt-4 text-[11px] text-muted-foreground">
-        Audit logs and GitHub publish events are retained for the lifetime of the project. There is currently no automatic retention rollover.
+        Audit logs and GitHub publish events are retained for the lifetime of the project. There is
+        currently no automatic retention rollover.
       </p>
 
       <div className="mt-6 flex justify-end">
@@ -187,14 +218,23 @@ function DangerButton({ label }: { label: string }) {
 
 function PermRow({ label, ok }: { label: string; ok: boolean }) {
   return (
-    <div className={`flex items-center gap-2 rounded-md border px-2 py-1.5 ${ok ? "border-success/30 bg-success/5" : "border-warning/30 bg-warning/5"}`}>
-      {ok ? <ShieldCheck className="size-3.5 text-success" /> : <ShieldAlert className="size-3.5 text-warning" />}
+    <div
+      className={`flex items-center gap-2 rounded-md border px-2 py-1.5 ${ok ? "border-success/30 bg-success/5" : "border-warning/30 bg-warning/5"}`}
+    >
+      {ok ? (
+        <ShieldCheck className="size-3.5 text-success" />
+      ) : (
+        <ShieldAlert className="size-3.5 text-warning" />
+      )}
       <span>{label}</span>
-      <span className={`ml-auto text-[10px] uppercase tracking-wider ${ok ? "text-success" : "text-warning"}`}>{ok ? "granted" : "missing"}</span>
+      <span
+        className={`ml-auto text-[10px] uppercase tracking-wider ${ok ? "text-success" : "text-warning"}`}
+      >
+        {ok ? "granted" : "missing"}
+      </span>
     </div>
   );
 }
-
 
 function Section({
   title,
@@ -232,7 +272,9 @@ function Radios({
           key={o}
           onClick={() => onChange(o)}
           className={`px-3 py-1.5 text-xs rounded capitalize transition-colors ${
-            value === o ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground"
+            value === o
+              ? "bg-accent text-foreground"
+              : "text-muted-foreground hover:text-foreground"
           }`}
         >
           {o}

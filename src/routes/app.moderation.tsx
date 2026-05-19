@@ -15,8 +15,9 @@ function ModerationPage() {
         actions={<DemoBadge />}
       />
       <div className="panel-elevated rounded-xl p-4 mb-4 text-sm text-muted-foreground">
-        MaintainerOS never auto-closes issues, hides comments, or punishes contributors. Every action requires
-        your approval, and reply templates are designed to de-escalate rather than confront.
+        MaintainerOS never auto-closes issues, hides comments, or punishes contributors. Every
+        action requires your approval, and reply templates are designed to de-escalate rather than
+        confront.
       </div>
       <div className="panel rounded-xl">
         <div className="px-4 py-3 border-b border-border flex items-center justify-between">
@@ -30,15 +31,23 @@ function ModerationPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 text-xs">
                     <span className="font-mono text-muted-foreground">{m.issue}</span>
-                    <span className="rounded border border-border-strong px-1.5 py-0.5 capitalize">{m.kind}</span>
+                    <span className="rounded border border-border-strong px-1.5 py-0.5 capitalize">
+                      {m.kind}
+                    </span>
                     <AIBadge confidence={m.confidence} />
                   </div>
                   <p className="mt-1.5 text-sm">{m.snippet}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button size="sm" variant="outline"><MessageSquare className="size-3.5" /> Reply draft</Button>
-                  <Button size="sm" variant="ghost" className="text-muted-foreground"><X className="size-3.5" /> Ignore</Button>
-                  <Button size="sm"><Check className="size-3.5" /> Approve</Button>
+                  <Button size="sm" variant="outline">
+                    <MessageSquare className="size-3.5" /> Reply draft
+                  </Button>
+                  <Button size="sm" variant="ghost" className="text-muted-foreground">
+                    <X className="size-3.5" /> Ignore
+                  </Button>
+                  <Button size="sm">
+                    <Check className="size-3.5" /> Approve
+                  </Button>
                 </div>
               </div>
             </li>

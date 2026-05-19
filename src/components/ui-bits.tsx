@@ -27,7 +27,7 @@ export function MetricCard({
           <span
             className={cn(
               "text-xs inline-flex items-center gap-0.5",
-              delta.positive ? "text-success" : "text-destructive"
+              delta.positive ? "text-success" : "text-destructive",
             )}
           >
             {delta.positive ? (
@@ -109,11 +109,7 @@ export function EmptyState({
   );
 }
 
-export function SeverityPill({
-  level,
-}: {
-  level: "low" | "medium" | "high" | "critical";
-}) {
+export function SeverityPill({ level }: { level: "low" | "medium" | "high" | "critical" }) {
   const map = {
     low: "bg-muted text-muted-foreground border-border",
     medium: "bg-info/10 text-info border-info/30",
@@ -124,7 +120,7 @@ export function SeverityPill({
     <span
       className={cn(
         "inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] font-medium capitalize",
-        map[level]
+        map[level],
       )}
     >
       {level}

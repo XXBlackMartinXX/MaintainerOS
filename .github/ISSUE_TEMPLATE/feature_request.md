@@ -6,6 +6,7 @@ labels: enhancement
 ---
 
 ## Problem
+
 What problem does this feature solve?
 
 ## Proposed solution

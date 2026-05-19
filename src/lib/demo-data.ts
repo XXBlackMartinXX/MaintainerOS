@@ -210,8 +210,7 @@ export const demoIssues: DemoIssue[] = [
       suggestedLabels: ["question", "docs"],
       needsMaintainer: false,
       confidence: 0.79,
-      summary:
-        "User-support question. Link to caching guide and offer suggested config snippet.",
+      summary: "User-support question. Link to caching guide and offer suggested config snippet.",
     },
   },
 ];
@@ -304,12 +303,48 @@ export type DemoContributor = {
 };
 
 export const demoContributors: DemoContributor[] = [
-  { username: "lin-ada", contributions: 142, firstSeen: "2023-04", status: "core", sentiment: "positive" },
-  { username: "marin-dev", contributions: 88, firstSeen: "2023-09", status: "core", sentiment: "neutral" },
-  { username: "okafor-r", contributions: 41, firstSeen: "2024-02", status: "returning", sentiment: "positive" },
-  { username: "sec-watcher", contributions: 6, firstSeen: "2024-08", status: "returning", sentiment: "neutral" },
-  { username: "newbie-42", contributions: 1, firstSeen: "2025-04", status: "first-time", sentiment: "positive" },
-  { username: "petra-k", contributions: 1, firstSeen: "2025-05", status: "first-time", sentiment: "positive" },
+  {
+    username: "lin-ada",
+    contributions: 142,
+    firstSeen: "2023-04",
+    status: "core",
+    sentiment: "positive",
+  },
+  {
+    username: "marin-dev",
+    contributions: 88,
+    firstSeen: "2023-09",
+    status: "core",
+    sentiment: "neutral",
+  },
+  {
+    username: "okafor-r",
+    contributions: 41,
+    firstSeen: "2024-02",
+    status: "returning",
+    sentiment: "positive",
+  },
+  {
+    username: "sec-watcher",
+    contributions: 6,
+    firstSeen: "2024-08",
+    status: "returning",
+    sentiment: "neutral",
+  },
+  {
+    username: "newbie-42",
+    contributions: 1,
+    firstSeen: "2025-04",
+    status: "first-time",
+    sentiment: "positive",
+  },
+  {
+    username: "petra-k",
+    contributions: 1,
+    firstSeen: "2025-05",
+    status: "first-time",
+    sentiment: "positive",
+  },
 ];
 
 export type AILogEntry = {
@@ -324,11 +359,56 @@ export type AILogEntry = {
 };
 
 export const demoAILog: AILogEntry[] = [
-  { id: "a1", ts: "2m ago", repo: "acme/atlas", action: "Issue triage", target: "#1284", model: "gemini-3-flash", status: "drafted", user: "you" },
-  { id: "a2", ts: "14m ago", repo: "acme/atlas", action: "PR summary", target: "#902", model: "gemini-3-flash", status: "approved", user: "you" },
-  { id: "a3", ts: "1h ago", repo: "acme/lumen", action: "Changelog draft", target: "v0.9.0", model: "gemini-3-flash", status: "edited", user: "you" },
-  { id: "a4", ts: "3h ago", repo: "acme/prism-ui", action: "Docs suggestion", target: "README.md", model: "gemini-3-flash", status: "rejected", user: "you" },
-  { id: "a5", ts: "yesterday", repo: "acme/atlas", action: "Issue triage", target: "#1271", model: "gemini-3-flash", status: "published", user: "you" },
+  {
+    id: "a1",
+    ts: "2m ago",
+    repo: "acme/atlas",
+    action: "Issue triage",
+    target: "#1284",
+    model: "gemini-3-flash",
+    status: "drafted",
+    user: "you",
+  },
+  {
+    id: "a2",
+    ts: "14m ago",
+    repo: "acme/atlas",
+    action: "PR summary",
+    target: "#902",
+    model: "gemini-3-flash",
+    status: "approved",
+    user: "you",
+  },
+  {
+    id: "a3",
+    ts: "1h ago",
+    repo: "acme/lumen",
+    action: "Changelog draft",
+    target: "v0.9.0",
+    model: "gemini-3-flash",
+    status: "edited",
+    user: "you",
+  },
+  {
+    id: "a4",
+    ts: "3h ago",
+    repo: "acme/prism-ui",
+    action: "Docs suggestion",
+    target: "README.md",
+    model: "gemini-3-flash",
+    status: "rejected",
+    user: "you",
+  },
+  {
+    id: "a5",
+    ts: "yesterday",
+    repo: "acme/atlas",
+    action: "Issue triage",
+    target: "#1271",
+    model: "gemini-3-flash",
+    status: "published",
+    user: "you",
+  },
 ];
 
 export const healthBreakdown = {
@@ -390,7 +470,12 @@ export const moderationQueue = [
 export const roadmapClusters = [
   { key: "bugs", title: "Bugs", count: 14, hint: "Crash + perf reports" },
   { key: "quick-wins", title: "Quick wins", count: 9, hint: "Small, low-risk improvements" },
-  { key: "requested", title: "Highly requested features", count: 6, hint: "Most-upvoted by community" },
+  {
+    key: "requested",
+    title: "Highly requested features",
+    count: 6,
+    hint: "Most-upvoted by community",
+  },
   { key: "docs", title: "Documentation gaps", count: 7, hint: "Missing guides and examples" },
   { key: "security", title: "Security priorities", count: 3, hint: "Review recommended" },
   { key: "refactors", title: "Refactors", count: 5, hint: "Technical debt cleanup" },

@@ -23,7 +23,9 @@ async function ghWrite<T>(
     try {
       const j = (await res.json()) as { message?: string };
       detail = j.message ? ` — ${j.message}` : "";
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
     throw new GitHubError(`GitHub ${res.status} on ${path}${detail}`, res.status);
   }
   return (await res.json()) as T;
@@ -46,10 +48,11 @@ export async function postIssueComment(args: {
   number: number;
   body: string;
 }): Promise<GhComment> {
-  return ghWrite<GhComment>(
-    `/repos/${args.owner}/${args.name}/issues/${args.number}/comments`,
-    { token: args.token, method: "POST", body: { body: args.body } },
-  );
+  return ghWrite<GhComment>(`/repos/${args.owner}/${args.name}/issues/${args.number}/comments`, {
+    token: args.token,
+    method: "POST",
+    body: { body: args.body },
+  });
 }
 
 export async function addIssueLabels(args: {
@@ -91,7 +94,10 @@ export async function createRelease(args: {
 /** Parse the OAuth `scopes` string (space- or comma-separated). */
 export function parseScopes(scopes: string | null | undefined): string[] {
   if (!scopes) return [];
-  return scopes.split(/[\s,]+/).map((s) => s.trim()).filter(Boolean);
+  return scopes
+    .split(/[\s,]+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
 }
 
 export type WritePermissions = {

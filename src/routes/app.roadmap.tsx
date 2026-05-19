@@ -24,8 +24,12 @@ function RoadmapPage() {
             <div className="mt-3 text-3xl font-semibold tabular-nums">{c.count}</div>
             <p className="text-xs text-muted-foreground mt-1">{c.hint}</p>
             <div className="mt-4 flex items-center gap-2">
-              <Button size="sm" variant="outline">View issues</Button>
-              <Button size="sm"><Plus className="size-3.5" /> Create milestone</Button>
+              <Button size="sm" variant="outline">
+                View issues
+              </Button>
+              <Button size="sm">
+                <Plus className="size-3.5" /> Create milestone
+              </Button>
             </div>
           </div>
         ))}
