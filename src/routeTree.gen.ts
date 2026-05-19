@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppIssuesRouteImport } from './routes/app.issues'
 import { Route as AppHealthRouteImport } from './routes/app.health'
 
 const AppRoute = AppRouteImport.update({
@@ -29,6 +30,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppIssuesRoute = AppIssuesRouteImport.update({
+  id: '/issues',
+  path: '/issues',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppHealthRoute = AppHealthRouteImport.update({
   id: '/health',
   path: '/health',
@@ -39,11 +45,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/health': typeof AppHealthRoute
+  '/app/issues': typeof AppIssuesRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app/health': typeof AppHealthRoute
+  '/app/issues': typeof AppIssuesRoute
   '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -51,14 +59,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/health': typeof AppHealthRoute
+  '/app/issues': typeof AppIssuesRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/health' | '/app/'
+  fullPaths: '/' | '/app' | '/app/health' | '/app/issues' | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app/health' | '/app'
-  id: '__root__' | '/' | '/app' | '/app/health' | '/app/'
+  to: '/' | '/app/health' | '/app/issues' | '/app'
+  id: '__root__' | '/' | '/app' | '/app/health' | '/app/issues' | '/app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -89,6 +98,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/issues': {
+      id: '/app/issues'
+      path: '/issues'
+      fullPath: '/app/issues'
+      preLoaderRoute: typeof AppIssuesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/health': {
       id: '/app/health'
       path: '/health'
@@ -101,11 +117,13 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppHealthRoute: typeof AppHealthRoute
+  AppIssuesRoute: typeof AppIssuesRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppHealthRoute: AppHealthRoute,
+  AppIssuesRoute: AppIssuesRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
