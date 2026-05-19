@@ -75,3 +75,15 @@ export const changelogResultSchema = z.object({
 export type ChangelogResult = z.infer<typeof changelogResultSchema>;
 
 export const releaseDraftStatuses = ["draft","approved","rejected","copied"] as const;
+
+// ---- Documentation generator ----
+export const documentationResultSchema = z.object({
+  title: z.string().min(1).max(200),
+  purpose: z.string().max(500).default(""),
+  bodyMarkdown: z.string().min(1).max(40000),
+  confidence: z.number().min(0).max(1),
+  missingContext: z.array(z.string().max(300)).max(30).default([]),
+  safetyNotes: z.array(z.string().max(300)).max(30).default([]),
+  sourceDataSummary: z.string().max(1000).default(""),
+});
+export type DocumentationResult = z.infer<typeof documentationResultSchema>;
