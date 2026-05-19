@@ -181,10 +181,11 @@ export const updateTriageDraft = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const userId = context.userId;
-    const patch: Record<string, unknown> = {};
+    const patch: { suggested_reply?: string; approval_status?: string; updated_at: string } = {
+      updated_at: new Date().toISOString(),
+    };
     if (typeof data.suggested_reply === "string") patch.suggested_reply = data.suggested_reply;
     if (data.approval_status) patch.approval_status = data.approval_status;
-    patch.updated_at = new Date().toISOString();
 
     if (Object.keys(patch).length > 1) {
       const { error } = await context.supabase
