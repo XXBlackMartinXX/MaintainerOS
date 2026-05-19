@@ -106,7 +106,28 @@ optional and gate their respective features.
 The deployment is missing the Supabase URL and publishable/anon key.
 Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (the safe public
 values, never the service role key) in your deployment environment and
-redeploy. Demo mode at `/demo` continues to work even without these vars.
+redeploy. Visit `/setup` in the deployed app for a live diagnostics
+checklist. Demo mode at `/demo` continues to work even without these vars.
+
+## Production setup
+
+1. Create a Supabase project.
+2. Copy the Project URL into `VITE_SUPABASE_URL` (and `SUPABASE_URL` if your
+   host does not auto-inject the server copy).
+3. Copy the anon/publishable key into `VITE_SUPABASE_ANON_KEY` (and
+   `SUPABASE_PUBLISHABLE_KEY` server-side).
+4. Copy the service role key into `SUPABASE_SERVICE_ROLE_KEY`. This is
+   server-only — never expose it to the browser.
+5. Create a GitHub OAuth App at <https://github.com/settings/developers>.
+6. Set the OAuth App **Authorization callback URL** to the value shown in
+   Supabase Auth → Providers → GitHub
+   (`https://<project-ref>.supabase.co/auth/v1/callback`).
+7. In Supabase Auth → Providers → GitHub, enable the provider and paste the
+   GitHub OAuth Client ID and Client Secret.
+8. In Supabase Auth → URL Configuration, add your deployed app URL and
+   `https://<your-app-domain>/auth/callback` to the redirect URL allow list.
+9. Set `LOVABLE_API_KEY` if you want AI features enabled.
+10. Redeploy, then verify `/setup`, `/login`, `/demo`, and `/app/dashboard`.
 
 ## GitHub OAuth setup
 
