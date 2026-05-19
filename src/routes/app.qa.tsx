@@ -14,7 +14,7 @@ const ITEMS = [
   ["supabase-migrations", "Supabase migrations applied"],
   ["rls", "RLS enabled on all user-data tables"],
   ["sync", "GitHub sync tested against a real repository"],
-  ["ai-gateway", "Lovable AI Gateway configured (LOVABLE_API_KEY present)"],
+  ["ai-gateway", "AI gateway configured (LOVABLE_API_KEY present)"],
   ["triage", "Issue triage tested end-to-end"],
   ["pr-summary", "PR summaries tested end-to-end"],
   ["changelog", "Changelog draft tested end-to-end"],

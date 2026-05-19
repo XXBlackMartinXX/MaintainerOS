@@ -57,5 +57,5 @@ maintainer workflow, but pre-1.0 and not production-tested at scale.
 - Security readiness signals are heuristics, not guarantees
 - Repository health scores are advisory and based on synced data only
 - Sync is on-demand only; no background polling or webhooks yet
-- Single GitHub account per account (Lovable platform limitation)
+- Single GitHub account per user account (platform limitation)
 - No production adoption claims — this is an initial public preview

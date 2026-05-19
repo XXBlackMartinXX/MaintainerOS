@@ -1,5 +1,5 @@
 /**
- * Server-only Lovable AI Gateway provider. Never import from the browser.
+ * Server-only AI gateway provider. Never import from the browser.
  */
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 

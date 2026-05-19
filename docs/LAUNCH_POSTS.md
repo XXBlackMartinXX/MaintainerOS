@@ -15,7 +15,7 @@ Honest, cautious copy for the v0.1.0 public preview. **No fake traction, no
 ## GitHub repository topics
 
 `open-source`, `maintainers`, `github`, `ai`, `triage`, `changelog`,
-`developer-tools`, `tanstack-start`, `supabase`, `lovable`.
+`developer-tools`, `tanstack-start`, `supabase`.
 
 ---
 

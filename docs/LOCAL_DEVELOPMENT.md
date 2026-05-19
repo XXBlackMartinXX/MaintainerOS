@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Bun (or Node 20+)
-- A the backend (Supabase) project (preconfigured `.env` provided by Lovable)
+- A Supabase project (preconfigured `.env` provided by the platform)
 - GitHub OAuth app credentials configured in Supabase Auth → Providers → GitHub
 
 ## Install
