@@ -186,3 +186,81 @@ to GitHub by this app.
   approved summaries and forces uncertain items into `knownLimitations` or
   `missingContext`.
 - Drafts are always labeled "AI draft". No auto-posting to GitHub.
+
+## GitHub Write Actions (Slice 6)
+
+MaintainerOS can publish approved AI-assisted drafts back to GitHub. Every
+public write is **explicit, confirmed, approval-gated, duplicate-protected,
+and audited**. Nothing is posted automatically.
+
+### Required GitHub OAuth scopes
+- `repo` — required to comment on issues, comment on pull requests, apply
+  labels, and create draft releases on private repositories.
+- `public_repo` — sufficient for the same actions on public repositories.
+
+If write scopes are missing, the Settings page shows a "Reconnect GitHub"
+prompt and all Post / Apply / Create buttons stay disabled.
+
+### How approval-gated publishing works
+1. AI generates a draft (issue reply, suggested labels, PR summary, or
+   release notes).
+2. A maintainer reviews, edits, and **approves** the draft.
+3. Only `approved` or `edited` drafts surface a publish button.
+4. The maintainer clicks the button and sees a confirmation dialog with a
+   preview of the exact content that will be posted.
+5. The maintainer confirms. The server function posts to GitHub.
+
+### Supported publish actions
+- **Issue comment publishing** — posts the approved AI reply as a GitHub
+  issue comment.
+- **Issue label application** — applies labels to the issue. Only labels
+  that already exist in the repository are pre-selected; the maintainer can
+  edit the final set before confirming.
+- **PR summary posting** — posts the structured AI summary as a comment on
+  the pull request via the issues comments endpoint.
+- **Draft release creation** — creates a GitHub release with
+  `draft: true`. MaintainerOS **never** publishes a non-draft release.
+
+### Duplicate-post protection
+Before every publish, the server checks `github_publish_events` for a
+prior `success` event with the same `(source_type, source_id, target)`. If
+one exists, the API returns `alreadyPosted: true` with the previous GitHub
+URL. The UI then requires explicit re-confirmation; the re-post is audited
+as `*.reposted` and shown as "duplicate confirmed" in the AI Action Log.
+
+### Audit logging
+Every publish attempt writes both:
+- an `audit_logs` entry (`github.<resource>.<attempted|success|failed|reposted>`), and
+- a row in `github_publish_events` with status, target, GitHub URL on
+  success, and sanitised error message on failure.
+
+Inspect everything from **AI Action Log** → filter "GitHub publish". Open a
+row to see action, target, source, publish status, GitHub URL, sanitised
+error, and raw metadata in the advanced section. Tokens and bearer
+credentials are never written to either table.
+
+### How to disable write actions
+- **Per session**: sign out of GitHub or revoke the MaintainerOS OAuth app
+  from your GitHub account settings.
+- **Per workspace**: reconnect with a token that lacks `repo` /
+  `public_repo`. The Settings page will show write actions as disabled.
+
+### Safety policy
+- No automatic posting of any kind.
+- No automatic label application.
+- No published releases — `draft: true` is hardcoded server-side.
+- All public writes require an approved or edited AI draft, an explicit
+  user click, a confirmation dialog, an audit log entry, and a
+  duplicate-protection check.
+
+### Troubleshooting
+
+| Symptom | Likely cause / fix |
+| --- | --- |
+| "Your GitHub session is missing write scope" | OAuth token lacks `repo` / `public_repo`. Go to Settings → Reconnect GitHub. |
+| "Repository access denied" (HTTP 403/404) | Your GitHub account is not a collaborator on the target repo, or org SSO is not authorised for the token. |
+| "Already posted to GitHub" notice | Duplicate-post protection found a previous successful publish. Click "Post again" to confirm a re-post. |
+| GitHub rate limit (HTTP 403 with `rate limit`) | Wait until the reset window. Authenticated requests get 5,000/hour per token. |
+| "No approved draft to publish" | The draft is still `pending` or was `rejected`. Approve or edit it first. |
+| "Release tag already exists" (HTTP 422) | GitHub rejected the release because the tag is in use. Change the version on the changelog draft before creating the release. |
+
