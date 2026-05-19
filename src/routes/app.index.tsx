@@ -26,9 +26,13 @@ import {
   Line,
   Legend,
 } from "recharts";
-import { MetricCard, PageHeader, DemoBadge, AIBadge, SeverityPill } from "@/components/ui-bits";
+import { MetricCard, PageHeader, AIBadge, SeverityPill } from "@/components/ui-bits";
 import { HealthScoreCard } from "@/components/health-score-card";
 import { RepoSelector } from "@/components/repo-selector";
+import { SyncStatusCard } from "@/components/sync-status-card";
+import { DataSourceBadge } from "@/components/data-source-badge";
+import { EmptyRepositoryState } from "@/components/empty-states";
+import { useSelectedRepo } from "@/hooks/use-selected-repo";
 import {
   demoIssueVolume,
   demoMergeTime,
@@ -45,18 +49,32 @@ export const Route = createFileRoute("/app/")({
 const CHART_COLORS = ["#34d399", "#60a5fa", "#fbbf24", "#a78bfa", "#f87171"];
 
 function Dashboard() {
+  const { selected, hasConnectedRepo } = useSelectedRepo();
   return (
     <div>
       <PageHeader
         title="Dashboard"
-        description="Overview of activity, health, and AI-suggested actions across your repositories."
-        actions={
-          <>
-            <DemoBadge />
-            <RepoSelector />
-          </>
-        }
+        description="Live sync status for the selected repository, plus preview charts that will become live as more data is wired up."
+        actions={<RepoSelector />}
       />
+
+      {hasConnectedRepo ? (
+        <div className="mb-6">
+          <SyncStatusCard repo={selected} />
+        </div>
+      ) : (
+        <div className="mb-6">
+          <EmptyRepositoryState />
+        </div>
+      )}
+
+      <div className="flex items-center gap-2 mb-3">
+        <h2 className="text-sm font-semibold tracking-tight">Activity preview</h2>
+        <DataSourceBadge variant="demo" />
+        <span className="text-xs text-muted-foreground">
+          These cards use illustrative numbers — wiring to live data is in progress.
+        </span>
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
         <MetricCard label="Open issues" value={47} delta={{ value: "+6 wk", positive: false }} icon={Inbox} />
@@ -66,6 +84,7 @@ function Dashboard() {
         <MetricCard label="Avg PR merge" value="19h" delta={{ value: "−5h", positive: true }} icon={Rocket} />
         <MetricCard label="Security alerts" value={3} hint="Review recommended" icon={ShieldAlert} />
       </div>
+
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         <div className="lg:col-span-2">
