@@ -7,21 +7,37 @@ dashboard for issues, pull requests, contributors, repo health, and AI drafts
 for triage, summaries, and changelogs. Every AI output is a **draft** — nothing
 is posted to GitHub without your explicit approval.
 
-> **Status:** v0.3 — live GitHub OAuth, repository sync, and live data on
-> the Issues, Pull Requests, Contributors, and Repo Health pages. Real AI
-> triage is the next slice.
+> **Status:** pre-1.0. Functionally complete across the core maintainer
+> workflow: live GitHub sync, AI issue triage, AI PR summaries, AI changelog
+> drafts, AI documentation drafts, approval-gated GitHub publishing, audit
+> log, demo mode, and a Trust Center. This project does not claim production
+> adoption, downloads, stars, or paying users.
+
+## Screenshots
+
+Screenshot placeholders — replace before publishing publicly:
+
+- `docs/screenshots/dashboard.png`
+- `docs/screenshots/issue-triage.png`
+- `docs/screenshots/pr-summaries.png`
+- `docs/screenshots/audit-log.png`
 
 ## Implemented today
 
 - GitHub OAuth via Lovable Cloud (Supabase Auth)
-- Repository connection + on-demand sync (issues, PRs, contributors, labels, commits)
-- Live Issues page (search, filters, sort, stale detection)
-- Live Pull Requests page (search, state/merged filters, sort, large-diff warnings)
-- Live Contributors page (distribution chart, top contributors, privacy-respecting wording)
-- Live Repo Health score with transparent breakdown and recommended actions
-- Dashboard sync-status panel with last-sync time, counts, error surfacing, and a Sync now button
-- Clear `Live GitHub data`, `Partial data`, and `Demo data` badges everywhere
-- Polished shell for changelog, docs, security, moderation, roadmap, and AI action log (preview)
+- Repository connection + on-demand sync (issues, PRs, contributors, labels, releases)
+- Live Issues, Pull Requests, Contributors, and Repo Health pages
+- AI issue triage (type, severity, priority, labels, suggested reply) — drafts only
+- AI PR summaries with risk, breaking-change detection, changelog entry — drafts only
+- AI changelog generator grouped by Added / Changed / Fixed — drafts only
+- AI documentation generator (README, CONTRIBUTING, SECURITY, …) — drafts only
+- Approval-gated GitHub write actions: issue replies, label apply, PR comments, draft releases
+- Duplicate-post protection backed by `github_publish_events`
+- AI Action Log with filter chips and publish-event enrichment
+- Demo mode with global banner and disabled publish/sync controls
+- First-run product tour (skippable, restartable from Settings)
+- Trust Center and internal QA checklist pages
+- Clear `Live GitHub data`, `Partial data`, `Demo data`, `AI draft` labels everywhere
 
 ## Ethics
 
@@ -326,3 +342,49 @@ A future slice will add an opt-in PR workflow that opens a real pull request
 against the repo with generated docs. Until then, the manual copy workflow
 above is the only supported path.
 
+
+## Demo mode
+
+Demo mode lets visitors explore every screen with clearly fictional sample
+data. It is enabled from the landing-page "Try demo" button or from Settings.
+While active, a global banner is shown, every AI output is labeled
+**Demo AI output**, and all publish and sync buttons are disabled. See
+[docs/DEMO_MODE.md](./docs/DEMO_MODE.md).
+
+## Quality checks
+
+```bash
+bun run lint        # ESLint
+bun run typecheck   # TypeScript (no emit)
+bun run build       # production build
+```
+
+See [docs/LOCAL_DEVELOPMENT.md](./docs/LOCAL_DEVELOPMENT.md) for the smoke-test
+checklist and troubleshooting tips.
+
+## Documentation
+
+- [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
+- [docs/SECURITY_MODEL.md](./docs/SECURITY_MODEL.md)
+- [docs/AI_SAFETY.md](./docs/AI_SAFETY.md)
+- [docs/DEMO_MODE.md](./docs/DEMO_MODE.md)
+- [docs/ROADMAP.md](./docs/ROADMAP.md)
+- [docs/LOCAL_DEVELOPMENT.md](./docs/LOCAL_DEVELOPMENT.md)
+- [CONTRIBUTING.md](./CONTRIBUTING.md)
+- [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+- [SECURITY.md](./SECURITY.md)
+
+## Contributing
+
+Issues and pull requests are welcome. Please follow the issue templates and
+the PR template. By contributing you agree to the Code of Conduct.
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
+
+## Honesty disclaimer
+
+MaintainerOS does not claim production adoption, downloads, stars, paying
+users, or specific maintainer endorsements. Pricing tiers labeled
+"Coming soon" are placeholders.

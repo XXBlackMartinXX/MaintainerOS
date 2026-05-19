@@ -14,8 +14,11 @@ import {
   Settings,
   Sparkles,
   CheckSquare,
+  Lock,
+  ClipboardCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDemoMode } from "@/hooks/use-demo-mode";
 
 const nav = [
   { to: "/app", label: "Dashboard", icon: LayoutDashboard, exact: true },
@@ -30,11 +33,14 @@ const nav = [
   { to: "/app/moderation", label: "Moderation", icon: ShieldCheck },
   { to: "/app/roadmap", label: "Roadmap", icon: Map },
   { to: "/app/actions", label: "AI Action Log", icon: History },
+  { to: "/app/trust", label: "Trust Center", icon: Lock },
+  { to: "/app/qa", label: "QA Checklist", icon: ClipboardCheck },
   { to: "/app/settings", label: "Settings", icon: Settings },
 ];
 
 export function AppSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { enabled: demo } = useDemoMode();
 
   return (
     <aside className="hidden md:flex w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar">
@@ -73,15 +79,17 @@ export function AppSidebar() {
           );
         })}
       </nav>
-      <div className="m-3 rounded-lg border border-sidebar-border bg-sidebar-accent/40 p-3 text-xs text-sidebar-foreground/70">
-        <div className="flex items-center gap-1.5 font-medium text-sidebar-foreground">
-          <span className="inline-block size-1.5 rounded-full bg-warning" />
-          Demo mode
+      {demo && (
+        <div className="m-3 rounded-lg border border-warning/30 bg-warning/10 p-3 text-xs text-warning">
+          <div className="flex items-center gap-1.5 font-medium">
+            <span className="inline-block size-1.5 rounded-full bg-warning" />
+            Demo mode
+          </div>
+          <p className="mt-1 leading-relaxed text-warning/80">
+            Illustrative data only. Publishing and sync are disabled.
+          </p>
         </div>
-        <p className="mt-1 leading-relaxed">
-          Showing illustrative data. Connect GitHub to load your real repositories.
-        </p>
-      </div>
+      )}
     </aside>
   );
 }

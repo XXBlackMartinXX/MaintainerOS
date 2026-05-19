@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowRight,
   Github,
@@ -12,8 +12,11 @@ import {
   Check,
   Lock,
   Eye,
+  PlayCircle,
+  Map,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { enableDemoMode } from "@/hooks/use-demo-mode";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -35,9 +38,13 @@ function Landing() {
       <SiteHeader />
       <Hero />
       <SocialNote />
+      <HowItWorks />
       <Features />
       <UseCases />
+      <ApprovalFirst />
+      <DemoSection />
       <Privacy />
+      <Roadmap />
       <Pricing />
       <CTASection />
       <SiteFooter />
@@ -82,6 +89,11 @@ function SiteHeader() {
 }
 
 function Hero() {
+  const navigate = useNavigate();
+  const tryDemo = () => {
+    enableDemoMode();
+    navigate({ to: "/app" });
+  };
   return (
     <section className="relative overflow-hidden">
       <div
@@ -103,18 +115,16 @@ function Hero() {
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Button asChild size="lg" className="shadow-[var(--shadow-glow)]">
-            <Link to="/app">
+            <Link to="/login">
               <Github className="size-4" /> Connect GitHub
             </Link>
           </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link to="/app">
-              View demo <ArrowRight className="size-4" />
-            </Link>
+          <Button size="lg" variant="outline" onClick={tryDemo}>
+            <PlayCircle className="size-4" /> Try demo
           </Button>
         </div>
         <p className="mt-4 text-xs text-muted-foreground">
-          The live demo uses clearly-labeled sample data. No real GitHub account is required.
+          Demo mode uses clearly-labeled sample data and never calls GitHub or AI providers.
         </p>
 
         <HeroPreview />
@@ -369,14 +379,127 @@ function SiteFooter() {
           <span className="font-medium text-foreground">MaintainerOS</span>
           <span>· MIT licensed</span>
         </div>
-        <nav className="flex flex-wrap items-center gap-5">
-          <a href="https://github.com" className="hover:text-foreground">GitHub</a>
-          <a href="#features" className="hover:text-foreground">Features</a>
-          <a href="#privacy" className="hover:text-foreground">Privacy</a>
+        <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-foreground">GitHub repository</a>
+          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-foreground">Docs</a>
+          <Link to="/app/trust" className="hover:text-foreground">Trust Center</Link>
+          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-foreground">Security</a>
+          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-foreground">Code of Conduct</a>
+          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-foreground">License (MIT)</a>
           <Link to="/app" className="hover:text-foreground">Dashboard</Link>
         </nav>
       </div>
+      <p className="max-w-6xl mx-auto px-4 md:px-6 mt-6 text-xs text-muted-foreground">
+        Privacy note: MaintainerOS only reads public GitHub data you grant access to and writes only when you explicitly confirm. No analytics or third-party tracking on this page.
+      </p>
     </footer>
+  );
+}
+
+function HowItWorks() {
+  const steps = [
+    { n: "1", title: "Connect a repository", body: "Sign in with GitHub and pick a repo. MaintainerOS only reads — never writes — until you approve a specific action." },
+    { n: "2", title: "Sync issues, PRs, contributors", body: "Live data lands in your private workspace. You can re-sync at any time." },
+    { n: "3", title: "Review AI drafts", body: "Issue triage, PR summaries, changelogs, and docs are generated as editable drafts. Confidence and source data are always shown." },
+    { n: "4", title: "Approve and publish on your terms", body: "When you're ready, one click + confirmation posts the approved draft to GitHub. Duplicates are blocked." },
+  ];
+  return (
+    <section className="py-20 border-t border-border/60">
+      <div className="max-w-6xl mx-auto px-4 md:px-6">
+        <SectionEyebrow>How it works</SectionEyebrow>
+        <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">Four small steps. No surprises.</h2>
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-4 gap-4">
+          {steps.map((s) => (
+            <div key={s.n} className="panel rounded-xl p-5">
+              <div className="size-7 rounded-md bg-primary/15 text-primary grid place-items-center font-mono text-xs ring-1 ring-primary/30">{s.n}</div>
+              <h3 className="mt-3 font-medium text-sm">{s.title}</h3>
+              <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{s.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ApprovalFirst() {
+  const items = [
+    "Every AI output is a draft until you approve or edit it.",
+    "Every GitHub write requires a confirmation dialog with a full preview.",
+    "Duplicate posts are blocked using the audit log.",
+    "GitHub releases are always created as drafts, never published.",
+    "Demo mode never calls GitHub write functions.",
+  ];
+  return (
+    <section className="py-20 border-t border-border/60">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div>
+          <SectionEyebrow><ShieldCheck className="size-3" /> Approval-first AI</SectionEyebrow>
+          <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">GitHub write actions are always confirmed.</h2>
+          <p className="mt-3 text-muted-foreground leading-relaxed">
+            MaintainerOS treats your repository like production. Nothing posts to GitHub without an explicit click, a confirmation dialog showing the exact payload, and an audit log entry.
+          </p>
+        </div>
+        <ul className="space-y-3">
+          {items.map((t) => (
+            <li key={t} className="flex items-start gap-3 panel rounded-lg p-3.5">
+              <Check className="size-4 mt-0.5 text-primary shrink-0" />
+              <span className="text-sm text-foreground">{t}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function DemoSection() {
+  const navigate = useNavigate();
+  const tryDemo = () => { enableDemoMode(); navigate({ to: "/app" }); };
+  return (
+    <section className="py-20 border-t border-border/60">
+      <div className="max-w-4xl mx-auto px-4 md:px-6 text-center">
+        <SectionEyebrow><PlayCircle className="size-3" /> Demo mode</SectionEyebrow>
+        <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">See the whole product, no GitHub required.</h2>
+        <p className="mt-3 text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          Demo mode loads a clearly fictional repository so you can explore every screen — triage, PR summaries, changelog, docs, audit log — without connecting GitHub. Publishing and sync are disabled and every AI output is labeled "Demo AI output".
+        </p>
+        <Button size="lg" className="mt-6" onClick={tryDemo}>
+          <PlayCircle className="size-4" /> Try the demo
+        </Button>
+      </div>
+    </section>
+  );
+}
+
+function Roadmap() {
+  const lanes = [
+    { title: "Shipped", items: ["GitHub read sync", "AI issue triage", "PR summaries", "Changelog drafts", "Documentation generator", "Approval-gated GitHub publishing", "AI Action Log", "Trust Center"] },
+    { title: "Next", items: ["Direct doc commits via PR", "Repository health trends", "Triage rule presets", "Contributor outreach helpers"] },
+    { title: "Exploring", items: ["Multi-repo dashboards", "Self-hosted deployment guide", "Bring-your-own AI provider"] },
+  ];
+  return (
+    <section className="py-20 border-t border-border/60">
+      <div className="max-w-6xl mx-auto px-4 md:px-6">
+        <SectionEyebrow><Map className="size-3" /> Roadmap</SectionEyebrow>
+        <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">Honest about what exists today.</h2>
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+          {lanes.map((l) => (
+            <div key={l.title} className="panel rounded-xl p-5">
+              <h3 className="font-medium text-sm">{l.title}</h3>
+              <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                {l.items.map((i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <Check className="size-3.5 mt-0.5 text-primary shrink-0" />
+                    <span>{i}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 

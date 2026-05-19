@@ -15,10 +15,12 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as AppTrustRouteImport } from './routes/app.trust'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppSecurityRouteImport } from './routes/app.security'
 import { Route as AppRoadmapRouteImport } from './routes/app.roadmap'
 import { Route as AppReadinessRouteImport } from './routes/app.readiness'
+import { Route as AppQaRouteImport } from './routes/app.qa'
 import { Route as AppPullsRouteImport } from './routes/app.pulls'
 import { Route as AppModerationRouteImport } from './routes/app.moderation'
 import { Route as AppIssuesRouteImport } from './routes/app.issues'
@@ -58,6 +60,11 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppTrustRoute = AppTrustRouteImport.update({
+  id: '/trust',
+  path: '/trust',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -76,6 +83,11 @@ const AppRoadmapRoute = AppRoadmapRouteImport.update({
 const AppReadinessRoute = AppReadinessRouteImport.update({
   id: '/readiness',
   path: '/readiness',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppQaRoute = AppQaRouteImport.update({
+  id: '/qa',
+  path: '/qa',
   getParentRoute: () => AppRoute,
 } as any)
 const AppPullsRoute = AppPullsRouteImport.update({
@@ -132,10 +144,12 @@ export interface FileRoutesByFullPath {
   '/app/issues': typeof AppIssuesRoute
   '/app/moderation': typeof AppModerationRoute
   '/app/pulls': typeof AppPullsRoute
+  '/app/qa': typeof AppQaRoute
   '/app/readiness': typeof AppReadinessRoute
   '/app/roadmap': typeof AppRoadmapRoute
   '/app/security': typeof AppSecurityRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/trust': typeof AppTrustRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/app/': typeof AppIndexRoute
 }
@@ -151,10 +165,12 @@ export interface FileRoutesByTo {
   '/app/issues': typeof AppIssuesRoute
   '/app/moderation': typeof AppModerationRoute
   '/app/pulls': typeof AppPullsRoute
+  '/app/qa': typeof AppQaRoute
   '/app/readiness': typeof AppReadinessRoute
   '/app/roadmap': typeof AppRoadmapRoute
   '/app/security': typeof AppSecurityRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/trust': typeof AppTrustRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/app': typeof AppIndexRoute
 }
@@ -172,10 +188,12 @@ export interface FileRoutesById {
   '/app/issues': typeof AppIssuesRoute
   '/app/moderation': typeof AppModerationRoute
   '/app/pulls': typeof AppPullsRoute
+  '/app/qa': typeof AppQaRoute
   '/app/readiness': typeof AppReadinessRoute
   '/app/roadmap': typeof AppRoadmapRoute
   '/app/security': typeof AppSecurityRoute
   '/app/settings': typeof AppSettingsRoute
+  '/app/trust': typeof AppTrustRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/app/': typeof AppIndexRoute
 }
@@ -194,10 +212,12 @@ export interface FileRouteTypes {
     | '/app/issues'
     | '/app/moderation'
     | '/app/pulls'
+    | '/app/qa'
     | '/app/readiness'
     | '/app/roadmap'
     | '/app/security'
     | '/app/settings'
+    | '/app/trust'
     | '/auth/callback'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
@@ -213,10 +233,12 @@ export interface FileRouteTypes {
     | '/app/issues'
     | '/app/moderation'
     | '/app/pulls'
+    | '/app/qa'
     | '/app/readiness'
     | '/app/roadmap'
     | '/app/security'
     | '/app/settings'
+    | '/app/trust'
     | '/auth/callback'
     | '/app'
   id:
@@ -233,10 +255,12 @@ export interface FileRouteTypes {
     | '/app/issues'
     | '/app/moderation'
     | '/app/pulls'
+    | '/app/qa'
     | '/app/readiness'
     | '/app/roadmap'
     | '/app/security'
     | '/app/settings'
+    | '/app/trust'
     | '/auth/callback'
     | '/app/'
   fileRoutesById: FileRoutesById
@@ -293,6 +317,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/trust': {
+      id: '/app/trust'
+      path: '/trust'
+      fullPath: '/app/trust'
+      preLoaderRoute: typeof AppTrustRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/settings': {
       id: '/app/settings'
       path: '/settings'
@@ -319,6 +350,13 @@ declare module '@tanstack/react-router' {
       path: '/readiness'
       fullPath: '/app/readiness'
       preLoaderRoute: typeof AppReadinessRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/qa': {
+      id: '/app/qa'
+      path: '/qa'
+      fullPath: '/app/qa'
+      preLoaderRoute: typeof AppQaRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/pulls': {
@@ -389,10 +427,12 @@ interface AppRouteChildren {
   AppIssuesRoute: typeof AppIssuesRoute
   AppModerationRoute: typeof AppModerationRoute
   AppPullsRoute: typeof AppPullsRoute
+  AppQaRoute: typeof AppQaRoute
   AppReadinessRoute: typeof AppReadinessRoute
   AppRoadmapRoute: typeof AppRoadmapRoute
   AppSecurityRoute: typeof AppSecurityRoute
   AppSettingsRoute: typeof AppSettingsRoute
+  AppTrustRoute: typeof AppTrustRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
@@ -405,10 +445,12 @@ const AppRouteChildren: AppRouteChildren = {
   AppIssuesRoute: AppIssuesRoute,
   AppModerationRoute: AppModerationRoute,
   AppPullsRoute: AppPullsRoute,
+  AppQaRoute: AppQaRoute,
   AppReadinessRoute: AppReadinessRoute,
   AppRoadmapRoute: AppRoadmapRoute,
   AppSecurityRoute: AppSecurityRoute,
   AppSettingsRoute: AppSettingsRoute,
+  AppTrustRoute: AppTrustRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
