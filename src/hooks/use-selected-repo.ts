@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { listConnectedRepos } from "@/lib/github.functions";
+import { supabase } from "@/integrations/supabase/client";
+
 
 const STORAGE_KEY = "maintainer-os.selected-repo-id";
 const EVENT = "maintainer-os:selected-repo-changed";
