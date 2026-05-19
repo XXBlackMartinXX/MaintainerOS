@@ -72,14 +72,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "MaintainerOS — AI operations center for open-source maintainers" },
+      {
+        name: "description",
+        content:
+          "MaintainerOS gives maintainers AI-powered issue triage, PR summaries, changelogs, contributor insights, and repo health analytics in one focused dashboard.",
+      },
+      { name: "author", content: "MaintainerOS" },
+      { property: "og:title", content: "MaintainerOS — AI operations center for open-source maintainers" },
+      {
+        property: "og:description",
+        content:
+          "Run your open-source project like a world-class engineering team. Open source, privacy-conscious, transparent AI.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
