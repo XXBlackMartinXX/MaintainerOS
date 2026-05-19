@@ -54,7 +54,11 @@ export function useConnectedRepos() {
 export function useSelectedRepo() {
   const { data, isLoading } = useConnectedRepos();
   const repos = (data?.repos ?? []) as ConnectedRepo[];
-  const [storedId, setStoredId] = useState<string | null>(() => readStored());
+  const [storedId, setStoredId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setStoredId(readStored());
+  }, []);
 
   useEffect(() => {
     const handler = (e: Event) => {
