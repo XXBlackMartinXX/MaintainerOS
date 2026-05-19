@@ -15,16 +15,24 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const configured = isSupabaseConfigured();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
+    const sb = getSupabase();
+    if (!sb) return;
+    sb.auth.getSession().then(({ data }) => {
       if (data.session) navigate({ to: "/app" });
-    });
+    }).catch(() => {});
   }, [navigate]);
 
   const signInWithGitHub = async () => {
+    const sb = getSupabase();
+    if (!sb) {
+      toast.error("Sign-in is unavailable: the backend is not configured.");
+      return;
+    }
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error } = await sb.auth.signInWithOAuth({
       provider: "github",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
