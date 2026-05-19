@@ -1,8 +1,7 @@
 # Launch post drafts
 
 Honest, cautious copy for the v0.1.0 public preview. **No fake traction, no
-"production proven" claims, no invented users or stars.** Edit before
-posting; replace `TODO_PUBLIC_REPO_URL` with the real URL.
+"production proven" claims, no invented users or stars.**
 
 ---
 
@@ -26,7 +25,7 @@ posting; replace `TODO_PUBLIC_REPO_URL` with the real URL.
 > for OSS maintainers. Live GitHub sync, AI drafts for triage / PR
 > summaries / changelogs / docs. Nothing posts to GitHub without explicit
 > approval. Pre-1.0 preview.
-> TODO_PUBLIC_REPO_URL
+> https://github.com/XXBlackMartinXX/MaintainerOS
 
 ---
 
@@ -47,7 +46,7 @@ posting; replace `TODO_PUBLIC_REPO_URL` with the real URL.
 > judgement, or a tool that auto-merges anything.
 >
 > Pre-1.0 preview. Feedback welcome.
-> TODO_PUBLIC_REPO_URL
+> https://github.com/XXBlackMartinXX/MaintainerOS
 
 ---
 
@@ -86,7 +85,7 @@ maintainers
 > - Fake stars, contributors, or "production adoption"
 >
 > Built on TanStack Start, Supabase (via Lovable Cloud), and the Lovable AI
-> Gateway. Repo and docs: TODO_PUBLIC_REPO_URL
+> Gateway. Repo and docs: https://github.com/XXBlackMartinXX/MaintainerOS
 >
 > This is a pre-1.0 preview. Honest feedback — including "this is over-
 > engineered" — is very welcome.
