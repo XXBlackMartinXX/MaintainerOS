@@ -1,9 +1,20 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
-import { Github, Check, Sparkles, ArrowRight } from "lucide-react";
+import { Github, Check, Sparkles, ArrowRight, Loader2, Star, GitFork } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { listGithubRepos, connectRepositories } from "@/lib/github.functions";
+import { toast } from "sonner";
 
-export const Route = createFileRoute("/onboarding")({ component: Onboarding });
+export const Route = createFileRoute("/onboarding")({
+  beforeLoad: async () => {
+    const { data } = await supabase.auth.getSession();
+    if (!data.session) throw redirect({ to: "/login" });
+  },
+  component: Onboarding,
+});
 
 const STEPS = ["Connect GitHub", "Choose repositories", "Enable AI features", "Maintainer preferences"];
 
