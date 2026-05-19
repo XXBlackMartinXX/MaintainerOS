@@ -178,7 +178,9 @@ export const updateDocumentationDraft = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const userId = context.userId;
-    const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
+    const patch: { updated_at: string; body_markdown?: string; title?: string; approval_status?: string } = {
+      updated_at: new Date().toISOString(),
+    };
     if (typeof data.body_markdown === "string") patch.body_markdown = data.body_markdown;
     if (typeof data.title === "string") patch.title = data.title;
     if (data.approval_status) patch.approval_status = data.approval_status;
