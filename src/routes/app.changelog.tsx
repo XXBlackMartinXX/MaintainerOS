@@ -45,6 +45,7 @@ type DraftRow = {
 
 function ChangelogPage() {
   const { selected, hasConnectedRepo, isLoading: reposLoading } = useSelectedRepo();
+  const hasSession = useHasSession();
   const qc = useQueryClient();
   const summariesFn = useServerFn(listPrSummariesForRepo);
   const generateFn = useServerFn(generateChangelog);
