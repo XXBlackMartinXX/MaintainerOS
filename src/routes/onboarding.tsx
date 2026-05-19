@@ -106,8 +106,6 @@ function Onboarding() {
                 <Pref label="Auto-draft release notes" options={["Off", "On"]} active="On" />
               </div>
             )}
-          </div>
-
             {step === 1 && (
               <div>
                 {reposQuery.isLoading && (
