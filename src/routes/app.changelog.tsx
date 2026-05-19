@@ -10,6 +10,7 @@ import { RepoSelector } from "@/components/repo-selector";
 import { DataSourceBadge } from "@/components/data-source-badge";
 import { EmptyRepositoryState } from "@/components/empty-states";
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
+import { useHasSession } from "@/hooks/use-has-session";
 import {
   listPrSummariesForRepo,
   generateChangelog,
