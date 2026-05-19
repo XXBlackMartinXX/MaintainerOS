@@ -486,3 +486,58 @@ export const fetchContributors = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     return { contributors: rows ?? [] };
   });
+
+/** Pull labels for a connected repo. */
+export const fetchLabels = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ repository_id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    const { data: rows, error } = await context.supabase
+      .from("labels")
+      .select("name, color, description")
+      .eq("repository_id", data.repository_id)
+      .order("name", { ascending: true });
+    if (error) throw new Error(error.message);
+    return { labels: rows ?? [] };
+  });
+
+/** Aggregate inputs for the health score. */
+export const getRepoHealthInputs = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => z.object({ repository_id: z.string().uuid() }).parse(d))
+  .handler(async ({ data, context }) => {
+    const repoId = data.repository_id;
+    const [issuesRes, prsRes, contribsRes, labelsRes, commitsRes] = await Promise.all([
+      context.supabase
+        .from("issues")
+        .select("state, created_at, updated_at, closed_at, comments")
+        .eq("repository_id", repoId)
+        .limit(500),
+      context.supabase
+        .from("pull_requests")
+        .select("state, created_at, updated_at, merged_at, closed_at, draft")
+        .eq("repository_id", repoId)
+        .limit(500),
+      context.supabase
+        .from("contributors")
+        .select("login, contributions")
+        .eq("repository_id", repoId),
+      context.supabase
+        .from("labels")
+        .select("name")
+        .eq("repository_id", repoId),
+      context.supabase
+        .from("commits")
+        .select("committed_at")
+        .eq("repository_id", repoId)
+        .order("committed_at", { ascending: false })
+        .limit(100),
+    ]);
+    return {
+      issues: issuesRes.data ?? [],
+      pulls: prsRes.data ?? [],
+      contributors: contribsRes.data ?? [],
+      labels: labelsRes.data ?? [],
+      commits: commitsRes.data ?? [],
+    };
+  });
