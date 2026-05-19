@@ -14,7 +14,7 @@ import { DataSourceBadge } from "@/components/data-source-badge";
 import { SyncNowButton } from "@/components/sync-now-button";
 import { EmptyRepositoryState, EmptySyncedDataState } from "@/components/empty-states";
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
-import { fetchIssues } from "@/lib/github.functions";
+import { fetchIssues, fetchLabels } from "@/lib/github.functions";
 import { triageIssue, listTriageForRepo, updateTriageDraft, getAiStatus } from "@/lib/ai.functions";
 import {
   publishIssueComment,
@@ -23,6 +23,13 @@ import {
   listPublishEventsForSource,
 } from "@/lib/github-publish.functions";
 import { PublishConfirmDialog } from "@/components/publish-confirm-dialog";
+import {
+  AlreadyPublishedNotice,
+  GitHubPermissionWarning,
+  PublishStatusBadge,
+  getPublishEventForSource,
+  type PublishEvent,
+} from "@/components/publish-helpers";
 import type { TriageResult } from "@/lib/ai/schemas";
 
 export const Route = createFileRoute("/app/issues")({ component: IssuesPage });
