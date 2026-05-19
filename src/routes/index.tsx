@@ -450,8 +450,8 @@ function SiteFooter() {
           <div className="size-6 rounded-md bg-primary/15 text-primary grid place-items-center ring-1 ring-primary/30">
             <Sparkles className="size-3" />
           </div>
-          <span className="font-medium text-foreground">MaintainerOS</span>
-          <span>· MIT licensed</span>
+          <span className="font-medium text-foreground">{PROJECT_META.projectName}</span>
+          <span>· v{PROJECT_META.version} · MIT licensed</span>
         </div>
         <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
           <a
