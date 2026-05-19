@@ -463,7 +463,7 @@ function SiteFooter() {
             GitHub repository
           </a>
           <a
-            href={PROJECT_META.repoUrl}
+            href={PROJECT_META.docsUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -474,7 +474,7 @@ function SiteFooter() {
             Trust Center
           </Link>
           <a
-            href={PROJECT_META.repoUrl}
+            href={PROJECT_META.securityUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -482,7 +482,7 @@ function SiteFooter() {
             Security
           </a>
           <a
-            href={PROJECT_META.repoUrl}
+            href={PROJECT_META.codeOfConductUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -490,7 +490,7 @@ function SiteFooter() {
             Code of Conduct
           </a>
           <a
-            href={PROJECT_META.repoUrl}
+            href={PROJECT_META.licenseUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
