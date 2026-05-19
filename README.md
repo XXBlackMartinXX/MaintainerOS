@@ -89,9 +89,24 @@ bun run build       # production build
 ## Environment variables
 
 See [`.env.example`](./.env.example) for the full list and placeholder
-values. The required keys cover the Supabase project (URL + publishable
-key), the Supabase service role (server-only), GitHub OAuth, and the AI
-gateway key.
+values. For the client bundle, set:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY` (or `VITE_SUPABASE_PUBLISHABLE_KEY`)
+
+For server-side code, `SUPABASE_URL` + `SUPABASE_PUBLISHABLE_KEY` /
+`SUPABASE_ANON_KEY` are accepted as fallbacks, plus the server-only
+`SUPABASE_SERVICE_ROLE_KEY`. GitHub OAuth and the AI gateway key are
+optional and gate their respective features.
+
+### Troubleshooting
+
+**`Missing Supabase environment variable(s): SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY`**
+
+The deployment is missing the Supabase URL and publishable/anon key.
+Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (the safe public
+values, never the service role key) in your deployment environment and
+redeploy. Demo mode at `/demo` continues to work even without these vars.
 
 ## GitHub OAuth setup
 
