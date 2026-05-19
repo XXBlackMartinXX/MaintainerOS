@@ -98,11 +98,13 @@ function sourceFromMetadata(
 
 function ActionsPage() {
   const fn = useServerFn(listAuditLogs);
+  const hasSession = useHasSession();
   const [filter, setFilter] = useState<string>("all");
   const logsQ = useQuery({
     queryKey: ["audit-logs", filter],
     queryFn: () =>
       fn({ data: { action_prefix: filter === "all" ? undefined : filter, limit: 300 } }),
+    enabled: hasSession === true,
   });
   const [selected, setSelected] = useState<LogRow | null>(null);
 
