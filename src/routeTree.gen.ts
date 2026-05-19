@@ -15,6 +15,7 @@ import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppPullsRouteImport } from './routes/app.pulls'
 import { Route as AppIssuesRouteImport } from './routes/app.issues'
 import { Route as AppHealthRouteImport } from './routes/app.health'
+import { Route as AppContributorsRouteImport } from './routes/app.contributors'
 import { Route as AppChangelogRouteImport } from './routes/app.changelog'
 
 const AppRoute = AppRouteImport.update({
@@ -47,6 +48,11 @@ const AppHealthRoute = AppHealthRouteImport.update({
   path: '/health',
   getParentRoute: () => AppRoute,
 } as any)
+const AppContributorsRoute = AppContributorsRouteImport.update({
+  id: '/contributors',
+  path: '/contributors',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppChangelogRoute = AppChangelogRouteImport.update({
   id: '/changelog',
   path: '/changelog',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/changelog': typeof AppChangelogRoute
+  '/app/contributors': typeof AppContributorsRoute
   '/app/health': typeof AppHealthRoute
   '/app/issues': typeof AppIssuesRoute
   '/app/pulls': typeof AppPullsRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app/changelog': typeof AppChangelogRoute
+  '/app/contributors': typeof AppContributorsRoute
   '/app/health': typeof AppHealthRoute
   '/app/issues': typeof AppIssuesRoute
   '/app/pulls': typeof AppPullsRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/app/changelog': typeof AppChangelogRoute
+  '/app/contributors': typeof AppContributorsRoute
   '/app/health': typeof AppHealthRoute
   '/app/issues': typeof AppIssuesRoute
   '/app/pulls': typeof AppPullsRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/app/changelog'
+    | '/app/contributors'
     | '/app/health'
     | '/app/issues'
     | '/app/pulls'
@@ -94,6 +104,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/app/changelog'
+    | '/app/contributors'
     | '/app/health'
     | '/app/issues'
     | '/app/pulls'
@@ -103,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/app/changelog'
+    | '/app/contributors'
     | '/app/health'
     | '/app/issues'
     | '/app/pulls'
@@ -158,6 +170,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppHealthRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/contributors': {
+      id: '/app/contributors'
+      path: '/contributors'
+      fullPath: '/app/contributors'
+      preLoaderRoute: typeof AppContributorsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/changelog': {
       id: '/app/changelog'
       path: '/changelog'
@@ -170,6 +189,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppChangelogRoute: typeof AppChangelogRoute
+  AppContributorsRoute: typeof AppContributorsRoute
   AppHealthRoute: typeof AppHealthRoute
   AppIssuesRoute: typeof AppIssuesRoute
   AppPullsRoute: typeof AppPullsRoute
@@ -178,6 +198,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppChangelogRoute: AppChangelogRoute,
+  AppContributorsRoute: AppContributorsRoute,
   AppHealthRoute: AppHealthRoute,
   AppIssuesRoute: AppIssuesRoute,
   AppPullsRoute: AppPullsRoute,
