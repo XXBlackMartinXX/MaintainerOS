@@ -65,7 +65,7 @@ function DocsPage() {
   const updateFn = useServerFn(updateDocumentationDraft);
   const deleteFn = useServerFn(deleteDocumentationDraft);
 
-  const aiStatusQ = useQuery({ queryKey: ["docs-ai-status"], queryFn: () => aiStatusFn() });
+  const aiStatusQ = useQuery({ queryKey: ["docs-ai-status"], queryFn: () => aiStatusFn(), enabled: hasSession === true });
   const draftsQ = useQuery({
     queryKey: ["docs-drafts", selected?.id, docType],
     queryFn: () => listFn({ data: { repository_id: selected!.id, doc_type: docType } }),
