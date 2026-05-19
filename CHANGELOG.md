@@ -11,7 +11,7 @@ maintainer workflow, but pre-1.0 and not production-tested at scale.
 
 ### Added
 
-- GitHub OAuth sign-in via Lovable Cloud (Supabase Auth)
+- GitHub OAuth sign-in via Supabase Auth
 - Repository connection and on-demand sync of issues, pull requests,
   contributors, labels, and releases
 - Live Issues, Pull Requests, Contributors, and Repo Health pages
@@ -33,7 +33,7 @@ maintainer workflow, but pre-1.0 and not production-tested at scale.
 
 ### Security & safety
 
-- All AI calls run server-side via Lovable AI Gateway; no provider keys in
+- All AI calls run server-side via managed AI gateway; no provider keys in
   the browser
 - All GitHub writes require an approved or edited draft, an explicit click,
   a confirmation dialog, and a duplicate check
@@ -57,5 +57,5 @@ maintainer workflow, but pre-1.0 and not production-tested at scale.
 - Security readiness signals are heuristics, not guarantees
 - Repository health scores are advisory and based on synced data only
 - Sync is on-demand only; no background polling or webhooks yet
-- Single GitHub account per Lovable account (Lovable platform limitation)
+- Single GitHub account per account (Lovable platform limitation)
 - No production adoption claims — this is an initial public preview

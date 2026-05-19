@@ -38,7 +38,7 @@ These tables are **read-only** to authenticated users; writes happen exclusively
 
 ## Verifying RLS is enabled
 
-In the Lovable Cloud database tab, every table must show "RLS enabled". The included `supabase--linter` tool also flags any table missing RLS.
+In the Supabase database tab, every table must show "RLS enabled". The included `supabase--linter` tool also flags any table missing RLS.
 
 ## Common patterns
 

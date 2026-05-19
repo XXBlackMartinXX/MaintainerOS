@@ -3,7 +3,7 @@
 ## Prerequisites
 
 - Bun (or Node 20+)
-- A Lovable Cloud project (preconfigured `.env` provided by Lovable)
+- A the backend (Supabase) project (preconfigured `.env` provided by Lovable)
 - GitHub OAuth app credentials configured in Supabase Auth → Providers → GitHub
 
 ## Install
@@ -14,7 +14,7 @@ bun install
 
 ## Run dev server
 
-The Lovable workspace runs the dev server for you. If running standalone:
+The development workspace runs the dev server for you. If running standalone:
 
 ```bash
 bun run dev
@@ -44,5 +44,5 @@ Run through these manually before publishing a release:
 ## Troubleshooting
 
 - "Unauthorized" on every server function → check that `attachSupabaseAuth` is registered in `src/start.ts`.
-- "AI Gateway not configured" → set `LOVABLE_API_KEY` in Lovable Cloud secrets.
+- "AI Gateway not configured" → set `LOVABLE_API_KEY` in backend secrets.
 - GitHub publish fails with 403 → reconnect GitHub with the `repo` scope.

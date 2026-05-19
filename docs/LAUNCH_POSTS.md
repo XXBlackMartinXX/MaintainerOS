@@ -84,7 +84,7 @@ maintainers
 > - Hide AI confidence or source data from you
 > - Fake stars, contributors, or "production adoption"
 >
-> Built on TanStack Start, Supabase (via Lovable Cloud), and the Lovable AI
+> Built on TanStack Start, Supabase (via the backend (Supabase)), and the the AI gateway
 > Gateway. Repo and docs: https://github.com/XXBlackMartinXX/MaintainerOS
 >
 > This is a pre-1.0 preview. Honest feedback — including "this is over-

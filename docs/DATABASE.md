@@ -1,6 +1,6 @@
 # Database
 
-MaintainerOS uses Supabase Postgres (via Lovable Cloud). All app data lives in the `public` schema; auth lives in the managed `auth` schema (do not modify).
+MaintainerOS uses Supabase Postgres (via the backend (Supabase)). All app data lives in the `public` schema; auth lives in the managed `auth` schema (do not modify).
 
 ## Tables (public schema)
 
@@ -36,7 +36,7 @@ See `supabase/migrations/` for the full schema history.
 
 ## Applying migrations
 
-Migrations live in `supabase/migrations/` and run automatically in Lovable Cloud. To apply them manually against a local Supabase project:
+Migrations live in `supabase/migrations/` and run automatically in the backend (Supabase). To apply them manually against a local Supabase project:
 
 ```bash
 supabase db push

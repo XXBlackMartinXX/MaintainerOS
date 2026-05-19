@@ -9,7 +9,7 @@ MaintainerOS is designed so that no third party — including the app itself —
 | Browser client            | Untrusted                 | Holds only the publishable Supabase key and the user's session token.                                                        |
 | TanStack server functions | Trusted                   | Run server-side. May use the user's OAuth token (via `requireSupabaseAuth`) or the service role key (admin operations only). |
 | Supabase Postgres         | Trusted, RLS-enforced     | Every user-data table has row-level security. The service role key never reaches the browser.                                |
-| Lovable AI Gateway        | Trusted, server-side only | `LOVABLE_API_KEY` is read inside `.handler()` and never exposed to the client.                                               |
+| managed AI gateway        | Trusted, server-side only | `LOVABLE_API_KEY` is read inside `.handler()` and never exposed to the client.                                               |
 | GitHub                    | External                  | Reads use the user's OAuth scopes. Writes require an additional approval flow (see below).                                   |
 
 ## Authentication

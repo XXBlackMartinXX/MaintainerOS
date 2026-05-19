@@ -78,13 +78,13 @@ export function hasFeature(feature: ServerFeature, env = serverEnv()): boolean {
 export function requireFeature(feature: ServerFeature, env = serverEnv()): void {
   if (hasFeature(feature, env)) return;
   const msg: Record<ServerFeature, string> = {
-    supabase: "Lovable Cloud is not configured. Missing SUPABASE_URL or SUPABASE_PUBLISHABLE_KEY.",
+    supabase: "the backend (Supabase) is not configured. Missing SUPABASE_URL or SUPABASE_PUBLISHABLE_KEY.",
     "supabase-admin":
       "Server-side database access is not configured. Missing SUPABASE_SERVICE_ROLE_KEY.",
     "github-oauth":
       "GitHub sign-in is not configured. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in your Supabase Auth provider settings.",
     "ai-gateway":
-      "Lovable AI Gateway is not configured. Set LOVABLE_API_KEY in your Lovable Cloud secrets.",
+      "managed AI gateway is not configured. Set LOVABLE_API_KEY in your backend secrets.",
     "github-write": "GitHub write actions require GitHub OAuth to be configured.",
   };
   throw new Error(msg[feature]);

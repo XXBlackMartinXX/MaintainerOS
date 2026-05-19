@@ -15,11 +15,11 @@ GitHub after explicit confirmation.
 
 - **Frontend:** TanStack Start v1 (React 19 + Vite 7), Tailwind v4,
   shadcn/ui, semantic design tokens in `src/styles.css`.
-- **Backend:** Lovable Cloud (Supabase) — Postgres, Auth (GitHub OAuth),
+- **Backend:** Supabase — Postgres, Auth (GitHub OAuth),
   RLS, Storage if needed.
 - **Server logic:** TanStack `createServerFn` functions in
   `src/lib/*.functions.ts`. No Supabase Edge Functions.
-- **AI:** Lovable AI Gateway via `src/lib/ai/provider.server.ts`.
+- **AI:** managed AI gateway via `src/lib/ai/provider.server.ts`.
   Prompts under `src/lib/ai/prompts/`. All outputs validated with Zod.
 - **Routing:** File-based routes in `src/routes/`. App routes under
   `/app/*`, public landing at `/`.
@@ -29,13 +29,13 @@ and [`SUPABASE_RLS.md`](./SUPABASE_RLS.md) for more.
 
 ## Required services
 
-- **Lovable Cloud** (Supabase project — auto-provisioned)
+- **the backend (Supabase)** (Supabase project — auto-provisioned)
 - **GitHub OAuth App** registered against the Supabase Auth callback
-- **Lovable AI Gateway** key (`LOVABLE_API_KEY` in Supabase Edge env)
+- **managed AI gateway** key (`LOVABLE_API_KEY` in Supabase Edge env)
 
 ## Environment variables
 
-Public (auto-injected by Lovable Cloud, never edit `.env` manually):
+Public (auto-injected by the backend (Supabase), never edit `.env` manually):
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
@@ -80,15 +80,15 @@ See `.env.example` for the canonical list.
 - **Apply a database migration:** create a new file in
   `supabase/migrations/` and use the Supabase migration tool. Never edit
   `src/integrations/supabase/types.ts` by hand.
-- **Rotate the Lovable AI Gateway key:** use the `ai_gateway` tool family
-  in Lovable, then redeploy.
+- **Rotate the managed AI gateway key:** use the `ai_gateway` tool family
+  in your AI provider, then redeploy.
 
 ## Known limitations
 
 - Documentation drafts are copied manually (no auto-PR yet).
 - Sync is on-demand; no webhooks or background polling.
 - Security readiness is heuristic.
-- One GitHub account per Lovable account.
+- One GitHub account per account.
 
 ## Where to change project URLs
 

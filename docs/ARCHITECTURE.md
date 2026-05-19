@@ -1,6 +1,6 @@
 # Architecture
 
-MaintainerOS is a TanStack Start (React 19 + Vite) application backed by Lovable Cloud (managed Supabase) and the Lovable AI Gateway.
+MaintainerOS is a TanStack Start (React 19 + Vite) application backed by managed Supabase and the managed AI gateway.
 
 ## High-level
 
@@ -8,7 +8,7 @@ MaintainerOS is a TanStack Start (React 19 + Vite) application backed by Lovable
 Browser ──► TanStack Start app ──► createServerFn handlers ──► Supabase (Postgres + Auth + RLS)
                                               │
                                               └──► GitHub REST API (read + opt-in write)
-                                              └──► Lovable AI Gateway (server-only)
+                                              └──► managed AI gateway (server-only)
 ```
 
 ## Runtimes
@@ -24,7 +24,7 @@ Browser ──► TanStack Start app ──► createServerFn handlers ──►
 | ------------------------------------------- | ----------------------------------------------------------------------------- |
 | `src/lib/github.functions.ts`               | Public-facing read sync server fns (repos, issues, PRs, contributors).        |
 | `src/lib/github/*.server.ts`                | Server-only GitHub REST client and write helpers.                             |
-| `src/lib/ai/provider.server.ts`             | Server-only Lovable AI Gateway wrapper with retry + timeout + Zod validation. |
+| `src/lib/ai/provider.server.ts`             | Server-only managed AI gateway wrapper with retry + timeout + Zod validation. |
 | `src/lib/ai/prompts/*`                      | Per-feature prompt templates (issue triage, PR summary, changelog, docs).     |
 | `src/lib/ai.functions.ts`                   | Server fns for AI issue triage.                                               |
 | `src/lib/ai-pr.functions.ts`                | Server fns for AI PR summaries and changelog drafts.                          |
@@ -38,7 +38,7 @@ Browser ──► TanStack Start app ──► createServerFn handlers ──►
 1. User signs in with GitHub via Supabase Auth.
 2. Server functions call GitHub with the user's OAuth token (read-only by default).
 3. Synced data is upserted into Supabase per-repository tables.
-4. AI features read from Supabase, call Lovable AI Gateway server-side, validate the response, and store an editable draft.
+4. AI features read from Supabase, call managed AI gateway server-side, validate the response, and store an editable draft.
 5. Publishing a draft to GitHub requires an approved draft, a click, a confirmation dialog, a duplicate-protection check, and writes an audit log entry.
 
 See [SECURITY_MODEL.md](./SECURITY_MODEL.md) and [AI_SAFETY.md](./AI_SAFETY.md).
