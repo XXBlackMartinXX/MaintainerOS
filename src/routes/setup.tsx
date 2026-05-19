@@ -1,9 +1,34 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { CheckCircle2, XCircle, Sparkles, ExternalLink, Loader2 } from "lucide-react";
+import { CheckCircle2, XCircle, Sparkles, ExternalLink, Loader2, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { clientEnv, clientFeatures } from "@/lib/env";
 import { getServerConfigStatus, type ServerConfigStatus } from "@/lib/setup.functions";
+import { toast } from "sonner";
+
+function CopyField({ value, label }: { value: string; label?: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      type="button"
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(value);
+          setCopied(true);
+          toast.success(`${label ?? "Value"} copied`);
+          setTimeout(() => setCopied(false), 1500);
+        } catch {
+          toast.error("Copy failed");
+        }
+      }}
+      className="inline-flex w-full items-center gap-2 rounded bg-muted px-2 py-1 text-left text-xs hover:bg-muted/70"
+      aria-label={`Copy ${label ?? "value"}`}
+    >
+      <code className="flex-1 truncate">{value}</code>
+      {copied ? <Check className="size-3 flex-none text-success" /> : <Copy className="size-3 flex-none text-muted-foreground" />}
+    </button>
+  );
+}
 
 export const Route = createFileRoute("/setup")({
   component: SetupPage,
