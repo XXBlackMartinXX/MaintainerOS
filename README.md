@@ -148,3 +148,41 @@ Log**: `ai.triage.generated`, `ai.triage.approve`, `ai.triage.edit`,
 ### Configuration
 If `LOVABLE_API_KEY` is missing, the Analyze buttons are disabled and a
 configuration warning is shown. No fake AI output is ever displayed.
+
+## AI pull request summaries & changelog (Slice 5)
+
+Pull requests can be summarized into editable AI drafts. Approved summaries
+become the source of truth for AI-generated release notes. Nothing is posted
+to GitHub by this app.
+
+### PR summaries
+- `Analyze` on any row generates a structured draft (change type, risk,
+  breaking-change likelihood, suggested review focus, testing/security notes,
+  release-note candidate, missing context, safety notes).
+- `Analyze visible PRs` runs sequential bulk analysis on the current filtered
+  list with confirmation and progress; already-analyzed PRs are skipped
+  unless you explicitly re-analyze.
+- Drafts can be approved, edited, rejected, or copied. Every action is logged
+  in `audit_logs` (`ai.pr_summary.*`).
+
+### Changelog generation
+- `/app/changelog` calls the AI gateway with **only approved PR summaries**
+  as source material. Approved-count badge shows whether output is `live`,
+  `partial`, or `preview only`.
+- AI returns a structured result (semver recommendation + rationale, grouped
+  sections, breaking changes, migration notes, known limitations, Markdown).
+- Markdown is fully editable. Save draft / approve / reject / copy are logged
+  as `ai.release_draft.*`. Drafts are stored in the `release_drafts` table.
+
+### Tables added
+- `pull_request_ai_summaries` — one editable AI draft per (PR, user).
+- `release_drafts` — generated changelogs (version, title, markdown, structured result).
+- Both use RLS scoped to the owning user.
+
+### Prompts and safety
+- The PR prompt forbids claims that a PR is safe, correct, or mergeable
+  without evidence, and forces the model to list `missingContext`.
+- The changelog prompt forbids inventing changes that are not present in the
+  approved summaries and forces uncertain items into `knownLimitations` or
+  `missingContext`.
+- Drafts are always labeled "AI draft". No auto-posting to GitHub.
