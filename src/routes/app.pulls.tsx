@@ -67,6 +67,11 @@ function PullsPage() {
   const listFn = useServerFn(listPrSummariesForRepo);
   const summarizeFn = useServerFn(summarizePullRequest);
   const updateFn = useServerFn(updatePrSummaryDraft);
+  const permsFn = useServerFn(getGithubWritePermissions);
+  const publishFn = useServerFn(publishPrSummary);
+  const listEventsFn = useServerFn(listPublishEventsForSource);
+
+  const permsQ = useQuery({ queryKey: ["github-perms"], queryFn: () => permsFn() });
 
   const pullsQ = useQuery({
     queryKey: ["pulls", selected?.id],
