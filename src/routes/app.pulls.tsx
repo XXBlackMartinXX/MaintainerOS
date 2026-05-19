@@ -516,9 +516,48 @@ function SummaryPanel({
               <Copy className="size-3.5" /> Copy release note
             </Button>
           </div>
+
+          <div className="pt-2 border-t border-border space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Publish to GitHub</div>
+              {event && <PublishStatusBadge status="success" />}
+            </div>
+            {!isApproved && <p className="text-xs text-muted-foreground">Approve or edit this summary to enable publishing.</p>}
+            {isApproved && perms && !perms.canCommentPulls && (
+              <GitHubPermissionWarning missing="post PR comments" hasToken={perms.hasToken} />
+            )}
+            {event && (
+              <AlreadyPublishedNotice
+                event={event}
+                republishLabel="Post summary again"
+                onRepublish={() => { setRepost(true); setDialogOpen(true); }}
+              />
+            )}
+            <Button
+              size="sm"
+              disabled={!canPost}
+              onClick={() => { setRepost(!!event); setDialogOpen(true); }}
+            >
+              <Send className="size-3.5" /> {event ? "Post summary again to GitHub PR" : "Post summary to GitHub PR"}
+            </Button>
+          </div>
+
           <p className="text-[11px] text-muted-foreground">
-            AI drafts are advisory. Nothing is posted to GitHub automatically.
+            AI drafts are advisory. Nothing is posted to GitHub without your explicit confirmation.
           </p>
+
+          <PublishConfirmDialog
+            open={dialogOpen}
+            onOpenChange={(v) => { setDialogOpen(v); if (!v) setRepost(false); }}
+            kind="pr_comment"
+            previousUrl={repost ? event?.github_url : null}
+            preview={<pre className="whitespace-pre-wrap font-mono text-xs">{previewMd}</pre>}
+            onConfirm={async () => {
+              const res = await publish(repost);
+              await eventsQ.refetch();
+              return res;
+            }}
+          />
         </div>
       </aside>
     </div>
