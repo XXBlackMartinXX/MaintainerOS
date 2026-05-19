@@ -421,9 +421,7 @@ function SummaryPanel({
     action?: "approve" | "edit" | "reject" | "copy";
   }) => Promise<void>;
   perms?: { hasToken: boolean; canCommentPulls: boolean; scopes: string[] };
-  publish: (
-    allowRepost: boolean,
-  ) => Promise<{
+  publish: (allowRepost: boolean) => Promise<{
     ok: boolean;
     githubUrl?: string | null;
     alreadyPosted?: boolean;
