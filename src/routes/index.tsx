@@ -87,7 +87,7 @@ function SiteHeader() {
             size="sm"
             className="text-muted-foreground hover:text-foreground"
           >
-            <a href="https://github.com" target="_blank" rel="noreferrer">
+            <a href={PROJECT_META.repoUrl} target="_blank" rel="noreferrer">
               <Github className="size-4" /> Star on GitHub
             </a>
           </Button>
@@ -432,7 +432,7 @@ function CTASection() {
             </Link>
           </Button>
           <Button asChild size="lg" variant="outline">
-            <a href="https://github.com" target="_blank" rel="noreferrer">
+            <a href={PROJECT_META.repoUrl} target="_blank" rel="noreferrer">
               <Eye className="size-4" /> View source
             </a>
           </Button>
@@ -455,7 +455,7 @@ function SiteFooter() {
         </div>
         <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
           <a
-            href="https://github.com"
+            href={PROJECT_META.repoUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -463,7 +463,7 @@ function SiteFooter() {
             GitHub repository
           </a>
           <a
-            href="https://github.com"
+            href={PROJECT_META.repoUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -474,7 +474,7 @@ function SiteFooter() {
             Trust Center
           </Link>
           <a
-            href="https://github.com"
+            href={PROJECT_META.repoUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -482,7 +482,7 @@ function SiteFooter() {
             Security
           </a>
           <a
-            href="https://github.com"
+            href={PROJECT_META.repoUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -490,7 +490,7 @@ function SiteFooter() {
             Code of Conduct
           </a>
           <a
-            href="https://github.com"
+            href={PROJECT_META.repoUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
