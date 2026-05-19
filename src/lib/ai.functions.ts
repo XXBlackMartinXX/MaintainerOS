@@ -20,7 +20,8 @@ async function logAudit(userId: string, action: string, targetId: string | null,
     action,
     target_type: "issue_triage",
     target_id: targetId,
-    metadata,
+    // Cast to satisfy generated Json type
+    metadata: metadata as never,
   });
 }
 
