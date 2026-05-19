@@ -49,11 +49,18 @@ export function useConnectedRepos() {
   const [hasSession, setHasSession] = useState<boolean | null>(null);
 
   useEffect(() => {
+    const sb = getSupabase();
+    if (!sb) {
+      setHasSession(false);
+      return;
+    }
     let active = true;
-    supabase.auth.getSession().then(({ data }) => {
+    sb.auth.getSession().then(({ data }) => {
       if (active) setHasSession(!!data.session);
+    }).catch(() => {
+      if (active) setHasSession(false);
     });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+    const { data: sub } = sb.auth.onAuthStateChange((_e, session) => {
       setHasSession(!!session);
     });
     return () => {
