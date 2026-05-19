@@ -50,6 +50,7 @@ type DraftRow = {
 
 function DocsPage() {
   const { selected, isLoading: repoLoading, hasConnectedRepo } = useSelectedRepo();
+  const hasSession = useHasSession();
   const [docType, setDocType] = useState<DocType>("readme_suggestions");
   const [activeDraftId, setActiveDraftId] = useState<string | null>(null);
   const [editedBody, setEditedBody] = useState<string>("");
