@@ -342,3 +342,49 @@ A future slice will add an opt-in PR workflow that opens a real pull request
 against the repo with generated docs. Until then, the manual copy workflow
 above is the only supported path.
 
+
+## Demo mode
+
+Demo mode lets visitors explore every screen with clearly fictional sample
+data. It is enabled from the landing-page "Try demo" button or from Settings.
+While active, a global banner is shown, every AI output is labeled
+**Demo AI output**, and all publish and sync buttons are disabled. See
+[docs/DEMO_MODE.md](./docs/DEMO_MODE.md).
+
+## Quality checks
+
+```bash
+bun run lint        # ESLint
+bun run typecheck   # TypeScript (no emit)
+bun run build       # production build
+```
+
+See [docs/LOCAL_DEVELOPMENT.md](./docs/LOCAL_DEVELOPMENT.md) for the smoke-test
+checklist and troubleshooting tips.
+
+## Documentation
+
+- [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
+- [docs/SECURITY_MODEL.md](./docs/SECURITY_MODEL.md)
+- [docs/AI_SAFETY.md](./docs/AI_SAFETY.md)
+- [docs/DEMO_MODE.md](./docs/DEMO_MODE.md)
+- [docs/ROADMAP.md](./docs/ROADMAP.md)
+- [docs/LOCAL_DEVELOPMENT.md](./docs/LOCAL_DEVELOPMENT.md)
+- [CONTRIBUTING.md](./CONTRIBUTING.md)
+- [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
+- [SECURITY.md](./SECURITY.md)
+
+## Contributing
+
+Issues and pull requests are welcome. Please follow the issue templates and
+the PR template. By contributing you agree to the Code of Conduct.
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
+
+## Honesty disclaimer
+
+MaintainerOS does not claim production adoption, downloads, stars, paying
+users, or specific maintainer endorsements. Pricing tiers labeled
+"Coming soon" are placeholders.
