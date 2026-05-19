@@ -111,6 +111,51 @@ export type Database = {
           },
         ]
       }
+      github_publish_events: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          github_response_metadata: Json
+          github_url: string | null
+          id: string
+          repository_id: string
+          source_id: string | null
+          source_type: string
+          status: string
+          target_id: string | null
+          target_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          github_response_metadata?: Json
+          github_url?: string | null
+          id?: string
+          repository_id: string
+          source_id?: string | null
+          source_type: string
+          status: string
+          target_id?: string | null
+          target_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          github_response_metadata?: Json
+          github_url?: string | null
+          id?: string
+          repository_id?: string
+          source_id?: string | null
+          source_type?: string
+          status?: string
+          target_id?: string | null
+          target_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       issue_triage_results: {
         Row: {
           approval_status: string

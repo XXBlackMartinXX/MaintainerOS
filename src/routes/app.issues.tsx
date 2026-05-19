@@ -6,7 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import {
   Search, MessageSquare, Loader2, Sparkles, X, Copy, Check, XCircle,
-  AlertTriangle, Pencil,
+  AlertTriangle, Pencil, Send, Tag, ExternalLink,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui-bits";
 import { RepoSelector } from "@/components/repo-selector";
@@ -16,6 +16,13 @@ import { EmptyRepositoryState, EmptySyncedDataState } from "@/components/empty-s
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
 import { fetchIssues } from "@/lib/github.functions";
 import { triageIssue, listTriageForRepo, updateTriageDraft, getAiStatus } from "@/lib/ai.functions";
+import {
+  publishIssueComment,
+  publishIssueLabels,
+  getGithubWritePermissions,
+  listPublishEventsForSource,
+} from "@/lib/github-publish.functions";
+import { PublishConfirmDialog } from "@/components/publish-confirm-dialog";
 import type { TriageResult } from "@/lib/ai/schemas";
 
 export const Route = createFileRoute("/app/issues")({ component: IssuesPage });
@@ -62,10 +69,19 @@ function IssuesPage() {
   const triageFn = useServerFn(triageIssue);
   const updateTriageFn = useServerFn(updateTriageDraft);
   const aiStatusFn = useServerFn(getAiStatus);
+  const permsFn = useServerFn(getGithubWritePermissions);
+  const publishCommentFn = useServerFn(publishIssueComment);
+  const publishLabelsFn = useServerFn(publishIssueLabels);
+  const listEventsFn = useServerFn(listPublishEventsForSource);
 
   const aiStatusQ = useQuery({
     queryKey: ["ai-status"],
     queryFn: () => aiStatusFn(),
+  });
+
+  const permsQ = useQuery({
+    queryKey: ["github-perms"],
+    queryFn: () => permsFn(),
   });
 
   const issuesQ = useQuery({
