@@ -111,6 +111,48 @@ export type Database = {
           },
         ]
       }
+      documentation_drafts: {
+        Row: {
+          approval_status: string
+          body_markdown: string
+          created_at: string
+          doc_type: string
+          id: string
+          model: string | null
+          repository_id: string
+          structured_result: Json
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_status?: string
+          body_markdown?: string
+          created_at?: string
+          doc_type: string
+          id?: string
+          model?: string | null
+          repository_id: string
+          structured_result?: Json
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_status?: string
+          body_markdown?: string
+          created_at?: string
+          doc_type?: string
+          id?: string
+          model?: string | null
+          repository_id?: string
+          structured_result?: Json
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       github_publish_events: {
         Row: {
           created_at: string

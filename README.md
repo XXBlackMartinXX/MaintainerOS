@@ -264,3 +264,65 @@ credentials are never written to either table.
 | "No approved draft to publish" | The draft is still `pending` or was `rejected`. Approve or edit it first. |
 | "Release tag already exists" (HTTP 422) | GitHub rejected the release because the tag is in use. Change the version on the changelog draft before creating the release. |
 
+
+## Documentation Generator (Slice 7)
+
+The Documentation Generator drafts the files every healthy open-source project
+needs, using live repository metadata, synced contributors/labels, and approved
+PR summaries as input.
+
+Supported doc types: README improvement suggestions, CONTRIBUTING.md,
+SECURITY.md, CODE_OF_CONDUCT.md, GitHub issue template, GitHub pull request
+template, maintainer guide, release process guide, new contributor onboarding.
+
+### Workflow
+1. Open **Documentation** and pick a doc type.
+2. Click **Generate draft**. Lovable AI Gateway (server-side only) produces an
+   editable Markdown draft, confidence score, missing-context list, safety
+   notes, and a source-data summary.
+3. Edit the title and body inline. Save → marks the draft as `edited`.
+4. Approve or Reject. All actions are logged in the AI Action Log.
+5. **Copy Markdown** and paste into your repo. MaintainerOS does **not** commit
+   docs to GitHub in this slice — buttons labelled
+   *"Create PR with this doc — coming soon"* and *"Commit file to GitHub — coming soon"*
+   are placeholders for the future workflow.
+
+If `LOVABLE_API_KEY` is missing, generation is disabled and the page shows
+setup instructions.
+
+## Security Readiness Dashboard
+
+The **Security** page is a practical readiness review, not a vulnerability
+scanner. Each signal uses cautious badges: *Looks ready*, *Review recommended*,
+*Missing data*, *Not configured*. We never claim a project is "secure" or
+"insecure" — those words require evidence MaintainerOS does not have.
+
+Signals: SECURITY.md draft presence, dependency metadata availability, release
+cadence, stale critical issues, open security-labeled issues, responsible
+disclosure guidance, code-owner guidance, public write-action safety, AI
+publishing safety, recent sync freshness.
+
+### Limitations
+- Repository file contents (SECURITY.md, CODEOWNERS, dependency manifests) are
+  **not** read in this slice — those checks show *Missing data* until you
+  generate a draft or wire up file inspection.
+- No CVE database lookup. No supply-chain analysis.
+- The optional AI security guidance is a copy-only draft. Nothing is published.
+
+## Open-source Readiness Checklist
+
+The **Readiness** page shows a completion percentage across the basics:
+README, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, issue template, PR template,
+release process, repo sync, AI audit logging, GitHub-write gating, demo-data
+labeling. Each item links to the next recommended action.
+
+Items backed by live sync data are tagged **verified live**. Items satisfied by
+an AI draft are tagged **draft available** — they still require manual editing
+and committing.
+
+## Future GitHub PR workflow
+
+A future slice will add an opt-in PR workflow that opens a real pull request
+against the repo with generated docs. Until then, the manual copy workflow
+above is the only supported path.
+
