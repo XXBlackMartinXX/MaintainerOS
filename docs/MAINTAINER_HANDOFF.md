@@ -93,7 +93,7 @@ See `.env.example` for the canonical list.
 ## Where to change project URLs
 
 All public URLs live in **`src/lib/project-meta.ts`**. Replace the
-`TODO_PUBLIC_REPO_URL` and `TODO_PUBLIC_DEMO_URL` placeholders. Footer
+`https://github.com/XXBlackMartinXX/MaintainerOS` and `TODO_PUBLIC_DEMO_URL` placeholders. Footer
 links, settings, Trust Center, and launch copy all read from this file.
 
 ## Pre-publication checklist
