@@ -69,6 +69,10 @@ function IssuesPage() {
   const triageFn = useServerFn(triageIssue);
   const updateTriageFn = useServerFn(updateTriageDraft);
   const aiStatusFn = useServerFn(getAiStatus);
+  const permsFn = useServerFn(getGithubWritePermissions);
+  const publishCommentFn = useServerFn(publishIssueComment);
+  const publishLabelsFn = useServerFn(publishIssueLabels);
+  const listEventsFn = useServerFn(listPublishEventsForSource);
 
   const aiStatusQ = useQuery({
     queryKey: ["ai-status"],
@@ -77,7 +81,7 @@ function IssuesPage() {
 
   const permsQ = useQuery({
     queryKey: ["github-perms"],
-    queryFn: () => useServerFn(getGithubWritePermissions)(),
+    queryFn: () => permsFn(),
   });
 
   const issuesQ = useQuery({
