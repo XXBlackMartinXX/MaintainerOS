@@ -75,6 +75,11 @@ function IssuesPage() {
     queryFn: () => aiStatusFn(),
   });
 
+  const permsQ = useQuery({
+    queryKey: ["github-perms"],
+    queryFn: () => useServerFn(getGithubWritePermissions)(),
+  });
+
   const issuesQ = useQuery({
     queryKey: ["issues", selected?.id],
     queryFn: () => fetchIssuesFn({ data: { repository_id: selected!.id } }),
