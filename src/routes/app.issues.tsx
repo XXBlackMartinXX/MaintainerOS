@@ -6,7 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import {
   Search, MessageSquare, Loader2, Sparkles, X, Copy, Check, XCircle,
-  AlertTriangle, Pencil,
+  AlertTriangle, Pencil, Send, Tag, ExternalLink,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui-bits";
 import { RepoSelector } from "@/components/repo-selector";
