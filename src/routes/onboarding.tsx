@@ -19,8 +19,43 @@ export const Route = createFileRoute("/onboarding")({
 const STEPS = ["Connect GitHub", "Choose repositories", "Enable AI features", "Maintainer preferences"];
 
 function Onboarding() {
+  const navigate = useNavigate();
   const [step, setStep] = useState(0);
+  const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [connecting, setConnecting] = useState(false);
+  const listRepos = useServerFn(listGithubRepos);
+  const connect = useServerFn(connectRepositories);
+  const reposQuery = useQuery({
+    queryKey: ["github-repos"],
+    queryFn: () => listRepos(),
+    enabled: step >= 1,
+    staleTime: 60_000,
+  });
   const isLast = step === STEPS.length - 1;
+
+  const toggle = (id: number) =>
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
+  const finish = async () => {
+    if (selected.size === 0) {
+      toast.error("Pick at least one repository");
+      return;
+    }
+    setConnecting(true);
+    try {
+      await connect({ data: { github_ids: Array.from(selected) } });
+      toast.success("Repositories connected");
+      navigate({ to: "/app" });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to connect");
+      setConnecting(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-background grid-bg">
       <div className="max-w-2xl mx-auto px-4 py-16">
