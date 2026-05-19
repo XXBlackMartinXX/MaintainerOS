@@ -510,6 +510,27 @@ export const listPublishEventsForSource = createServerFn({ method: "GET" })
     return { events: rows ?? [] };
   });
 
+export const getPublishEventForAudit = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) =>
+    z.object({
+      source_type: z.enum(["issue_triage", "pr_summary", "release_draft"]),
+      source_id: z.string().uuid(),
+    }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { data: row, error } = await context.supabase
+      .from("github_publish_events")
+      .select("id, status, source_type, source_id, target_type, target_id, github_url, error_message, github_response_metadata, repository_id, user_id, created_at")
+      .eq("source_type", data.source_type)
+      .eq("source_id", data.source_id)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return { event: row ?? null };
+  });
+
 export const listPublishEventsForRepo = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
