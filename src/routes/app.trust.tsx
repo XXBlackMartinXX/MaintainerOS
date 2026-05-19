@@ -85,10 +85,10 @@ function TrustPage() {
           </ul>
         </Card>
 
-        <Card icon={Sparkles} title="How AI Gateway is used">
+        <Card icon={Sparkles} title="How the AI gateway is used">
           <p>
-            All AI calls run server-side through Lovable AI Gateway. No AI provider keys are exposed
-            to the browser.
+            All AI calls run server-side through a managed AI gateway. No AI provider keys are
+            exposed to the browser.
           </p>
           <ul className="list-disc pl-5 space-y-1">
             <li>Prompts include only the relevant issue / PR / repo context.</li>
