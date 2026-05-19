@@ -15,12 +15,11 @@ is posted to GitHub without your explicit approval.
 
 ## Screenshots
 
-Screenshot placeholders — replace before publishing publicly:
-
-- `docs/screenshots/dashboard.png`
-- `docs/screenshots/issue-triage.png`
-- `docs/screenshots/pr-summaries.png`
-- `docs/screenshots/audit-log.png`
+> **TODO** — screenshots have not been captured yet. See
+> [`docs/screenshots/README.md`](docs/screenshots/README.md) for the full
+> capture list (landing, dashboard, issue triage, PR summary, changelog,
+> docs generator, trust center, readiness, audit log). Do not link to
+> non-existent files until the captures land.
 
 ## Implemented today
 
