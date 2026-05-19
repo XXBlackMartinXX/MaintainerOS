@@ -350,10 +350,21 @@ function IssuesPage() {
           onAnalyze={() => runTriage(selectedIssue.id, !!selectedTriage)}
           analyzing={analyzing.has(selectedIssue.id)}
           aiConfigured={aiConfigured}
+          perms={permsQ.data}
+          repoLabels={(repoLabelsQ.data?.labels ?? []).map((l) => l.name)}
           onUpdate={async (payload) => {
             await updateTriageFn({ data: payload });
             await qc.invalidateQueries({ queryKey: ["triage", selected?.id] });
           }}
+          publishComment={async (triageId, allowRepost) =>
+            publishCommentFn({ data: { triage_id: triageId, confirm: true, allow_repost: allowRepost } })
+          }
+          publishLabels={async (triageId, labels) =>
+            publishLabelsFn({ data: { triage_id: triageId, labels, confirm: true } })
+          }
+          listEvents={(sourceId) =>
+            listEventsFn({ data: { source_type: "issue_triage", source_id: sourceId } })
+          }
         />
       )}
     </div>
