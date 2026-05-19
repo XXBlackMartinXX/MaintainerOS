@@ -111,6 +111,12 @@ checklist. Demo mode at `/demo` continues to work even without these vars.
 
 ## Production setup
 
+For the full step-by-step walkthrough, see
+[`docs/PRODUCTION_AUTH_SETUP.md`](docs/PRODUCTION_AUTH_SETUP.md) or visit
+`/setup` in the deployed app for a live configuration checklist.
+
+
+
 1. Create a Supabase project.
 2. Copy the Project URL into `VITE_SUPABASE_URL` (and `SUPABASE_URL` if your
    host does not auto-inject the server copy).
