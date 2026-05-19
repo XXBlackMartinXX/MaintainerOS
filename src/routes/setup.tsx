@@ -94,10 +94,21 @@ function SetupPage() {
   }, []);
 
   const appOrigin = typeof window !== "undefined" ? window.location.origin : "";
-  const projectRef = server?.supabaseProjectRef;
+
+  // Derive project ref from either the server config OR the client-visible
+  // VITE_SUPABASE_URL — whichever resolves first.
+  let derivedRef: string | null = server?.supabaseProjectRef ?? null;
+  if (!derivedRef && clientEnv.supabaseUrl) {
+    try {
+      derivedRef = new URL(clientEnv.supabaseUrl).host.split(".")[0] || null;
+    } catch {
+      derivedRef = null;
+    }
+  }
+  const projectRef = derivedRef;
   const expectedCallback = projectRef
     ? `https://${projectRef}.supabase.co/auth/v1/callback`
-    : "https://<your-supabase-project-ref>.supabase.co/auth/v1/callback";
+    : "https://YOUR_SUPABASE_PROJECT_REF.supabase.co/auth/v1/callback";
 
   const clientRows: Row[] = [
     {
