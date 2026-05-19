@@ -89,6 +89,11 @@ function SiteHeader() {
 }
 
 function Hero() {
+  const navigate = useNavigate();
+  const tryDemo = () => {
+    enableDemoMode();
+    navigate({ to: "/app" });
+  };
   return (
     <section className="relative overflow-hidden">
       <div
@@ -110,18 +115,16 @@ function Hero() {
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Button asChild size="lg" className="shadow-[var(--shadow-glow)]">
-            <Link to="/app">
+            <Link to="/login">
               <Github className="size-4" /> Connect GitHub
             </Link>
           </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link to="/app">
-              View demo <ArrowRight className="size-4" />
-            </Link>
+          <Button size="lg" variant="outline" onClick={tryDemo}>
+            <PlayCircle className="size-4" /> Try demo
           </Button>
         </div>
         <p className="mt-4 text-xs text-muted-foreground">
-          The live demo uses clearly-labeled sample data. No real GitHub account is required.
+          Demo mode uses clearly-labeled sample data and never calls GitHub or AI providers.
         </p>
 
         <HeroPreview />
