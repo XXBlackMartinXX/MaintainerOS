@@ -4,13 +4,16 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
 import { Github, Check, Sparkles, ArrowRight, Loader2, Star, GitFork } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase } from "@/integrations/supabase/safe-client";
 import { listGithubRepos, connectRepositories } from "@/lib/github.functions";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/onboarding")({
   beforeLoad: async () => {
-    const { data } = await supabase.auth.getSession();
+    if (typeof window === "undefined") return;
+    const sb = getSupabase();
+    if (!sb) throw redirect({ to: "/login" });
+    const { data } = await sb.auth.getSession();
     if (!data.session) throw redirect({ to: "/login" });
   },
   component: Onboarding,

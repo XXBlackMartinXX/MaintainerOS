@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Sparkles, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase } from "@/integrations/supabase/safe-client";
 import { useServerFn } from "@tanstack/react-start";
 import { persistGithubToken, getOnboardingStatus } from "@/lib/github.functions";
 import { toast } from "sonner";
@@ -22,11 +22,17 @@ function AuthCallback() {
     ran.current = true;
     (async () => {
       try {
+        const sb = getSupabase();
+        if (!sb) {
+          toast.error("Backend not configured.");
+          navigate({ to: "/login" });
+          return;
+        }
         // Wait for session — Supabase JS auto-parses the URL hash.
-        let session = (await supabase.auth.getSession()).data.session;
+        let session = (await sb.auth.getSession()).data.session;
         if (!session) {
           await new Promise((r) => setTimeout(r, 400));
-          session = (await supabase.auth.getSession()).data.session;
+          session = (await sb.auth.getSession()).data.session;
         }
         if (!session) {
           toast.error("Could not establish a session. Please try again.");

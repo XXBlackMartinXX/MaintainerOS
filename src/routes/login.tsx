@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Github, Sparkles, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase, isSupabaseConfigured } from "@/integrations/supabase/safe-client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
@@ -15,16 +15,24 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const configured = isSupabaseConfigured();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
+    const sb = getSupabase();
+    if (!sb) return;
+    sb.auth.getSession().then(({ data }) => {
       if (data.session) navigate({ to: "/app" });
-    });
+    }).catch(() => {});
   }, [navigate]);
 
   const signInWithGitHub = async () => {
+    const sb = getSupabase();
+    if (!sb) {
+      toast.error("Sign-in is unavailable: the backend is not configured.");
+      return;
+    }
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error } = await sb.auth.signInWithOAuth({
       provider: "github",
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
@@ -50,7 +58,20 @@ function LoginPage() {
         <p className="mt-2 text-sm text-muted-foreground">
           Connect your GitHub account to read your repositories.
         </p>
-        <Button size="lg" className="mt-6 w-full" onClick={signInWithGitHub} disabled={loading}>
+        {!configured && (
+          <div className="mt-4 rounded-md border border-warning/30 bg-warning/10 p-3 text-left text-xs text-warning">
+            <p className="font-medium">Backend not configured</p>
+            <p className="mt-1 text-warning/80">
+              Sign-in is unavailable because the deployment is missing Supabase
+              environment variables. Set <code>VITE_SUPABASE_URL</code> and
+              <code> VITE_SUPABASE_ANON_KEY</code> (or{" "}
+              <code>SUPABASE_URL</code> + <code>SUPABASE_PUBLISHABLE_KEY</code>)
+              and redeploy. Demo mode still works — try{" "}
+              <Link to="/demo" className="underline">/demo</Link>.
+            </p>
+          </div>
+        )}
+        <Button size="lg" className="mt-6 w-full" onClick={signInWithGitHub} disabled={loading || !configured}>
           <Github className="size-4" /> {loading ? "Redirecting…" : "Continue with GitHub"}
         </Button>
         <p className="mt-4 inline-flex items-center gap-1.5 text-[11px] text-muted-foreground">

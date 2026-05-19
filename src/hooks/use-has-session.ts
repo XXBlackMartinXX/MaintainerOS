@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase } from "@/integrations/supabase/safe-client";
 
 /**
  * Returns whether a Supabase session is available.
  * - `null` while the initial check is in flight.
+ * - `false` if Supabase is not configured (demo-mode visitors land here).
  * - `true`/`false` once known. Updates on auth state changes.
- *
- * Use to gate calls to auth-protected server functions so unauthenticated
- * visitors (including demo-mode visitors) don't trigger 401 errors.
  */
 export function useHasSession(): boolean | null {
   const [hasSession, setHasSession] = useState<boolean | null>(null);
 
   useEffect(() => {
+    const sb = getSupabase();
+    if (!sb) {
+      setHasSession(false);
+      return;
+    }
     let active = true;
-    supabase.auth
+    sb.auth
       .getSession()
       .then(({ data }) => {
         if (active) setHasSession(!!data.session);
@@ -22,7 +25,7 @@ export function useHasSession(): boolean | null {
       .catch(() => {
         if (active) setHasSession(false);
       });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+    const { data: sub } = sb.auth.onAuthStateChange((_e, session) => {
       setHasSession(!!session);
     });
     return () => {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase } from "@/integrations/supabase/safe-client";
 
 export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);
@@ -8,15 +8,20 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
+    const sb = getSupabase();
+    if (!sb) {
+      setLoading(false);
+      return;
+    }
+    const { data: sub } = sb.auth.onAuthStateChange((_event, s) => {
       setSession(s);
       setUser(s?.user ?? null);
     });
-    supabase.auth.getSession().then(({ data }) => {
+    sb.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setUser(data.session?.user ?? null);
       setLoading(false);
-    });
+    }).catch(() => setLoading(false));
     return () => sub.subscription.unsubscribe();
   }, []);
 
@@ -25,6 +30,9 @@ export function useAuth() {
     user,
     loading,
     isAuthenticated: !!user,
-    signOut: () => supabase.auth.signOut(),
+    signOut: () => {
+      const sb = getSupabase();
+      return sb ? sb.auth.signOut() : Promise.resolve({ error: null } as never);
+    },
   };
 }

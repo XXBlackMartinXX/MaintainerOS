@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { listConnectedRepos } from "@/lib/github.functions";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase } from "@/integrations/supabase/safe-client";
 
 
 const STORAGE_KEY = "maintainer-os.selected-repo-id";
@@ -49,11 +49,18 @@ export function useConnectedRepos() {
   const [hasSession, setHasSession] = useState<boolean | null>(null);
 
   useEffect(() => {
+    const sb = getSupabase();
+    if (!sb) {
+      setHasSession(false);
+      return;
+    }
     let active = true;
-    supabase.auth.getSession().then(({ data }) => {
+    sb.auth.getSession().then(({ data }) => {
       if (active) setHasSession(!!data.session);
+    }).catch(() => {
+      if (active) setHasSession(false);
     });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+    const { data: sub } = sb.auth.onAuthStateChange((_e, session) => {
       setHasSession(!!session);
     });
     return () => {
