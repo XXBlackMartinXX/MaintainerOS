@@ -34,37 +34,8 @@ function NotFoundComponent() {
 }
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+  console.error(error);
   const router = useRouter();
-  const pathname =
-    typeof window !== "undefined" ? window.location.pathname : "(server)";
-
-  // Safe log: message + route only, never tokens/secrets.
-  console.error(`[route-error] ${pathname}:`, error?.message ?? error);
-
-  const resetDemoMode = () => {
-    try {
-      window.localStorage.removeItem("mos.demoMode");
-    } catch {
-      /* ignore */
-    }
-    window.location.assign("/");
-  };
-
-  const clearLocalState = () => {
-    try {
-      const keep = new Set<string>();
-      const toRemove: string[] = [];
-      for (let i = 0; i < window.localStorage.length; i++) {
-        const k = window.localStorage.key(i);
-        if (k && k.startsWith("maintainer-os.") && !keep.has(k)) toRemove.push(k);
-        if (k === "mos.demoMode") toRemove.push(k);
-      }
-      toRemove.forEach((k) => window.localStorage.removeItem(k));
-    } catch {
-      /* ignore */
-    }
-    window.location.assign("/");
-  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -73,14 +44,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           This page didn't load
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong while rendering{" "}
-          <code className="rounded bg-muted px-1 py-0.5 text-xs">{pathname}</code>.
+          Something went wrong on our end. You can try refreshing or head back home.
         </p>
-        {error?.message && (
-          <p className="mt-2 text-xs text-muted-foreground/80 break-words">
-            {error.message}
-          </p>
-        )}
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -97,24 +62,6 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           >
             Go home
           </a>
-          <a
-            href="/demo"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Demo dashboard
-          </a>
-          <button
-            onClick={resetDemoMode}
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Reset demo mode
-          </button>
-          <button
-            onClick={clearLocalState}
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Clear local app state
-          </button>
         </div>
       </div>
     </div>
@@ -144,6 +91,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "MaintainerOS — AI operations center for open-source maintainers" },
+      { name: "twitter:title", content: "MaintainerOS — AI operations center for open-source maintainers" },
+      { name: "description", content: "An AI operations center for open-source maintainers, streamlining issue triage, PR summaries, and more." },
+      { property: "og:description", content: "An AI operations center for open-source maintainers, streamlining issue triage, PR summaries, and more." },
+      { name: "twitter:description", content: "An AI operations center for open-source maintainers, streamlining issue triage, PR summaries, and more." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c2e9a21b-9c3c-47df-922d-7ffbb66bc5f4/id-preview-ad23ef30--00feff26-a896-46df-bf28-ac575d1a7899.lovable.app-1779213400662.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c2e9a21b-9c3c-47df-922d-7ffbb66bc5f4/id-preview-ad23ef30--00feff26-a896-46df-bf28-ac575d1a7899.lovable.app-1779213400662.png" },
     ],
     links: [
       {
