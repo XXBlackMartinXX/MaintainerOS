@@ -29,6 +29,21 @@ import {
   listPrSummariesForRepo,
   updatePrSummaryDraft,
 } from "@/lib/ai-pr.functions";
+import {
+  publishPrSummary,
+  formatPrSummaryComment,
+  getGithubWritePermissions,
+  listPublishEventsForSource,
+} from "@/lib/github-publish.functions";
+import { PublishConfirmDialog } from "@/components/publish-confirm-dialog";
+import {
+  AlreadyPublishedNotice,
+  GitHubPermissionWarning,
+  PublishStatusBadge,
+  getPublishEventForSource,
+  type PublishEvent,
+} from "@/components/publish-helpers";
+import { Send } from "lucide-react";
 
 export const Route = createFileRoute("/app/pulls")({ component: PullsPage });
 
