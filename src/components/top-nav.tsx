@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Bell, Github, Search, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PROJECT_META } from "@/lib/project-meta";
 
 export function TopNav() {
   return (
@@ -17,7 +18,7 @@ export function TopNav() {
         <div className="ml-auto flex items-center gap-2">
           <Button size="sm" variant="ghost" asChild className="hidden sm:inline-flex">
             <a
-              href="https://github.com"
+              href={PROJECT_META.repoUrl}
               target="_blank"
               rel="noreferrer"
               className="text-muted-foreground hover:text-foreground"
