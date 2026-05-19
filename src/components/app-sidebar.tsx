@@ -13,6 +13,7 @@ import {
   History,
   Settings,
   Sparkles,
+  CheckSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +26,7 @@ const nav = [
   { to: "/app/contributors", label: "Contributors", icon: Users },
   { to: "/app/docs", label: "Documentation", icon: BookOpen },
   { to: "/app/security", label: "Security", icon: ShieldAlert },
+  { to: "/app/readiness", label: "Readiness", icon: CheckSquare },
   { to: "/app/moderation", label: "Moderation", icon: ShieldCheck },
   { to: "/app/roadmap", label: "Roadmap", icon: Map },
   { to: "/app/actions", label: "AI Action Log", icon: History },
