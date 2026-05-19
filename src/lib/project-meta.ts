@@ -1,6 +1,5 @@
 /**
- * Central project metadata. Replace https://github.com/XXBlackMartinXX/MaintainerOS placeholders before
- * publishing the public repository. Used by landing page, footer, Trust
+ * Central project metadata. Used by landing page, footer, Trust
  * Center, Settings, and QA Checklist.
  */
 
