@@ -393,6 +393,9 @@ function SummaryPanel({
   summary,
   onClose,
   onUpdate,
+  perms,
+  publish,
+  listEvents,
 }: {
   pr: { id: string; number: number; title: string };
   summary: SummaryRow;
@@ -402,12 +405,33 @@ function SummaryPanel({
     approval_status?: "pending" | "approved" | "edited" | "rejected";
     action?: "approve" | "edit" | "reject" | "copy";
   }) => Promise<void>;
+  perms?: { hasToken: boolean; canCommentPulls: boolean; scopes: string[] };
+  publish: (allowRepost: boolean) => Promise<{ ok: boolean; githubUrl?: string | null; alreadyPosted?: boolean; previousUrl?: string | null }>;
+  listEvents: (id: string) => Promise<{ events: PublishEvent[] }>;
 }) {
   const r = summary.result as Record<string, unknown>;
   const [note, setNote] = useState(summary.release_note_candidate ?? String(r.releaseNoteCandidate ?? ""));
   const [saving, setSaving] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [repost, setRepost] = useState(false);
 
   const arr = (k: string) => (Array.isArray(r[k]) ? (r[k] as string[]) : []);
+
+  const eventsQ = useQuery({
+    queryKey: ["publish-events", "pr_summary", summary.id],
+    queryFn: () => listEvents(summary.id),
+  });
+  const event = getPublishEventForSource(eventsQ.data?.events, "success");
+
+  const isApproved = ["approved", "edited"].includes(summary.approval_status);
+  const previewMd = formatPrSummaryComment({
+    plainEnglishSummary: typeof r.plainEnglishSummary === "string" ? r.plainEnglishSummary : undefined,
+    suggestedReviewFocus: arr("suggestedReviewFocus"),
+    testingNotes: arr("testingNotes"),
+    securityNotes: arr("securityNotes"),
+    missingContext: arr("missingContext"),
+  });
+  const canPost = isApproved && !!perms?.canCommentPulls && previewMd.trim().length > 0;
 
   async function act(action: "approve" | "edit" | "reject" | "copy", status?: "approved" | "edited" | "rejected") {
     setSaving(true);
