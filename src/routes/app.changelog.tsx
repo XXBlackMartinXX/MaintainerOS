@@ -82,6 +82,14 @@ function ChangelogPage() {
 
   const active = useMemo(() => drafts.find((d) => d.id === activeId) ?? null, [drafts, activeId]);
 
+  const eventsQ = useQuery({
+    queryKey: ["publish-events", "release_draft", active?.id],
+    queryFn: () => listEventsFn({ data: { source_type: "release_draft", source_id: active!.id } }),
+    enabled: !!active?.id,
+  });
+  const event = getPublishEventForSource(eventsQ.data?.events, "success");
+  const canPublish = !!active && active.status === "approved" && !!permsQ.data?.canCreateReleases && !!body && !!version;
+
   useEffect(() => {
     if (active) {
       setVersion(active.version || version);
