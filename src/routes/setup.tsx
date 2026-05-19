@@ -1,9 +1,34 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { CheckCircle2, XCircle, Sparkles, ExternalLink, Loader2 } from "lucide-react";
+import { CheckCircle2, XCircle, Sparkles, ExternalLink, Loader2, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { clientEnv, clientFeatures } from "@/lib/env";
 import { getServerConfigStatus, type ServerConfigStatus } from "@/lib/setup.functions";
+import { toast } from "sonner";
+
+function CopyField({ value, label }: { value: string; label?: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      type="button"
+      onClick={async () => {
+        try {
+          await navigator.clipboard.writeText(value);
+          setCopied(true);
+          toast.success(`${label ?? "Value"} copied`);
+          setTimeout(() => setCopied(false), 1500);
+        } catch {
+          toast.error("Copy failed");
+        }
+      }}
+      className="inline-flex w-full items-center gap-2 rounded bg-muted px-2 py-1 text-left text-xs hover:bg-muted/70"
+      aria-label={`Copy ${label ?? "value"}`}
+    >
+      <code className="flex-1 truncate">{value}</code>
+      {copied ? <Check className="size-3 flex-none text-success" /> : <Copy className="size-3 flex-none text-muted-foreground" />}
+    </button>
+  );
+}
 
 export const Route = createFileRoute("/setup")({
   component: SetupPage,
@@ -69,10 +94,21 @@ function SetupPage() {
   }, []);
 
   const appOrigin = typeof window !== "undefined" ? window.location.origin : "";
-  const projectRef = server?.supabaseProjectRef;
+
+  // Derive project ref from either the server config OR the client-visible
+  // VITE_SUPABASE_URL — whichever resolves first.
+  let derivedRef: string | null = server?.supabaseProjectRef ?? null;
+  if (!derivedRef && clientEnv.supabaseUrl) {
+    try {
+      derivedRef = new URL(clientEnv.supabaseUrl).host.split(".")[0] || null;
+    } catch {
+      derivedRef = null;
+    }
+  }
+  const projectRef = derivedRef;
   const expectedCallback = projectRef
     ? `https://${projectRef}.supabase.co/auth/v1/callback`
-    : "https://<your-supabase-project-ref>.supabase.co/auth/v1/callback";
+    : "https://YOUR_SUPABASE_PROJECT_REF.supabase.co/auth/v1/callback";
 
   const clientRows: Row[] = [
     {
@@ -223,37 +259,43 @@ function SetupPage() {
             </a>
             .
           </p>
-          <dl className="mt-3 grid gap-2 text-xs">
+          <dl className="mt-3 grid gap-3 text-xs">
             <div>
-              <dt className="text-muted-foreground">GitHub OAuth App callback URL</dt>
+              <dt className="text-muted-foreground mb-1">GitHub OAuth App — Homepage URL</dt>
               <dd>
-                <code className="rounded bg-muted px-1.5 py-0.5">{expectedCallback}</code>
+                <CopyField value={appOrigin || "https://your-app-domain"} label="Homepage URL" />
               </dd>
             </div>
             <div>
-              <dt className="text-muted-foreground">Supabase Auth redirect URLs (add both)</dt>
+              <dt className="text-muted-foreground mb-1">
+                GitHub OAuth App — Authorization callback URL
+              </dt>
+              <dd>
+                <CopyField value={expectedCallback} label="Callback URL" />
+              </dd>
+            </div>
+            <div>
+              <dt className="text-muted-foreground mb-1">
+                Supabase Auth — Redirect URLs (add both)
+              </dt>
               <dd className="space-y-1">
-                <div>
-                  <code className="rounded bg-muted px-1.5 py-0.5">
-                    {appOrigin || "https://your-app-domain"}
-                  </code>
-                </div>
-                <div>
-                  <code className="rounded bg-muted px-1.5 py-0.5">
-                    {appOrigin || "https://your-app-domain"}/auth/callback
-                  </code>
-                </div>
+                <CopyField value={appOrigin || "https://your-app-domain"} label="Redirect URL" />
+                <CopyField
+                  value={`${appOrigin || "https://your-app-domain"}/auth/callback`}
+                  label="Redirect URL"
+                />
               </dd>
             </div>
             <div>
-              <dt className="text-muted-foreground">Recommended GitHub scopes</dt>
+              <dt className="text-muted-foreground mb-1">Recommended GitHub scopes</dt>
               <dd>
-                <code className="rounded bg-muted px-1.5 py-0.5">
-                  read:user user:email repo read:org
-                </code>
+                <CopyField value="read:user user:email repo read:org" label="Scopes" />
               </dd>
             </div>
           </dl>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Full walkthrough: <code>docs/PRODUCTION_AUTH_SETUP.md</code>.
+          </p>
           {!projectRef && (
             <p className="mt-2 text-xs text-muted-foreground">
               The exact callback URL is shown in Supabase Auth → Providers → GitHub. Copy it from

@@ -15,9 +15,22 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [oauthError, setOauthError] = useState<string | null>(null);
   const configured = isSupabaseConfigured();
 
   useEffect(() => {
+    // Surface OAuth errors that Supabase appends to the URL hash on failure.
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash.startsWith("#")
+        ? window.location.hash.slice(1)
+        : "";
+      const params = new URLSearchParams(hash);
+      const err = params.get("error_description") || params.get("error");
+      if (err) {
+        setOauthError(decodeURIComponent(err.replace(/\+/g, " ")));
+        history.replaceState(null, "", window.location.pathname);
+      }
+    }
     const sb = getSupabase();
     if (!sb) return;
     sb.auth.getSession().then(({ data }) => {
@@ -71,6 +84,15 @@ function LoginPage() {
               <span aria-hidden>·</span>
               <Link to="/demo" className="underline">Try the demo</Link>
             </div>
+          </div>
+        )}
+        {oauthError && (
+          <div className="mt-4 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-left text-xs text-destructive">
+            <p className="font-medium">Sign-in failed</p>
+            <p className="mt-1 text-destructive/90 break-words">{oauthError}</p>
+            <Link to="/setup" className="mt-2 inline-block underline">
+              Open setup diagnostics
+            </Link>
           </div>
         )}
         {configured && (
