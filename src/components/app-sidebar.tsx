@@ -48,9 +48,7 @@ export function AppSidebar() {
         <div className="size-7 rounded-md bg-primary/15 text-primary grid place-items-center ring-1 ring-primary/30">
           <Sparkles className="size-4" />
         </div>
-        <span className="font-semibold tracking-tight text-sidebar-foreground">
-          MaintainerOS
-        </span>
+        <span className="font-semibold tracking-tight text-sidebar-foreground">MaintainerOS</span>
       </Link>
       <nav className="flex-1 overflow-y-auto p-2 space-y-0.5">
         {nav.map((item) => {
@@ -65,13 +63,15 @@ export function AppSidebar() {
               className={cn(
                 "group flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-sidebar-foreground/80 transition-colors",
                 "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                active && "bg-sidebar-accent text-sidebar-accent-foreground"
+                active && "bg-sidebar-accent text-sidebar-accent-foreground",
               )}
             >
               <Icon
                 className={cn(
                   "size-4 shrink-0 transition-colors",
-                  active ? "text-primary" : "text-sidebar-foreground/60 group-hover:text-sidebar-foreground"
+                  active
+                    ? "text-primary"
+                    : "text-sidebar-foreground/60 group-hover:text-sidebar-foreground",
                 )}
               />
               <span className="truncate">{item.label}</span>

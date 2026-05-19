@@ -28,15 +28,13 @@ export const persistGithubToken = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const userId = context.userId;
-    const { error } = await supabaseAdmin
-      .from("user_github_tokens")
-      .upsert({
-        user_id: userId,
-        access_token: data.access_token,
-        refresh_token: data.refresh_token ?? null,
-        scopes: data.scopes ?? null,
-        updated_at: new Date().toISOString(),
-      });
+    const { error } = await supabaseAdmin.from("user_github_tokens").upsert({
+      user_id: userId,
+      access_token: data.access_token,
+      refresh_token: data.refresh_token ?? null,
+      scopes: data.scopes ?? null,
+      updated_at: new Date().toISOString(),
+    });
     if (error) throw new Error(error.message);
     await supabaseAdmin.from("audit_logs").insert({
       user_id: userId,
@@ -522,10 +520,7 @@ export const getRepoHealthInputs = createServerFn({ method: "GET" })
         .from("contributors")
         .select("login, contributions")
         .eq("repository_id", repoId),
-      context.supabase
-        .from("labels")
-        .select("name")
-        .eq("repository_id", repoId),
+      context.supabase.from("labels").select("name").eq("repository_id", repoId),
       context.supabase
         .from("commits")
         .select("committed_at")

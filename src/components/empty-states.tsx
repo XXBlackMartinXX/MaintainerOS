@@ -16,9 +16,7 @@ export function EmptyRepositoryState({
         <Github className="size-5 text-primary" />
       </div>
       <h3 className="mt-4 font-medium">{title}</h3>
-      <p className="mt-1 text-sm text-muted-foreground max-w-md mx-auto">
-        {description}
-      </p>
+      <p className="mt-1 text-sm text-muted-foreground max-w-md mx-auto">{description}</p>
       <div className="mt-5">
         <Button asChild>
           <Link to="/onboarding">

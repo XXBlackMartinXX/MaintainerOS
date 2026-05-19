@@ -10,11 +10,13 @@ labels: bug
 ## What did you expect to happen
 
 ## Steps to reproduce
+
 1.
 2.
 3.
 
 ## Environment
+
 - MaintainerOS version:
 - Browser / OS:
 

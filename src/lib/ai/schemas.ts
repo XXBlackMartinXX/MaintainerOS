@@ -1,11 +1,21 @@
 import { z } from "zod";
 
-export const issueTypes = ["bug","feature","docs","security","question","maintenance","duplicate","spam","unknown"] as const;
-export const severities = ["low","medium","high","critical","unknown"] as const;
-export const priorities = ["P0","P1","P2","P3","unknown"] as const;
-export const complexities = ["small","medium","large","unknown"] as const;
-export const sentiments = ["positive","neutral","frustrated","hostile","unknown"] as const;
-export const approvalStatuses = ["pending","approved","edited","rejected"] as const;
+export const issueTypes = [
+  "bug",
+  "feature",
+  "docs",
+  "security",
+  "question",
+  "maintenance",
+  "duplicate",
+  "spam",
+  "unknown",
+] as const;
+export const severities = ["low", "medium", "high", "critical", "unknown"] as const;
+export const priorities = ["P0", "P1", "P2", "P3", "unknown"] as const;
+export const complexities = ["small", "medium", "large", "unknown"] as const;
+export const sentiments = ["positive", "neutral", "frustrated", "hostile", "unknown"] as const;
+export const approvalStatuses = ["pending", "approved", "edited", "rejected"] as const;
 
 export const triageResultSchema = z.object({
   issueType: z.enum(issueTypes),
@@ -27,10 +37,28 @@ export const triageResultSchema = z.object({
 export type TriageResult = z.infer<typeof triageResultSchema>;
 
 // ---- PR summary ----
-export const changeTypes = ["feature","fix","docs","refactor","test","chore","security","dependency","unknown"] as const;
-export const riskLevels = ["low","medium","high","unknown"] as const;
-export const changelogCategories = ["Added","Changed","Fixed","Deprecated","Removed","Security","Unknown"] as const;
-export const versionBumps = ["patch","minor","major","unknown"] as const;
+export const changeTypes = [
+  "feature",
+  "fix",
+  "docs",
+  "refactor",
+  "test",
+  "chore",
+  "security",
+  "dependency",
+  "unknown",
+] as const;
+export const riskLevels = ["low", "medium", "high", "unknown"] as const;
+export const changelogCategories = [
+  "Added",
+  "Changed",
+  "Fixed",
+  "Deprecated",
+  "Removed",
+  "Security",
+  "Unknown",
+] as const;
+export const versionBumps = ["patch", "minor", "major", "unknown"] as const;
 
 export const prSummarySchema = z.object({
   plainEnglishSummary: z.string().max(2000),
@@ -74,7 +102,7 @@ export const changelogResultSchema = z.object({
 });
 export type ChangelogResult = z.infer<typeof changelogResultSchema>;
 
-export const releaseDraftStatuses = ["draft","approved","rejected","copied"] as const;
+export const releaseDraftStatuses = ["draft", "approved", "rejected", "copied"] as const;
 
 // ---- Documentation generator ----
 export const documentationResultSchema = z.object({

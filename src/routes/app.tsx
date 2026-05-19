@@ -10,7 +10,11 @@ export const Route = createFileRoute("/app")({
   beforeLoad: async () => {
     const { data } = await supabase.auth.getSession();
     // Allow demo mode visitors without a session
-    if (!data.session && typeof window !== "undefined" && window.localStorage.getItem("mos.demoMode") !== "1") {
+    if (
+      !data.session &&
+      typeof window !== "undefined" &&
+      window.localStorage.getItem("mos.demoMode") !== "1"
+    ) {
       throw redirect({ to: "/login" });
     }
   },

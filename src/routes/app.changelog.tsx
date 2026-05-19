@@ -88,7 +88,12 @@ function ChangelogPage() {
     enabled: !!active?.id,
   });
   const event = getPublishEventForSource(eventsQ.data?.events, "success");
-  const canPublish = !!active && active.status === "approved" && !!permsQ.data?.canCreateReleases && !!body && !!version;
+  const canPublish =
+    !!active &&
+    active.status === "approved" &&
+    !!permsQ.data?.canCreateReleases &&
+    !!body &&
+    !!version;
 
   useEffect(() => {
     if (active) {
@@ -237,9 +242,7 @@ function ChangelogPage() {
                 <AIBadge />
                 <span>Suggested bump:</span>
                 <span className="font-mono text-foreground capitalize">{recommendation}</span>
-                {rationale && (
-                  <span className="text-muted-foreground italic">— {rationale}</span>
-                )}
+                {rationale && <span className="text-muted-foreground italic">— {rationale}</span>}
               </div>
             )}
           </div>
@@ -259,53 +262,76 @@ function ChangelogPage() {
                 >
                   <Save className="size-3.5" /> Save draft
                 </Button>
-                <Button
-                  size="sm"
-                  disabled={!active || saving}
-                  onClick={() => onSave("approve")}
-                >
+                <Button size="sm" disabled={!active || saving} onClick={() => onSave("approve")}>
                   <Check className="size-3.5" /> Approve
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   disabled={!canPublish}
-                  onClick={() => { setRepost(!!event); setPublishOpen(true); }}
+                  onClick={() => {
+                    setRepost(!!event);
+                    setPublishOpen(true);
+                  }}
                 >
-                  <Send className="size-3.5" /> {event ? "Create draft again" : "Create GitHub release draft"}
+                  <Send className="size-3.5" />{" "}
+                  {event ? "Create draft again" : "Create GitHub release draft"}
                 </Button>
                 {event && <PublishStatusBadge status="success" />}
               </div>
             </div>
-            {active && active.status === "approved" && permsQ.data && !permsQ.data.canCreateReleases && (
-              <div className="px-4 pt-3">
-                <GitHubPermissionWarning missing="create releases" hasToken={permsQ.data.hasToken} />
-              </div>
-            )}
+            {active &&
+              active.status === "approved" &&
+              permsQ.data &&
+              !permsQ.data.canCreateReleases && (
+                <div className="px-4 pt-3">
+                  <GitHubPermissionWarning
+                    missing="create releases"
+                    hasToken={permsQ.data.hasToken}
+                  />
+                </div>
+              )}
             {event && (
               <div className="px-4 pt-3">
                 <AlreadyPublishedNotice
                   event={event}
                   republishLabel="Create draft again"
-                  onRepublish={() => { setRepost(true); setPublishOpen(true); }}
+                  onRepublish={() => {
+                    setRepost(true);
+                    setPublishOpen(true);
+                  }}
                 />
               </div>
             )}
             <PublishConfirmDialog
               open={publishOpen}
-              onOpenChange={(v) => { setPublishOpen(v); if (!v) setRepost(false); }}
+              onOpenChange={(v) => {
+                setPublishOpen(v);
+                if (!v) setRepost(false);
+              }}
               kind="release_draft"
               previousUrl={repost ? event?.github_url : null}
               preview={
                 <div className="space-y-2 text-xs">
-                  <div><span className="text-muted-foreground">Tag:</span> <span className="font-mono">{version.startsWith("v") ? version : `v${version}`}</span></div>
-                  <div><span className="text-muted-foreground">Title:</span> {title || "(empty)"}</div>
-                  <pre className="whitespace-pre-wrap font-mono text-xs mt-2 border-t border-border pt-2">{body}</pre>
+                  <div>
+                    <span className="text-muted-foreground">Tag:</span>{" "}
+                    <span className="font-mono">
+                      {version.startsWith("v") ? version : `v${version}`}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Title:</span> {title || "(empty)"}
+                  </div>
+                  <pre className="whitespace-pre-wrap font-mono text-xs mt-2 border-t border-border pt-2">
+                    {body}
+                  </pre>
                 </div>
               }
               onConfirm={async () => {
                 if (!active) return { ok: false };
-                const res = await publishFn({ data: { draft_id: active.id, confirm: true, allow_repost: repost } });
+                const res = await publishFn({
+                  data: { draft_id: active.id, confirm: true, allow_repost: repost },
+                });
                 await eventsQ.refetch();
                 return res;
               }}
@@ -358,7 +384,9 @@ function ChangelogPage() {
                       <FileText className="size-3.5 text-muted-foreground" />
                       <span className="font-mono text-xs">{d.version || "—"}</span>
                       <span className="truncate flex-1">{d.title || "Untitled release"}</span>
-                      <span className="text-[10px] uppercase text-muted-foreground">{d.status}</span>
+                      <span className="text-[10px] uppercase text-muted-foreground">
+                        {d.status}
+                      </span>
                     </div>
                   </li>
                 ))}
@@ -368,8 +396,8 @@ function ChangelogPage() {
 
           <div className="panel rounded-xl p-4 text-xs text-muted-foreground space-y-1">
             <p>
-              <strong className="text-foreground">Source:</strong> approved AI PR summaries
-              ({approved.length} approved of {summaries.length} total).
+              <strong className="text-foreground">Source:</strong> approved AI PR summaries (
+              {approved.length} approved of {summaries.length} total).
             </p>
             <p>The AI is instructed to use only approved summaries and flag missing data.</p>
             <p>Nothing is posted to GitHub automatically.</p>

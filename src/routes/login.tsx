@@ -54,7 +54,8 @@ function LoginPage() {
           <Github className="size-4" /> {loading ? "Redirecting…" : "Continue with GitHub"}
         </Button>
         <p className="mt-4 inline-flex items-center gap-1.5 text-[11px] text-muted-foreground">
-          <ShieldCheck className="size-3" /> Read-only by default. Nothing is posted without your approval.
+          <ShieldCheck className="size-3" /> Read-only by default. Nothing is posted without your
+          approval.
         </p>
         <p className="mt-6 text-xs text-muted-foreground">
           First-time setup requires the GitHub auth provider to be enabled in the Lovable Cloud

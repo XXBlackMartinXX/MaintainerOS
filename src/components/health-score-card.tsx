@@ -29,7 +29,9 @@ export function HealthScoreCard({ score = healthBreakdown.overall }: { score?: n
         </svg>
         <div className="absolute inset-0 grid place-items-center">
           <div className="text-center">
-            <div className={`text-2xl font-semibold tabular-nums ${scoreColor(score)}`}>{score}</div>
+            <div className={`text-2xl font-semibold tabular-nums ${scoreColor(score)}`}>
+              {score}
+            </div>
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Health</div>
           </div>
         </div>

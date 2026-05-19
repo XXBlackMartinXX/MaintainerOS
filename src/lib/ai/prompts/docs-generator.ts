@@ -11,16 +11,55 @@ export const DOC_TYPES = [
 ] as const;
 export type DocType = (typeof DOC_TYPES)[number];
 
-export const DOC_TYPE_LABELS: Record<DocType, { title: string; purpose: string; filename: string }> = {
-  readme_suggestions:    { title: "README improvement suggestions", purpose: "Concrete improvements for the existing README.",            filename: "README-suggestions.md" },
-  contributing:          { title: "CONTRIBUTING.md",                purpose: "How new contributors get started and what good PRs look like.", filename: "CONTRIBUTING.md" },
-  security:              { title: "SECURITY.md",                    purpose: "How to responsibly disclose security issues.",                  filename: "SECURITY.md" },
-  code_of_conduct:       { title: "CODE_OF_CONDUCT.md",             purpose: "Welcoming, inclusive community guidelines.",                    filename: "CODE_OF_CONDUCT.md" },
-  issue_template:        { title: "GitHub issue template",          purpose: "Structured issue form for bug reports / feature requests.",     filename: ".github/ISSUE_TEMPLATE/bug_report.md" },
-  pull_request_template: { title: "GitHub pull request template",   purpose: "Checklist that helps maintainers review PRs faster.",           filename: ".github/PULL_REQUEST_TEMPLATE.md" },
-  maintainer_guide:      { title: "Maintainer guide",               purpose: "How this project is maintained day-to-day.",                    filename: "MAINTAINING.md" },
-  release_process:       { title: "Release process guide",          purpose: "Versioning, changelog, and release steps.",                     filename: "RELEASING.md" },
-  contributor_onboarding:{ title: "New contributor onboarding",     purpose: "First-week guide for a brand-new contributor.",                 filename: "ONBOARDING.md" },
+export const DOC_TYPE_LABELS: Record<
+  DocType,
+  { title: string; purpose: string; filename: string }
+> = {
+  readme_suggestions: {
+    title: "README improvement suggestions",
+    purpose: "Concrete improvements for the existing README.",
+    filename: "README-suggestions.md",
+  },
+  contributing: {
+    title: "CONTRIBUTING.md",
+    purpose: "How new contributors get started and what good PRs look like.",
+    filename: "CONTRIBUTING.md",
+  },
+  security: {
+    title: "SECURITY.md",
+    purpose: "How to responsibly disclose security issues.",
+    filename: "SECURITY.md",
+  },
+  code_of_conduct: {
+    title: "CODE_OF_CONDUCT.md",
+    purpose: "Welcoming, inclusive community guidelines.",
+    filename: "CODE_OF_CONDUCT.md",
+  },
+  issue_template: {
+    title: "GitHub issue template",
+    purpose: "Structured issue form for bug reports / feature requests.",
+    filename: ".github/ISSUE_TEMPLATE/bug_report.md",
+  },
+  pull_request_template: {
+    title: "GitHub pull request template",
+    purpose: "Checklist that helps maintainers review PRs faster.",
+    filename: ".github/PULL_REQUEST_TEMPLATE.md",
+  },
+  maintainer_guide: {
+    title: "Maintainer guide",
+    purpose: "How this project is maintained day-to-day.",
+    filename: "MAINTAINING.md",
+  },
+  release_process: {
+    title: "Release process guide",
+    purpose: "Versioning, changelog, and release steps.",
+    filename: "RELEASING.md",
+  },
+  contributor_onboarding: {
+    title: "New contributor onboarding",
+    purpose: "First-week guide for a brand-new contributor.",
+    filename: "ONBOARDING.md",
+  },
 };
 
 export const DOCS_SYSTEM_PROMPT = `You are an assistant helping open-source maintainers draft project documentation.
@@ -70,11 +109,21 @@ export function buildDocsUserPrompt(input: DocsPromptInput): string {
   lines.push(`- visibility: ${input.visibility ?? "unknown"}`);
   lines.push(`- stars: ${input.stars}, forks: ${input.forks}, open_issues: ${input.openIssues}`);
   lines.push(`- contributor_count_synced: ${input.contributorCount}`);
-  lines.push(`- recent_release_titles: ${input.recentReleaseTitles.length ? input.recentReleaseTitles.slice(0, 5).join(" | ") : "unknown"}`);
-  lines.push(`- top_labels: ${input.topLabels.length ? input.topLabels.slice(0, 12).join(", ") : "unknown"}`);
-  lines.push(`- has_SECURITY_md: ${input.hasSecurityMd === null ? "unknown" : String(input.hasSecurityMd)}`);
-  lines.push(`- has_CONTRIBUTING_md: ${input.hasContributingMd === null ? "unknown" : String(input.hasContributingMd)}`);
-  lines.push(`- has_CODE_OF_CONDUCT: ${input.hasCodeOfConduct === null ? "unknown" : String(input.hasCodeOfConduct)}`);
+  lines.push(
+    `- recent_release_titles: ${input.recentReleaseTitles.length ? input.recentReleaseTitles.slice(0, 5).join(" | ") : "unknown"}`,
+  );
+  lines.push(
+    `- top_labels: ${input.topLabels.length ? input.topLabels.slice(0, 12).join(", ") : "unknown"}`,
+  );
+  lines.push(
+    `- has_SECURITY_md: ${input.hasSecurityMd === null ? "unknown" : String(input.hasSecurityMd)}`,
+  );
+  lines.push(
+    `- has_CONTRIBUTING_md: ${input.hasContributingMd === null ? "unknown" : String(input.hasContributingMd)}`,
+  );
+  lines.push(
+    `- has_CODE_OF_CONDUCT: ${input.hasCodeOfConduct === null ? "unknown" : String(input.hasCodeOfConduct)}`,
+  );
   if (input.approvedPrSummaryHighlights.length) {
     lines.push("- approved_pr_summary_highlights:");
     for (const h of input.approvedPrSummaryHighlights.slice(0, 10)) {

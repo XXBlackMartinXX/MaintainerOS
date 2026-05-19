@@ -22,11 +22,11 @@ bun run dev
 
 ## Quality checks
 
-| Command | Purpose |
-| --- | --- |
-| `bun run lint` | ESLint |
+| Command             | Purpose              |
+| ------------------- | -------------------- |
+| `bun run lint`      | ESLint               |
 | `bun run typecheck` | TypeScript (no emit) |
-| `bun run build` | Production build |
+| `bun run build`     | Production build     |
 
 ## Smoke-test checklist
 

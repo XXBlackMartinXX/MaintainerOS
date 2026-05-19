@@ -66,13 +66,26 @@ function SiteHeader() {
           </span>
         </Link>
         <nav className="hidden md:flex items-center gap-5 text-sm text-muted-foreground">
-          <a href="#features" className="hover:text-foreground">Features</a>
-          <a href="#use-cases" className="hover:text-foreground">Use cases</a>
-          <a href="#privacy" className="hover:text-foreground">Privacy</a>
-          <a href="#pricing" className="hover:text-foreground">Pricing</a>
+          <a href="#features" className="hover:text-foreground">
+            Features
+          </a>
+          <a href="#use-cases" className="hover:text-foreground">
+            Use cases
+          </a>
+          <a href="#privacy" className="hover:text-foreground">
+            Privacy
+          </a>
+          <a href="#pricing" className="hover:text-foreground">
+            Pricing
+          </a>
         </nav>
         <div className="ml-auto flex items-center gap-2">
-          <Button asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground"
+          >
             <a href="https://github.com" target="_blank" rel="noreferrer">
               <Github className="size-4" /> Star on GitHub
             </a>
@@ -96,10 +109,7 @@ function Hero() {
   };
   return (
     <section className="relative overflow-hidden">
-      <div
-        className="absolute inset-0 -z-10"
-        style={{ background: "var(--gradient-hero)" }}
-      />
+      <div className="absolute inset-0 -z-10" style={{ background: "var(--gradient-hero)" }} />
       <div className="absolute inset-0 -z-10 grid-bg opacity-50" />
       <div className="max-w-6xl mx-auto px-4 md:px-6 pt-20 pb-24 text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 text-xs text-muted-foreground">
@@ -148,25 +158,35 @@ function HeroPreview() {
           </div>
           <div className="grid grid-cols-12 gap-0">
             <div className="col-span-3 border-r border-border p-3 hidden sm:block">
-              {["Dashboard", "Issue Triage", "Pull Requests", "Changelog", "Contributors", "Security"].map(
-                (l, i) => (
-                  <div
-                    key={l}
-                    className={`text-xs rounded px-2 py-1.5 mb-0.5 ${
-                      i === 1 ? "bg-accent text-foreground" : "text-muted-foreground"
-                    }`}
-                  >
-                    {l}
-                  </div>
-                )
-              )}
+              {[
+                "Dashboard",
+                "Issue Triage",
+                "Pull Requests",
+                "Changelog",
+                "Contributors",
+                "Security",
+              ].map((l, i) => (
+                <div
+                  key={l}
+                  className={`text-xs rounded px-2 py-1.5 mb-0.5 ${
+                    i === 1 ? "bg-accent text-foreground" : "text-muted-foreground"
+                  }`}
+                >
+                  {l}
+                </div>
+              ))}
             </div>
             <div className="col-span-12 sm:col-span-9 p-4 space-y-3">
               <div className="text-xs text-muted-foreground">AI triage queue · 5 issues</div>
               {[
                 { n: 1284, t: "Memory leak when streaming large payloads", s: "high", p: "P1" },
                 { n: 1271, t: "Add TypeScript generics to createClient<T>", s: "low", p: "P2" },
-                { n: 1269, t: "Possible prototype pollution in config merge", s: "critical", p: "P0" },
+                {
+                  n: 1269,
+                  t: "Possible prototype pollution in config merge",
+                  s: "critical",
+                  p: "P0",
+                },
               ].map((row) => (
                 <div
                   key={row.t}
@@ -182,8 +202,8 @@ function HeroPreview() {
                       row.s === "critical"
                         ? "bg-destructive/15 text-destructive"
                         : row.s === "high"
-                        ? "bg-warning/15 text-warning"
-                        : "bg-muted text-muted-foreground"
+                          ? "bg-warning/15 text-warning"
+                          : "bg-muted text-muted-foreground"
                     }`}
                   >
                     {row.s}
@@ -215,12 +235,36 @@ function SocialNote() {
 
 function Features() {
   const items = [
-    { icon: Inbox, title: "AI issue triage", desc: "Drafts type, severity, priority, labels, and a suggested reply. You review before anything is posted." },
-    { icon: GitPullRequest, title: "PR summaries", desc: "Plain-English summary, risk level, breaking-change detection, and a ready-to-edit changelog entry." },
-    { icon: FileText, title: "Changelog generator", desc: "Group merged PRs into Added / Changed / Fixed and propose a semver bump. Always editable." },
-    { icon: Activity, title: "Repo health score", desc: "0–100 score across issues, PRs, docs, security and community, with concrete next actions." },
-    { icon: Users, title: "Contributor insights", desc: "Top, returning, and first-time contributors. Privacy-respecting — no hostile scoring." },
-    { icon: ShieldCheck, title: "Security & moderation", desc: "Surfaces potential risks, spam, and low-quality issues as suggestions for maintainer review." },
+    {
+      icon: Inbox,
+      title: "AI issue triage",
+      desc: "Drafts type, severity, priority, labels, and a suggested reply. You review before anything is posted.",
+    },
+    {
+      icon: GitPullRequest,
+      title: "PR summaries",
+      desc: "Plain-English summary, risk level, breaking-change detection, and a ready-to-edit changelog entry.",
+    },
+    {
+      icon: FileText,
+      title: "Changelog generator",
+      desc: "Group merged PRs into Added / Changed / Fixed and propose a semver bump. Always editable.",
+    },
+    {
+      icon: Activity,
+      title: "Repo health score",
+      desc: "0–100 score across issues, PRs, docs, security and community, with concrete next actions.",
+    },
+    {
+      icon: Users,
+      title: "Contributor insights",
+      desc: "Top, returning, and first-time contributors. Privacy-respecting — no hostile scoring.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Security & moderation",
+      desc: "Surfaces potential risks, spam, and low-quality issues as suggestions for maintainer review.",
+    },
   ];
   return (
     <section id="features" className="py-24">
@@ -234,7 +278,10 @@ function Features() {
         </p>
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="panel rounded-xl p-5 hover:border-border-strong transition-colors">
+            <div
+              key={title}
+              className="panel rounded-xl p-5 hover:border-border-strong transition-colors"
+            >
               <div className="size-9 rounded-lg bg-primary/10 text-primary grid place-items-center ring-1 ring-primary/20">
                 <Icon className="size-4" />
               </div>
@@ -250,9 +297,18 @@ function Features() {
 
 function UseCases() {
   const cases = [
-    { title: "Solo maintainers", desc: "Cut triage from hours to minutes. Auto-drafted replies and labels you can accept with one click." },
-    { title: "Small core teams", desc: "Shared health dashboard, AI-suggested roadmap clusters, audit log of every AI action." },
-    { title: "Foundation projects", desc: "Self-host on your own infrastructure, bring your own AI provider, full transparency for the community." },
+    {
+      title: "Solo maintainers",
+      desc: "Cut triage from hours to minutes. Auto-drafted replies and labels you can accept with one click.",
+    },
+    {
+      title: "Small core teams",
+      desc: "Shared health dashboard, AI-suggested roadmap clusters, audit log of every AI action.",
+    },
+    {
+      title: "Foundation projects",
+      desc: "Self-host on your own infrastructure, bring your own AI provider, full transparency for the community.",
+    },
   ];
   return (
     <section id="use-cases" className="py-24 border-t border-border/60">
@@ -283,13 +339,15 @@ function Privacy() {
     <section id="privacy" className="py-24 border-t border-border/60">
       <div className="max-w-6xl mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <div>
-          <SectionEyebrow><Lock className="size-3" /> Privacy & ethics</SectionEyebrow>
+          <SectionEyebrow>
+            <Lock className="size-3" /> Privacy & ethics
+          </SectionEyebrow>
           <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">
             Transparent AI. Maintainer in control.
           </h2>
           <p className="mt-3 text-muted-foreground leading-relaxed">
-            MaintainerOS is designed to respect contributors and the open-source community.
-            It never invents activity, never auto-enforces, and never claims to know things it can't measure.
+            MaintainerOS is designed to respect contributors and the open-source community. It never
+            invents activity, never auto-enforces, and never claims to know things it can't measure.
           </p>
         </div>
         <ul className="space-y-3">
@@ -307,9 +365,24 @@ function Privacy() {
 
 function Pricing() {
   const tiers = [
-    { name: "Self-hosted", price: "Free", note: "MIT license", features: ["Unlimited repos", "Bring your own AI key", "Full source access"] },
-    { name: "Cloud — Solo", price: "$0", note: "Coming soon", features: ["1 maintainer", "Up to 3 repos", "Lovable AI Gateway included"] },
-    { name: "Cloud — Team", price: "TBD", note: "Coming soon", features: ["Multiple maintainers", "Unlimited repos", "Priority support"] },
+    {
+      name: "Self-hosted",
+      price: "Free",
+      note: "MIT license",
+      features: ["Unlimited repos", "Bring your own AI key", "Full source access"],
+    },
+    {
+      name: "Cloud — Solo",
+      price: "$0",
+      note: "Coming soon",
+      features: ["1 maintainer", "Up to 3 repos", "Lovable AI Gateway included"],
+    },
+    {
+      name: "Cloud — Team",
+      price: "TBD",
+      note: "Coming soon",
+      features: ["Multiple maintainers", "Unlimited repos", "Priority support"],
+    },
   ];
   return (
     <section id="pricing" className="py-24 border-t border-border/60">
@@ -380,17 +453,57 @@ function SiteFooter() {
           <span>· MIT licensed</span>
         </div>
         <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-foreground">GitHub repository</a>
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-foreground">Docs</a>
-          <Link to="/app/trust" className="hover:text-foreground">Trust Center</Link>
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-foreground">Security</a>
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-foreground">Code of Conduct</a>
-          <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-foreground">License (MIT)</a>
-          <Link to="/app" className="hover:text-foreground">Dashboard</Link>
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-foreground"
+          >
+            GitHub repository
+          </a>
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-foreground"
+          >
+            Docs
+          </a>
+          <Link to="/app/trust" className="hover:text-foreground">
+            Trust Center
+          </Link>
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-foreground"
+          >
+            Security
+          </a>
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-foreground"
+          >
+            Code of Conduct
+          </a>
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-foreground"
+          >
+            License (MIT)
+          </a>
+          <Link to="/app" className="hover:text-foreground">
+            Dashboard
+          </Link>
         </nav>
       </div>
       <p className="max-w-6xl mx-auto px-4 md:px-6 mt-6 text-xs text-muted-foreground">
-        Privacy note: MaintainerOS only reads public GitHub data you grant access to and writes only when you explicitly confirm. No analytics or third-party tracking on this page.
+        Privacy note: MaintainerOS only reads public GitHub data you grant access to and writes only
+        when you explicitly confirm. No analytics or third-party tracking on this page.
       </p>
     </footer>
   );
@@ -398,20 +511,40 @@ function SiteFooter() {
 
 function HowItWorks() {
   const steps = [
-    { n: "1", title: "Connect a repository", body: "Sign in with GitHub and pick a repo. MaintainerOS only reads — never writes — until you approve a specific action." },
-    { n: "2", title: "Sync issues, PRs, contributors", body: "Live data lands in your private workspace. You can re-sync at any time." },
-    { n: "3", title: "Review AI drafts", body: "Issue triage, PR summaries, changelogs, and docs are generated as editable drafts. Confidence and source data are always shown." },
-    { n: "4", title: "Approve and publish on your terms", body: "When you're ready, one click + confirmation posts the approved draft to GitHub. Duplicates are blocked." },
+    {
+      n: "1",
+      title: "Connect a repository",
+      body: "Sign in with GitHub and pick a repo. MaintainerOS only reads — never writes — until you approve a specific action.",
+    },
+    {
+      n: "2",
+      title: "Sync issues, PRs, contributors",
+      body: "Live data lands in your private workspace. You can re-sync at any time.",
+    },
+    {
+      n: "3",
+      title: "Review AI drafts",
+      body: "Issue triage, PR summaries, changelogs, and docs are generated as editable drafts. Confidence and source data are always shown.",
+    },
+    {
+      n: "4",
+      title: "Approve and publish on your terms",
+      body: "When you're ready, one click + confirmation posts the approved draft to GitHub. Duplicates are blocked.",
+    },
   ];
   return (
     <section className="py-20 border-t border-border/60">
       <div className="max-w-6xl mx-auto px-4 md:px-6">
         <SectionEyebrow>How it works</SectionEyebrow>
-        <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">Four small steps. No surprises.</h2>
+        <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">
+          Four small steps. No surprises.
+        </h2>
         <div className="mt-10 grid grid-cols-1 md:grid-cols-4 gap-4">
           {steps.map((s) => (
             <div key={s.n} className="panel rounded-xl p-5">
-              <div className="size-7 rounded-md bg-primary/15 text-primary grid place-items-center font-mono text-xs ring-1 ring-primary/30">{s.n}</div>
+              <div className="size-7 rounded-md bg-primary/15 text-primary grid place-items-center font-mono text-xs ring-1 ring-primary/30">
+                {s.n}
+              </div>
               <h3 className="mt-3 font-medium text-sm">{s.title}</h3>
               <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{s.body}</p>
             </div>
@@ -434,10 +567,15 @@ function ApprovalFirst() {
     <section className="py-20 border-t border-border/60">
       <div className="max-w-6xl mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <div>
-          <SectionEyebrow><ShieldCheck className="size-3" /> Approval-first AI</SectionEyebrow>
-          <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">GitHub write actions are always confirmed.</h2>
+          <SectionEyebrow>
+            <ShieldCheck className="size-3" /> Approval-first AI
+          </SectionEyebrow>
+          <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">
+            GitHub write actions are always confirmed.
+          </h2>
           <p className="mt-3 text-muted-foreground leading-relaxed">
-            MaintainerOS treats your repository like production. Nothing posts to GitHub without an explicit click, a confirmation dialog showing the exact payload, and an audit log entry.
+            MaintainerOS treats your repository like production. Nothing posts to GitHub without an
+            explicit click, a confirmation dialog showing the exact payload, and an audit log entry.
           </p>
         </div>
         <ul className="space-y-3">
@@ -455,14 +593,23 @@ function ApprovalFirst() {
 
 function DemoSection() {
   const navigate = useNavigate();
-  const tryDemo = () => { enableDemoMode(); navigate({ to: "/app" }); };
+  const tryDemo = () => {
+    enableDemoMode();
+    navigate({ to: "/app" });
+  };
   return (
     <section className="py-20 border-t border-border/60">
       <div className="max-w-4xl mx-auto px-4 md:px-6 text-center">
-        <SectionEyebrow><PlayCircle className="size-3" /> Demo mode</SectionEyebrow>
-        <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">See the whole product, no GitHub required.</h2>
+        <SectionEyebrow>
+          <PlayCircle className="size-3" /> Demo mode
+        </SectionEyebrow>
+        <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">
+          See the whole product, no GitHub required.
+        </h2>
         <p className="mt-3 text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Demo mode loads a clearly fictional repository so you can explore every screen — triage, PR summaries, changelog, docs, audit log — without connecting GitHub. Publishing and sync are disabled and every AI output is labeled "Demo AI output".
+          Demo mode loads a clearly fictional repository so you can explore every screen — triage,
+          PR summaries, changelog, docs, audit log — without connecting GitHub. Publishing and sync
+          are disabled and every AI output is labeled "Demo AI output".
         </p>
         <Button size="lg" className="mt-6" onClick={tryDemo}>
           <PlayCircle className="size-4" /> Try the demo
@@ -474,15 +621,46 @@ function DemoSection() {
 
 function Roadmap() {
   const lanes = [
-    { title: "Shipped", items: ["GitHub read sync", "AI issue triage", "PR summaries", "Changelog drafts", "Documentation generator", "Approval-gated GitHub publishing", "AI Action Log", "Trust Center"] },
-    { title: "Next", items: ["Direct doc commits via PR", "Repository health trends", "Triage rule presets", "Contributor outreach helpers"] },
-    { title: "Exploring", items: ["Multi-repo dashboards", "Self-hosted deployment guide", "Bring-your-own AI provider"] },
+    {
+      title: "Shipped",
+      items: [
+        "GitHub read sync",
+        "AI issue triage",
+        "PR summaries",
+        "Changelog drafts",
+        "Documentation generator",
+        "Approval-gated GitHub publishing",
+        "AI Action Log",
+        "Trust Center",
+      ],
+    },
+    {
+      title: "Next",
+      items: [
+        "Direct doc commits via PR",
+        "Repository health trends",
+        "Triage rule presets",
+        "Contributor outreach helpers",
+      ],
+    },
+    {
+      title: "Exploring",
+      items: [
+        "Multi-repo dashboards",
+        "Self-hosted deployment guide",
+        "Bring-your-own AI provider",
+      ],
+    },
   ];
   return (
     <section className="py-20 border-t border-border/60">
       <div className="max-w-6xl mx-auto px-4 md:px-6">
-        <SectionEyebrow><Map className="size-3" /> Roadmap</SectionEyebrow>
-        <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">Honest about what exists today.</h2>
+        <SectionEyebrow>
+          <Map className="size-3" /> Roadmap
+        </SectionEyebrow>
+        <h2 className="mt-2 text-3xl md:text-4xl font-semibold tracking-tight">
+          Honest about what exists today.
+        </h2>
         <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
           {lanes.map((l) => (
             <div key={l.title} className="panel rounded-xl p-5">

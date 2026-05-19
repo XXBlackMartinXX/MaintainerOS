@@ -13,8 +13,8 @@ export function DemoBanner() {
       <AlertTriangle className="size-3.5 shrink-0" />
       <span className="font-medium">Demo mode active.</span>
       <span className="text-warning/80 hidden sm:inline">
-        All repositories, issues, PRs and AI outputs shown are illustrative sample data.
-        Publishing and GitHub sync are disabled.
+        All repositories, issues, PRs and AI outputs shown are illustrative sample data. Publishing
+        and GitHub sync are disabled.
       </span>
       <button
         onClick={() => setDemo(false)}

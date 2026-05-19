@@ -77,14 +77,38 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
-        <MetricCard label="Open issues" value={47} delta={{ value: "+6 wk", positive: false }} icon={Inbox} />
-        <MetricCard label="Active PRs" value={12} delta={{ value: "+2 wk", positive: true }} icon={GitPullRequest} />
+        <MetricCard
+          label="Open issues"
+          value={47}
+          delta={{ value: "+6 wk", positive: false }}
+          icon={Inbox}
+        />
+        <MetricCard
+          label="Active PRs"
+          value={12}
+          delta={{ value: "+2 wk", positive: true }}
+          icon={GitPullRequest}
+        />
         <MetricCard label="Stale issues" value={5} hint=">60 days" icon={Clock} />
-        <MetricCard label="New contributors" value={3} delta={{ value: "+1 wk", positive: true }} icon={Users} />
-        <MetricCard label="Avg PR merge" value="19h" delta={{ value: "−5h", positive: true }} icon={Rocket} />
-        <MetricCard label="Security alerts" value={3} hint="Review recommended" icon={ShieldAlert} />
+        <MetricCard
+          label="New contributors"
+          value={3}
+          delta={{ value: "+1 wk", positive: true }}
+          icon={Users}
+        />
+        <MetricCard
+          label="Avg PR merge"
+          value="19h"
+          delta={{ value: "−5h", positive: true }}
+          icon={Rocket}
+        />
+        <MetricCard
+          label="Security alerts"
+          value={3}
+          hint="Review recommended"
+          icon={ShieldAlert}
+        />
       </div>
-
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
         <div className="lg:col-span-2">
@@ -95,7 +119,9 @@ function Dashboard() {
             <h3 className="text-sm font-medium">Release readiness</h3>
             <span className="text-xs text-muted-foreground">v0.9.0 draft</span>
           </div>
-          <div className="mt-4 text-3xl font-semibold tabular-nums text-warning">68<span className="text-base text-muted-foreground"> / 100</span></div>
+          <div className="mt-4 text-3xl font-semibold tabular-nums text-warning">
+            68<span className="text-base text-muted-foreground"> / 100</span>
+          </div>
           <p className="mt-1 text-xs text-muted-foreground">
             2 PRs awaiting review block readiness. 9 merged PRs ready for changelog.
           </p>
@@ -139,7 +165,13 @@ function Dashboard() {
               <XAxis dataKey="week" stroke="rgba(255,255,255,0.4)" fontSize={11} />
               <YAxis stroke="rgba(255,255,255,0.4)" fontSize={11} />
               <Tooltip contentStyle={tooltipStyle} />
-              <Line type="monotone" dataKey="hours" stroke="#fbbf24" strokeWidth={2} dot={{ r: 3 }} />
+              <Line
+                type="monotone"
+                dataKey="hours"
+                stroke="#fbbf24"
+                strokeWidth={2}
+                dot={{ r: 3 }}
+              />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -185,17 +217,24 @@ function Dashboard() {
         <div className="panel rounded-xl">
           <div className="p-4 border-b border-border flex items-center justify-between">
             <h3 className="text-sm font-medium">Recent AI actions</h3>
-            <Link to="/app/actions" className="text-xs text-primary hover:underline">View log</Link>
+            <Link to="/app/actions" className="text-xs text-primary hover:underline">
+              View log
+            </Link>
           </div>
           <ul>
             {demoAILog.slice(0, 5).map((a) => (
-              <li key={a.id} className="flex items-center gap-3 px-4 py-3 border-b border-border last:border-0">
+              <li
+                key={a.id}
+                className="flex items-center gap-3 px-4 py-3 border-b border-border last:border-0"
+              >
                 <AIBadge />
                 <div className="flex-1 min-w-0">
                   <div className="text-sm truncate">
                     {a.action} · <span className="font-mono text-muted-foreground">{a.target}</span>
                   </div>
-                  <div className="text-xs text-muted-foreground truncate">{a.repo} · {a.ts}</div>
+                  <div className="text-xs text-muted-foreground truncate">
+                    {a.repo} · {a.ts}
+                  </div>
                 </div>
                 <span className="text-xs text-muted-foreground capitalize">{a.status}</span>
               </li>
@@ -206,11 +245,16 @@ function Dashboard() {
         <div className="panel rounded-xl">
           <div className="p-4 border-b border-border flex items-center justify-between">
             <h3 className="text-sm font-medium">Security alerts</h3>
-            <Link to="/app/security" className="text-xs text-primary hover:underline">Security center</Link>
+            <Link to="/app/security" className="text-xs text-primary hover:underline">
+              Security center
+            </Link>
           </div>
           <ul>
             {securityAlerts.map((a) => (
-              <li key={a.id} className="flex items-start gap-3 px-4 py-3 border-b border-border last:border-0">
+              <li
+                key={a.id}
+                className="flex items-start gap-3 px-4 py-3 border-b border-border last:border-0"
+              >
                 <AlertTriangle className="size-4 mt-0.5 text-warning shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">

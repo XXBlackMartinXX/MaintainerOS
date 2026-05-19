@@ -2,15 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Shield, Loader2 } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-} from "recharts";
+import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 import { PageHeader } from "@/components/ui-bits";
 import { RepoSelector } from "@/components/repo-selector";
 import { DataSourceBadge } from "@/components/data-source-badge";
@@ -69,10 +61,9 @@ function ContributorsPage() {
       <div className="panel-elevated rounded-xl p-4 mb-4 flex items-start gap-3 text-sm">
         <Shield className="size-4 mt-0.5 text-info shrink-0" />
         <p className="text-muted-foreground leading-relaxed">
-          <span className="text-foreground font-medium">Privacy promise.</span>{" "}
-          MaintainerOS never infers sensitive personal traits and does not rank
-          contributors in a hostile way. These insights focus on activity volume
-          and onboarding quality.
+          <span className="text-foreground font-medium">Privacy promise.</span> MaintainerOS never
+          infers sensitive personal traits and does not rank contributors in a hostile way. These
+          insights focus on activity volume and onboarding quality.
         </p>
       </div>
 
@@ -85,9 +76,19 @@ function ContributorsPage() {
           <div className="panel rounded-xl p-4 mb-4">
             <h3 className="text-sm font-medium mb-3">Contribution distribution</h3>
             <ResponsiveContainer width="100%" height={260}>
-              <BarChart data={top.slice(0, 15).map((c) => ({ name: c.login, value: c.contributions }))}>
+              <BarChart
+                data={top.slice(0, 15).map((c) => ({ name: c.login, value: c.contributions }))}
+              >
                 <CartesianGrid stroke="rgba(255,255,255,0.05)" />
-                <XAxis dataKey="name" stroke="rgba(255,255,255,0.4)" fontSize={11} angle={-25} textAnchor="end" height={60} interval={0} />
+                <XAxis
+                  dataKey="name"
+                  stroke="rgba(255,255,255,0.4)"
+                  fontSize={11}
+                  angle={-25}
+                  textAnchor="end"
+                  height={60}
+                  interval={0}
+                />
                 <YAxis stroke="rgba(255,255,255,0.4)" fontSize={11} />
                 <Tooltip
                   contentStyle={{

@@ -74,8 +74,7 @@ export function useSelectedRepo() {
     setSelectedRepoId(id);
   }, []);
 
-  const selected =
-    repos.find((r) => r.id === storedId) ?? repos[0] ?? null;
+  const selected = repos.find((r) => r.id === storedId) ?? repos[0] ?? null;
 
   return {
     repos,

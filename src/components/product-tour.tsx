@@ -5,15 +5,51 @@ import { useProductTour } from "@/hooks/use-product-tour";
 import { Button } from "@/components/ui/button";
 
 const STEPS = [
-  { title: "Repository selector", body: "Pick which connected GitHub repository MaintainerOS focuses on. You can switch at any time from the top bar.", to: "/app" },
-  { title: "Sync status", body: "MaintainerOS only ever reads GitHub. The sync status card shows how fresh your data is and lets you re-sync on demand.", to: "/app" },
-  { title: "Issue triage", body: "AI drafts type, severity, priority, labels, and a reply for each issue. Nothing is posted until you approve and confirm.", to: "/app/issues" },
-  { title: "PR summaries", body: "Plain-English summaries, risk level, and a ready-to-edit changelog entry for every merged pull request.", to: "/app/pulls" },
-  { title: "Changelog drafts", body: "Group merged PRs into Added / Changed / Fixed and generate release notes you can edit before publishing.", to: "/app/changelog" },
-  { title: "Documentation", body: "Generate README, CONTRIBUTING, SECURITY and more as editable drafts. You copy them into your repo — MaintainerOS never commits for you.", to: "/app/docs" },
-  { title: "GitHub write actions", body: "When you publish a draft, a confirmation dialog shows exactly what will be sent. Duplicate posts are blocked automatically.", to: "/app/issues" },
-  { title: "AI Action Log", body: "Every AI call and GitHub publish event is recorded with model, outcome, and source draft for full auditability.", to: "/app/actions" },
-  { title: "Readiness checklist", body: "Track how close your repo is to open-source ready: docs, security signals, sync health, and more.", to: "/app/readiness" },
+  {
+    title: "Repository selector",
+    body: "Pick which connected GitHub repository MaintainerOS focuses on. You can switch at any time from the top bar.",
+    to: "/app",
+  },
+  {
+    title: "Sync status",
+    body: "MaintainerOS only ever reads GitHub. The sync status card shows how fresh your data is and lets you re-sync on demand.",
+    to: "/app",
+  },
+  {
+    title: "Issue triage",
+    body: "AI drafts type, severity, priority, labels, and a reply for each issue. Nothing is posted until you approve and confirm.",
+    to: "/app/issues",
+  },
+  {
+    title: "PR summaries",
+    body: "Plain-English summaries, risk level, and a ready-to-edit changelog entry for every merged pull request.",
+    to: "/app/pulls",
+  },
+  {
+    title: "Changelog drafts",
+    body: "Group merged PRs into Added / Changed / Fixed and generate release notes you can edit before publishing.",
+    to: "/app/changelog",
+  },
+  {
+    title: "Documentation",
+    body: "Generate README, CONTRIBUTING, SECURITY and more as editable drafts. You copy them into your repo — MaintainerOS never commits for you.",
+    to: "/app/docs",
+  },
+  {
+    title: "GitHub write actions",
+    body: "When you publish a draft, a confirmation dialog shows exactly what will be sent. Duplicate posts are blocked automatically.",
+    to: "/app/issues",
+  },
+  {
+    title: "AI Action Log",
+    body: "Every AI call and GitHub publish event is recorded with model, outcome, and source draft for full auditability.",
+    to: "/app/actions",
+  },
+  {
+    title: "Readiness checklist",
+    body: "Track how close your repo is to open-source ready: docs, security signals, sync health, and more.",
+    to: "/app/readiness",
+  },
 ];
 
 export function ProductTour() {
@@ -51,12 +87,7 @@ export function ProductTour() {
         <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{step.body}</p>
       </div>
       <div className="flex items-center gap-2 border-t border-border px-3 py-2">
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => go(Math.max(0, i - 1))}
-          disabled={i === 0}
-        >
+        <Button size="sm" variant="ghost" onClick={() => go(Math.max(0, i - 1))} disabled={i === 0}>
           <ChevronLeft className="size-3.5" /> Back
         </Button>
         <button
@@ -67,7 +98,9 @@ export function ProductTour() {
         </button>
         <div className="ml-auto">
           {last ? (
-            <Button size="sm" onClick={complete}>Done</Button>
+            <Button size="sm" onClick={complete}>
+              Done
+            </Button>
           ) : (
             <Button size="sm" onClick={() => go(i + 1)}>
               Next <ChevronRight className="size-3.5" />

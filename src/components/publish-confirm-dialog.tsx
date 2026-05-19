@@ -32,7 +32,8 @@ const COPY: Record<PublishConfirmKind, { title: string; warning: string; confirm
   },
   release_draft: {
     title: "Create a draft GitHub release?",
-    warning: "This will create a draft release on GitHub. Drafts are not published until you publish them on GitHub.",
+    warning:
+      "This will create a draft release on GitHub. Drafts are not published until you publish them on GitHub.",
     confirmLabel: "Create draft release",
   },
 };
@@ -53,7 +54,12 @@ export function PublishConfirmDialog({
   preview: React.ReactNode;
   /** If set, this is a "post again" flow. */
   previousUrl?: string | null;
-  onConfirm: () => Promise<{ ok: boolean; githubUrl?: string | null; alreadyPosted?: boolean; previousUrl?: string | null } | void>;
+  onConfirm: () => Promise<{
+    ok: boolean;
+    githubUrl?: string | null;
+    alreadyPosted?: boolean;
+    previousUrl?: string | null;
+  } | void>;
   disabled?: boolean;
 }) {
   const copy = COPY[kind];
@@ -68,7 +74,10 @@ export function PublishConfirmDialog({
       } else if (res && res.ok && res.githubUrl) {
         toast.success(
           <span>
-            Posted to GitHub. <a href={res.githubUrl} target="_blank" rel="noreferrer" className="underline">Open <ExternalLink className="inline size-3" /></a>
+            Posted to GitHub.{" "}
+            <a href={res.githubUrl} target="_blank" rel="noreferrer" className="underline">
+              Open <ExternalLink className="inline size-3" />
+            </a>
           </span>,
         );
       } else {

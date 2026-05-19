@@ -49,8 +49,12 @@ export async function callAIJson(opts: {
           response_format: { type: "json_object" },
         }),
       });
-      if (res.status === 429) throw new AIRateLimitError("AI rate limit exceeded. Please retry shortly.");
-      if (res.status === 402) throw new AICreditsError("AI credits exhausted. Add credits in Settings → Workspace → Usage.");
+      if (res.status === 429)
+        throw new AIRateLimitError("AI rate limit exceeded. Please retry shortly.");
+      if (res.status === 402)
+        throw new AICreditsError(
+          "AI credits exhausted. Add credits in Settings → Workspace → Usage.",
+        );
       if (!res.ok) {
         const text = await res.text().catch(() => "");
         throw new AIResponseError(`AI gateway error ${res.status}: ${text.slice(0, 300)}`);
@@ -62,7 +66,11 @@ export async function callAIJson(opts: {
     } catch (err) {
       lastErr = err;
       // Don't retry config / credits / rate-limit
-      if (err instanceof AIConfigError || err instanceof AICreditsError || err instanceof AIRateLimitError) {
+      if (
+        err instanceof AIConfigError ||
+        err instanceof AICreditsError ||
+        err instanceof AIRateLimitError
+      ) {
         throw err;
       }
       if (attempt === maxRetries) break;

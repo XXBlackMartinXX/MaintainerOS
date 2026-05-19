@@ -27,15 +27,7 @@ function StatusPill({ status }: { status: string | null }) {
   );
 }
 
-function Stat({
-  label,
-  value,
-  Icon,
-}: {
-  label: string;
-  value: number;
-  Icon: typeof Inbox;
-}) {
+function Stat({ label, value, Icon }: { label: string; value: number; Icon: typeof Inbox }) {
   return (
     <div className="rounded-lg border border-border bg-surface px-3 py-2.5">
       <div className="flex items-center justify-between text-[11px] uppercase tracking-wider text-muted-foreground">
@@ -54,14 +46,13 @@ export function SyncStatusCard({ repo }: { repo: ConnectedRepo | null }) {
     queryFn: () => fn({ data: { repository_id: repo!.id } }),
     enabled: !!repo,
     refetchInterval: (q) =>
-      (q.state.data?.job?.status === "running" || q.state.data?.job?.status === "pending")
+      q.state.data?.job?.status === "running" || q.state.data?.job?.status === "pending"
         ? 3_000
         : false,
   });
 
   const job = data?.job ?? null;
-  const rateLimited =
-    !!job?.error && /rate.?limit|secondary rate/i.test(job.error);
+  const rateLimited = !!job?.error && /rate.?limit|secondary rate/i.test(job.error);
 
   return (
     <div className="panel-elevated rounded-xl p-5">
@@ -76,9 +67,7 @@ export function SyncStatusCard({ repo }: { repo: ConnectedRepo | null }) {
                 {repo ? repo.full_name : "No repository selected"}
               </h2>
               <StatusPill status={job?.status ?? null} />
-              {job?.status === "success" && !job.error && (
-                <DataSourceBadge variant="live" />
-              )}
+              {job?.status === "success" && !job.error && <DataSourceBadge variant="live" />}
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
               {repo

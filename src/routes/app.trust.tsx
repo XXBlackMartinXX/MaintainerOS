@@ -1,5 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ShieldCheck, Database, Sparkles, Github, CheckCircle2, AlertTriangle, History, Ban } from "lucide-react";
+import {
+  ShieldCheck,
+  Database,
+  Sparkles,
+  Github,
+  CheckCircle2,
+  AlertTriangle,
+  History,
+  Ban,
+} from "lucide-react";
 import { PageHeader } from "@/components/ui-bits";
 
 export const Route = createFileRoute("/app/trust")({
@@ -7,12 +16,23 @@ export const Route = createFileRoute("/app/trust")({
   head: () => ({
     meta: [
       { title: "Trust Center — MaintainerOS" },
-      { name: "description", content: "How MaintainerOS uses GitHub data, AI, and what requires your explicit approval." },
+      {
+        name: "description",
+        content: "How MaintainerOS uses GitHub data, AI, and what requires your explicit approval.",
+      },
     ],
   }),
 });
 
-function Card({ icon: Icon, title, children }: { icon: typeof ShieldCheck; title: string; children: React.ReactNode }) {
+function Card({
+  icon: Icon,
+  title,
+  children,
+}: {
+  icon: typeof ShieldCheck;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="panel rounded-xl p-5">
       <div className="flex items-center gap-2">
@@ -47,16 +67,28 @@ function TrustPage() {
         </Card>
 
         <Card icon={Database} title="What is stored in Lovable Cloud">
-          <p>Synced GitHub data plus AI drafts and audit logs, scoped per repository and protected by row-level security.</p>
+          <p>
+            Synced GitHub data plus AI drafts and audit logs, scoped per repository and protected by
+            row-level security.
+          </p>
           <ul className="list-disc pl-5 space-y-1">
             <li>Only members of a repository in MaintainerOS can read its data.</li>
-            <li>AI drafts (issue triage, PR summaries, changelogs, docs) are stored with approval status and version history.</li>
-            <li>Every publish event is recorded in <code className="font-mono">github_publish_events</code>.</li>
+            <li>
+              AI drafts (issue triage, PR summaries, changelogs, docs) are stored with approval
+              status and version history.
+            </li>
+            <li>
+              Every publish event is recorded in{" "}
+              <code className="font-mono">github_publish_events</code>.
+            </li>
           </ul>
         </Card>
 
         <Card icon={Sparkles} title="How AI Gateway is used">
-          <p>All AI calls run server-side through Lovable AI Gateway. No AI provider keys are exposed to the browser.</p>
+          <p>
+            All AI calls run server-side through Lovable AI Gateway. No AI provider keys are exposed
+            to the browser.
+          </p>
           <ul className="list-disc pl-5 space-y-1">
             <li>Prompts include only the relevant issue / PR / repo context.</li>
             <li>Outputs are validated with Zod schemas before being shown.</li>
@@ -71,7 +103,10 @@ function TrustPage() {
             <li>Posting a PR summary comment</li>
             <li>Creating a GitHub release draft</li>
           </ul>
-          <p>Each requires an approved or edited AI draft, a click, a confirmation dialog, and a duplicate-protection check.</p>
+          <p>
+            Each requires an approved or edited AI draft, a click, a confirmation dialog, and a
+            duplicate-protection check.
+          </p>
         </Card>
 
         <Card icon={Ban} title="What is never automatic">
@@ -79,23 +114,37 @@ function TrustPage() {
             <li>No automatic GitHub comments, labels, or releases.</li>
             <li>No background publishing.</li>
             <li>No automatic merging, closing, or reopening of issues or PRs.</li>
-            <li>Releases are always created as <code className="font-mono">draft: true</code>.</li>
+            <li>
+              Releases are always created as <code className="font-mono">draft: true</code>.
+            </li>
           </ul>
         </Card>
 
         <Card icon={History} title="Audit logging & duplicate protection">
-          <p>Every AI action and GitHub publish action writes a row to the audit log with the source draft id, target GitHub object, and outcome.</p>
-          <p>Before publishing, MaintainerOS checks for a prior successful publish of the same draft and blocks duplicates.</p>
+          <p>
+            Every AI action and GitHub publish action writes a row to the audit log with the source
+            draft id, target GitHub object, and outcome.
+          </p>
+          <p>
+            Before publishing, MaintainerOS checks for a prior successful publish of the same draft
+            and blocks duplicates.
+          </p>
         </Card>
 
         <Card icon={AlertTriangle} title="Demo data labeling">
-          <p>Demo mode uses clearly fictional repository data, is labeled in the global banner and on every page, and never calls GitHub write functions.</p>
+          <p>
+            Demo mode uses clearly fictional repository data, is labeled in the global banner and on
+            every page, and never calls GitHub write functions.
+          </p>
           <p>Demo data is never mixed with live synced data.</p>
         </Card>
 
         <Card icon={ShieldCheck} title="Current limitations">
           <ul className="list-disc pl-5 space-y-1">
-            <li>MaintainerOS does not currently commit documentation to GitHub — you copy approved drafts manually.</li>
+            <li>
+              MaintainerOS does not currently commit documentation to GitHub — you copy approved
+              drafts manually.
+            </li>
             <li>Security readiness signals are heuristics, not guarantees.</li>
             <li>Repository health scores are advisory and based on synced data only.</li>
           </ul>
@@ -103,7 +152,11 @@ function TrustPage() {
       </div>
 
       <div className="mt-6 panel rounded-xl p-4 text-xs text-muted-foreground">
-        Questions? See <Link to="/app/actions" className="text-primary underline">the AI Action Log</Link> for every recorded action, or open an issue on the project repository.
+        Questions? See{" "}
+        <Link to="/app/actions" className="text-primary underline">
+          the AI Action Log
+        </Link>{" "}
+        for every recorded action, or open an issue on the project repository.
       </div>
     </div>
   );

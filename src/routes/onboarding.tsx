@@ -16,7 +16,12 @@ export const Route = createFileRoute("/onboarding")({
   component: Onboarding,
 });
 
-const STEPS = ["Connect GitHub", "Choose repositories", "Enable AI features", "Maintainer preferences"];
+const STEPS = [
+  "Connect GitHub",
+  "Choose repositories",
+  "Enable AI features",
+  "Maintainer preferences",
+];
 
 function Onboarding() {
   const navigate = useNavigate();
@@ -74,7 +79,9 @@ function Onboarding() {
               />
             ))}
           </div>
-          <div className="text-xs uppercase tracking-wider text-muted-foreground">Step {step + 1} of {STEPS.length}</div>
+          <div className="text-xs uppercase tracking-wider text-muted-foreground">
+            Step {step + 1} of {STEPS.length}
+          </div>
           <h1 className="mt-2 text-2xl font-semibold tracking-tight">{STEPS[step]}</h1>
 
           <div className="mt-6 min-h-[200px]">
@@ -83,7 +90,9 @@ function Onboarding() {
                 <p className="text-sm text-muted-foreground mb-4">
                   Sign in with GitHub to let MaintainerOS read your repositories.
                 </p>
-                <Button size="lg"><Github className="size-4" /> Continue with GitHub</Button>
+                <Button size="lg">
+                  <Github className="size-4" /> Continue with GitHub
+                </Button>
                 <p className="mt-3 text-[11px] text-muted-foreground">
                   Read-only by default. Nothing is posted without your approval.
                 </p>
@@ -91,8 +100,17 @@ function Onboarding() {
             )}
             {step === 2 && (
               <ul className="space-y-2">
-                {["Issue triage", "PR summaries", "Changelog generation", "Documentation suggestions", "Security analysis"].map((f) => (
-                  <li key={f} className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm">
+                {[
+                  "Issue triage",
+                  "PR summaries",
+                  "Changelog generation",
+                  "Documentation suggestions",
+                  "Security analysis",
+                ].map((f) => (
+                  <li
+                    key={f}
+                    className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm"
+                  >
                     <input type="checkbox" defaultChecked className="size-4 accent-primary" />
                     {f}
                   </li>
@@ -101,35 +119,67 @@ function Onboarding() {
             )}
             {step === 3 && (
               <div className="space-y-3 text-sm">
-                <Pref label="AI tone" options={["Concise", "Friendly", "Formal"]} active="Friendly" />
-                <Pref label="Security sensitivity" options={["Relaxed", "Balanced", "Strict"]} active="Balanced" />
+                <Pref
+                  label="AI tone"
+                  options={["Concise", "Friendly", "Formal"]}
+                  active="Friendly"
+                />
+                <Pref
+                  label="Security sensitivity"
+                  options={["Relaxed", "Balanced", "Strict"]}
+                  active="Balanced"
+                />
                 <Pref label="Auto-draft release notes" options={["Off", "On"]} active="On" />
               </div>
             )}
             {step === 1 && (
               <div>
                 {reposQuery.isLoading && (
-                  <div className="inline-flex items-center gap-2 text-sm text-muted-foreground"><Loader2 className="size-4 animate-spin" /> Loading your repositories…</div>
+                  <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+                    <Loader2 className="size-4 animate-spin" /> Loading your repositories…
+                  </div>
                 )}
                 {reposQuery.error && (
-                  <div className="text-sm text-destructive">{(reposQuery.error as Error).message}</div>
+                  <div className="text-sm text-destructive">
+                    {(reposQuery.error as Error).message}
+                  </div>
                 )}
                 {reposQuery.data && (
                   <ul className="space-y-2 max-h-[360px] overflow-auto">
                     {reposQuery.data.repos.map((r) => (
-                      <li key={r.github_id} className="flex items-center gap-3 rounded-md border border-border bg-surface px-3 py-2 text-sm">
-                        <input type="checkbox" checked={selected.has(r.github_id)} onChange={() => toggle(r.github_id)} className="size-4 accent-primary" />
+                      <li
+                        key={r.github_id}
+                        className="flex items-center gap-3 rounded-md border border-border bg-surface px-3 py-2 text-sm"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selected.has(r.github_id)}
+                          onChange={() => toggle(r.github_id)}
+                          className="size-4 accent-primary"
+                        />
                         <Github className="size-3.5 text-muted-foreground" />
                         <div className="flex-1 min-w-0">
                           <div className="font-medium truncate">{r.full_name}</div>
-                          {r.description && <div className="text-xs text-muted-foreground truncate">{r.description}</div>}
+                          {r.description && (
+                            <div className="text-xs text-muted-foreground truncate">
+                              {r.description}
+                            </div>
+                          )}
                         </div>
-                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground"><Star className="size-3" />{r.stars}</span>
-                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground"><GitFork className="size-3" />{r.forks}</span>
+                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                          <Star className="size-3" />
+                          {r.stars}
+                        </span>
+                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                          <GitFork className="size-3" />
+                          {r.forks}
+                        </span>
                       </li>
                     ))}
                     {reposQuery.data.repos.length === 0 && (
-                      <li className="text-sm text-muted-foreground">No repositories found in your GitHub account.</li>
+                      <li className="text-sm text-muted-foreground">
+                        No repositories found in your GitHub account.
+                      </li>
                     )}
                   </ul>
                 )}
@@ -138,13 +188,24 @@ function Onboarding() {
           </div>
 
           <div className="mt-8 flex items-center justify-between">
-            <Button variant="ghost" disabled={step === 0 || connecting} onClick={() => setStep((s) => s - 1)}>
+            <Button
+              variant="ghost"
+              disabled={step === 0 || connecting}
+              onClick={() => setStep((s) => s - 1)}
+            >
               Back
             </Button>
             {isLast ? (
               <Button onClick={finish} disabled={connecting || selected.size === 0}>
-                {connecting ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
-                Connect {selected.size > 0 ? `${selected.size} repo${selected.size === 1 ? "" : "s"}` : "repositories"}
+                {connecting ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Check className="size-4" />
+                )}
+                Connect{" "}
+                {selected.size > 0
+                  ? `${selected.size} repo${selected.size === 1 ? "" : "s"}`
+                  : "repositories"}
               </Button>
             ) : (
               <Button onClick={() => setStep((s) => s + 1)}>

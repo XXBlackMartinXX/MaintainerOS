@@ -8,8 +8,7 @@ export function useProductTour() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     setCompleted(Boolean(window.localStorage.getItem(KEY)));
-    const onCustom = () =>
-      setCompleted(Boolean(window.localStorage.getItem(KEY)));
+    const onCustom = () => setCompleted(Boolean(window.localStorage.getItem(KEY)));
     window.addEventListener("mos:tour", onCustom);
     return () => window.removeEventListener("mos:tour", onCustom);
   }, []);

@@ -167,8 +167,8 @@ function PullsPage() {
     toast.success(`Bulk done: ${ok} analyzed, ${skipped} skipped, ${fail} failed`);
   }
 
-  const selectedSummary = selectedId ? summaryByPr.get(selectedId) ?? null : null;
-  const selectedPr = selectedId ? pulls.find((p) => p.id === selectedId) ?? null : null;
+  const selectedSummary = selectedId ? (summaryByPr.get(selectedId) ?? null) : null;
+  const selectedPr = selectedId ? (pulls.find((p) => p.id === selectedId) ?? null) : null;
 
   const header = (
     <PageHeader
@@ -273,7 +273,10 @@ function PullsPage() {
                   ? summary.approval_status === "approved"
                     ? { label: "approved", cls: "border-success/30 bg-success/10 text-success" }
                     : summary.approval_status === "rejected"
-                      ? { label: "rejected", cls: "border-destructive/30 bg-destructive/10 text-destructive" }
+                      ? {
+                          label: "rejected",
+                          cls: "border-destructive/30 bg-destructive/10 text-destructive",
+                        }
                       : { label: "AI draft", cls: "border-primary/30 bg-primary/10 text-primary" }
                   : { label: "not analyzed", cls: "border-border bg-muted text-muted-foreground" };
               return (
@@ -292,7 +295,11 @@ function PullsPage() {
                             : "border-muted bg-muted text-muted-foreground"
                       }`}
                     >
-                      {merged ? <GitMerge className="size-3" /> : <GitPullRequest className="size-3" />}
+                      {merged ? (
+                        <GitMerge className="size-3" />
+                      ) : (
+                        <GitPullRequest className="size-3" />
+                      )}
                       {merged ? "merged" : p.state}
                     </span>
                     {p.draft && (
@@ -306,7 +313,9 @@ function PullsPage() {
                       </span>
                     )}
                     <span className="text-sm font-medium truncate flex-1">{p.title}</span>
-                    <span className={`text-[10px] inline-flex items-center gap-1 rounded border px-1.5 py-0.5 ${status.cls}`}>
+                    <span
+                      className={`text-[10px] inline-flex items-center gap-1 rounded border px-1.5 py-0.5 ${status.cls}`}
+                    >
                       {status.label}
                     </span>
                     <Button
@@ -345,8 +354,12 @@ function PullsPage() {
                     )}
                     {summary && (
                       <>
-                        <span className="text-foreground/80">· type: {String(res.changeType ?? "—")}</span>
-                        <span className="text-foreground/80">· risk: {String(res.riskLevel ?? "—")}</span>
+                        <span className="text-foreground/80">
+                          · type: {String(res.changeType ?? "—")}
+                        </span>
+                        <span className="text-foreground/80">
+                          · risk: {String(res.riskLevel ?? "—")}
+                        </span>
                         <span className="text-foreground/80">
                           · confidence: {Math.round(Number(res.confidence ?? 0) * 100)}%
                         </span>
@@ -379,7 +392,9 @@ function PullsPage() {
             await qc.invalidateQueries({ queryKey: ["pr-summaries", selected?.id] });
           }}
           publish={async (allowRepost) =>
-            publishFn({ data: { summary_id: selectedSummary.id, confirm: true, allow_repost: allowRepost } })
+            publishFn({
+              data: { summary_id: selectedSummary.id, confirm: true, allow_repost: allowRepost },
+            })
           }
           listEvents={(id) => listEventsFn({ data: { source_type: "pr_summary", source_id: id } })}
         />
@@ -406,11 +421,20 @@ function SummaryPanel({
     action?: "approve" | "edit" | "reject" | "copy";
   }) => Promise<void>;
   perms?: { hasToken: boolean; canCommentPulls: boolean; scopes: string[] };
-  publish: (allowRepost: boolean) => Promise<{ ok: boolean; githubUrl?: string | null; alreadyPosted?: boolean; previousUrl?: string | null }>;
+  publish: (
+    allowRepost: boolean,
+  ) => Promise<{
+    ok: boolean;
+    githubUrl?: string | null;
+    alreadyPosted?: boolean;
+    previousUrl?: string | null;
+  }>;
   listEvents: (id: string) => Promise<{ events: PublishEvent[] }>;
 }) {
   const r = summary.result as Record<string, unknown>;
-  const [note, setNote] = useState(summary.release_note_candidate ?? String(r.releaseNoteCandidate ?? ""));
+  const [note, setNote] = useState(
+    summary.release_note_candidate ?? String(r.releaseNoteCandidate ?? ""),
+  );
   const [saving, setSaving] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [repost, setRepost] = useState(false);
@@ -425,7 +449,8 @@ function SummaryPanel({
 
   const isApproved = ["approved", "edited"].includes(summary.approval_status);
   const previewMd = formatPrSummaryComment({
-    plainEnglishSummary: typeof r.plainEnglishSummary === "string" ? r.plainEnglishSummary : undefined,
+    plainEnglishSummary:
+      typeof r.plainEnglishSummary === "string" ? r.plainEnglishSummary : undefined,
     suggestedReviewFocus: arr("suggestedReviewFocus"),
     testingNotes: arr("testingNotes"),
     securityNotes: arr("securityNotes"),
@@ -433,7 +458,10 @@ function SummaryPanel({
   });
   const canPost = isApproved && !!perms?.canCommentPulls && previewMd.trim().length > 0;
 
-  async function act(action: "approve" | "edit" | "reject" | "copy", status?: "approved" | "edited" | "rejected") {
+  async function act(
+    action: "approve" | "edit" | "reject" | "copy",
+    status?: "approved" | "edited" | "rejected",
+  ) {
     setSaving(true);
     try {
       if (action === "copy") {
@@ -506,10 +534,20 @@ function SummaryPanel({
             <Button size="sm" disabled={saving} onClick={() => act("approve", "approved")}>
               <Check className="size-3.5" /> Approve
             </Button>
-            <Button size="sm" variant="outline" disabled={saving} onClick={() => act("edit", "edited")}>
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={saving}
+              onClick={() => act("edit", "edited")}
+            >
               Save edits
             </Button>
-            <Button size="sm" variant="ghost" disabled={saving} onClick={() => act("reject", "rejected")}>
+            <Button
+              size="sm"
+              variant="ghost"
+              disabled={saving}
+              onClick={() => act("reject", "rejected")}
+            >
               Reject
             </Button>
             <Button size="sm" variant="outline" disabled={saving} onClick={() => act("copy")}>
@@ -519,10 +557,16 @@ function SummaryPanel({
 
           <div className="pt-2 border-t border-border space-y-2">
             <div className="flex items-center justify-between">
-              <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Publish to GitHub</div>
+              <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                Publish to GitHub
+              </div>
               {event && <PublishStatusBadge status="success" />}
             </div>
-            {!isApproved && <p className="text-xs text-muted-foreground">Approve or edit this summary to enable publishing.</p>}
+            {!isApproved && (
+              <p className="text-xs text-muted-foreground">
+                Approve or edit this summary to enable publishing.
+              </p>
+            )}
             {isApproved && perms && !perms.canCommentPulls && (
               <GitHubPermissionWarning missing="post PR comments" hasToken={perms.hasToken} />
             )}
@@ -530,15 +574,22 @@ function SummaryPanel({
               <AlreadyPublishedNotice
                 event={event}
                 republishLabel="Post summary again"
-                onRepublish={() => { setRepost(true); setDialogOpen(true); }}
+                onRepublish={() => {
+                  setRepost(true);
+                  setDialogOpen(true);
+                }}
               />
             )}
             <Button
               size="sm"
               disabled={!canPost}
-              onClick={() => { setRepost(!!event); setDialogOpen(true); }}
+              onClick={() => {
+                setRepost(!!event);
+                setDialogOpen(true);
+              }}
             >
-              <Send className="size-3.5" /> {event ? "Post summary again to GitHub PR" : "Post summary to GitHub PR"}
+              <Send className="size-3.5" />{" "}
+              {event ? "Post summary again to GitHub PR" : "Post summary to GitHub PR"}
             </Button>
           </div>
 
@@ -548,7 +599,10 @@ function SummaryPanel({
 
           <PublishConfirmDialog
             open={dialogOpen}
-            onOpenChange={(v) => { setDialogOpen(v); if (!v) setRepost(false); }}
+            onOpenChange={(v) => {
+              setDialogOpen(v);
+              if (!v) setRepost(false);
+            }}
             kind="pr_comment"
             previousUrl={repost ? event?.github_url : null}
             preview={<pre className="whitespace-pre-wrap font-mono text-xs">{previewMd}</pre>}
