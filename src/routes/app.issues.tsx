@@ -16,6 +16,13 @@ import { EmptyRepositoryState, EmptySyncedDataState } from "@/components/empty-s
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
 import { fetchIssues } from "@/lib/github.functions";
 import { triageIssue, listTriageForRepo, updateTriageDraft, getAiStatus } from "@/lib/ai.functions";
+import {
+  publishIssueComment,
+  publishIssueLabels,
+  getGithubWritePermissions,
+  listPublishEventsForSource,
+} from "@/lib/github-publish.functions";
+import { PublishConfirmDialog } from "@/components/publish-confirm-dialog";
 import type { TriageResult } from "@/lib/ai/schemas";
 
 export const Route = createFileRoute("/app/issues")({ component: IssuesPage });
