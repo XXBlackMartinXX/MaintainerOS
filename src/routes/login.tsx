@@ -58,8 +58,8 @@ function LoginPage() {
           approval.
         </p>
         <p className="mt-6 text-xs text-muted-foreground">
-          First-time setup requires the GitHub auth provider to be enabled in the Lovable Cloud
-          backend settings.
+          First-time setup requires the GitHub auth provider to be enabled in the backend Supabase
+          auth settings.
         </p>
       </div>
     </div>

@@ -30,7 +30,7 @@ to a production maintainer team at scale. There are no adoption claims.
 
 ## Safety model
 
-- AI calls run server-side through Lovable AI Gateway. No provider keys are
+- AI calls run server-side through managed AI gateway. No provider keys are
   exposed to the browser.
 - GitHub writes require: an approved or edited draft, a user click, a
   confirmation dialog, and a duplicate-protection check.
@@ -44,13 +44,13 @@ to a production maintainer team at scale. There are no adoption claims.
 See [`docs/LOCAL_DEVELOPMENT.md`](./LOCAL_DEVELOPMENT.md) for the full setup
 walkthrough. Short version:
 
-1. Enable Lovable Cloud on the project (Supabase Auth, Database, AI Gateway).
+1. Enable the backend (Supabase) on the project (Supabase Auth, Database, AI Gateway).
 2. Configure a GitHub OAuth App and add it as a Supabase Auth provider.
 3. Apply the Supabase migrations in `supabase/migrations/`.
 4. Run `bun install && bun run dev`.
 
 Environment variables are documented in `.env.example`. Public values are
-auto-injected by Lovable Cloud.
+auto-injected by the backend (Supabase).
 
 ## Known limitations
 
@@ -59,7 +59,7 @@ auto-injected by Lovable Cloud.
 - Security readiness is a heuristic, not a guarantee.
 - Repository health scores are advisory.
 - Sync is on-demand only; no background polling or webhooks.
-- One GitHub account per Lovable account (platform limitation).
+- One GitHub account per account (platform limitation).
 
 ## Recommended next steps
 

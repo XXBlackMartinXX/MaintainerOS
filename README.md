@@ -23,7 +23,7 @@ is posted to GitHub without your explicit approval.
 
 ## Implemented today
 
-- GitHub OAuth via Lovable Cloud (Supabase Auth)
+- GitHub OAuth via Supabase Auth
 - Repository connection + on-demand sync (issues, PRs, contributors, labels, releases)
 - Live Issues, Pull Requests, Contributors, and Repo Health pages
 - AI issue triage (type, severity, priority, labels, suggested reply) — drafts only
@@ -52,8 +52,8 @@ MaintainerOS is built to be honest:
 
 - **TanStack Start** (React 19, SSR, server functions) on Vite 7
 - **TypeScript** + **Tailwind CSS v4** + **shadcn/ui**
-- **Lovable Cloud** (Supabase) for auth, Postgres, RLS
-- **Lovable AI Gateway** for AI features (planned)
+- **the backend (Supabase)** (Supabase) for auth, Postgres, RLS
+- **managed AI gateway** for AI features (planned)
 - Cloudflare Workers / Vercel-compatible deployment
 
 ## Local development
@@ -70,7 +70,7 @@ bun run dev
    ```
    https://<your-supabase-project-ref>.supabase.co/auth/v1/callback
    ```
-3. In Lovable Cloud → **Auth → Providers → GitHub**, paste your Client ID and
+3. In the backend (Supabase) → **Auth → Providers → GitHub**, paste your Client ID and
    Client Secret and enable the provider.
 4. Recommended scopes: `read:user user:email repo read:org`.
 
@@ -106,7 +106,7 @@ sees repository rows only if they have a row in `repository_memberships`.
 
 ## Environment variables
 
-See `.env.example`. In Lovable Cloud most server-side values are managed for
+See `.env.example`. In the backend (Supabase) most server-side values are managed for
 you; only the GitHub OAuth credentials need to be configured in the Auth
 provider screen.
 
@@ -131,7 +131,7 @@ See [SECURITY.md](./SECURITY.md) for responsible disclosure.
 
 ## AI issue triage (Slice 4)
 
-MaintainerOS uses the **Lovable AI Gateway** (server-side, via
+MaintainerOS uses the **managed AI gateway** (server-side, via
 `LOVABLE_API_KEY`) to generate **editable triage drafts** for live GitHub
 issues. The browser never sees the AI key.
 
@@ -309,7 +309,7 @@ template, maintainer guide, release process guide, new contributor onboarding.
 ### Workflow
 
 1. Open **Documentation** and pick a doc type.
-2. Click **Generate draft**. Lovable AI Gateway (server-side only) produces an
+2. Click **Generate draft**. managed AI gateway (server-side only) produces an
    editable Markdown draft, confidence score, missing-context list, safety
    notes, and a source-data summary.
 3. Edit the title and body inline. Save → marks the draft as `edited`.

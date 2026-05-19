@@ -198,7 +198,7 @@ function DocsPage() {
               <p className="text-xs text-muted-foreground mt-1">
                 Documentation generation is disabled until{" "}
                 <code className="text-foreground">LOVABLE_API_KEY</code> is set in the backend
-                environment. Connect Lovable AI to enable AI drafts.
+                environment. Configure the AI gateway to enable AI drafts.
               </p>
             </div>
           </div>

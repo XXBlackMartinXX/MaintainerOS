@@ -1,6 +1,6 @@
 # AI Safety
 
-MaintainerOS uses Lovable AI Gateway exclusively from server functions. No AI provider key is ever sent to the browser.
+MaintainerOS uses managed AI gateway exclusively from server functions. No AI provider key is ever sent to the browser.
 
 ## Design principles
 

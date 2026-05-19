@@ -376,7 +376,7 @@ function Pricing() {
       name: "Cloud — Solo",
       price: "$0",
       note: "Coming soon",
-      features: ["1 maintainer", "Up to 3 repos", "Lovable AI Gateway included"],
+      features: ["1 maintainer", "Up to 3 repos", "Managed AI gateway included"],
     },
     {
       name: "Cloud — Team",

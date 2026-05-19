@@ -11,7 +11,7 @@ Run through this before tagging a release of MaintainerOS itself.
 - [ ] Replace screenshot TODOs under `docs/screenshots/` and in `README.md`
 - [ ] Configure GitHub OAuth App and add it as a Supabase Auth provider
 - [ ] Verify Supabase project is healthy (migrations applied, RLS on)
-- [ ] Verify Lovable AI Gateway key is present (`LOVABLE_API_KEY`)
+- [ ] Verify managed AI gateway key is present (`LOVABLE_API_KEY`)
 - [ ] `bun run typecheck` passes
 - [ ] `bun run lint` passes (warnings reviewed)
 - [ ] `bun run build` succeeds
