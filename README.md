@@ -15,12 +15,11 @@ is posted to GitHub without your explicit approval.
 
 ## Screenshots
 
-Screenshot placeholders — replace before publishing publicly:
-
-- `docs/screenshots/dashboard.png`
-- `docs/screenshots/issue-triage.png`
-- `docs/screenshots/pr-summaries.png`
-- `docs/screenshots/audit-log.png`
+> **TODO** — screenshots have not been captured yet. See
+> [`docs/screenshots/README.md`](docs/screenshots/README.md) for the full
+> capture list (landing, dashboard, issue triage, PR summary, changelog,
+> docs generator, trust center, readiness, audit log). Do not link to
+> non-existent files until the captures land.
 
 ## Implemented today
 
@@ -384,9 +383,18 @@ checklist and troubleshooting tips.
 - [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
 - [docs/SECURITY_MODEL.md](./docs/SECURITY_MODEL.md)
 - [docs/AI_SAFETY.md](./docs/AI_SAFETY.md)
+- [docs/DATABASE.md](./docs/DATABASE.md)
+- [docs/SUPABASE_RLS.md](./docs/SUPABASE_RLS.md)
 - [docs/DEMO_MODE.md](./docs/DEMO_MODE.md)
 - [docs/ROADMAP.md](./docs/ROADMAP.md)
 - [docs/LOCAL_DEVELOPMENT.md](./docs/LOCAL_DEVELOPMENT.md)
+- [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md)
+- [docs/RELEASE_CHECKLIST.md](./docs/RELEASE_CHECKLIST.md)
+- [docs/MAINTAINER_HANDOFF.md](./docs/MAINTAINER_HANDOFF.md)
+- [docs/LAUNCH_POSTS.md](./docs/LAUNCH_POSTS.md)
+- [docs/RELEASE_NOTES_v0.1.0.md](./docs/RELEASE_NOTES_v0.1.0.md)
+- [docs/screenshots/README.md](./docs/screenshots/README.md)
+- [CHANGELOG.md](./CHANGELOG.md)
 - [CONTRIBUTING.md](./CONTRIBUTING.md)
 - [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 - [SECURITY.md](./SECURITY.md)

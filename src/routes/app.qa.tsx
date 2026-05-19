@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { PageHeader } from "@/components/ui-bits";
 import { CheckSquare, Square } from "lucide-react";
+import { PROJECT_META } from "@/lib/project-meta";
 
 export const Route = createFileRoute("/app/qa")({
   component: QAPage,
@@ -50,7 +51,7 @@ function QAPage() {
     <div>
       <PageHeader
         title="QA Checklist"
-        description="Internal pre-launch checklist for MaintainerOS maintainers. Stored locally in your browser."
+        description={`Internal pre-launch checklist for MaintainerOS v${PROJECT_META.version}. Stored locally in your browser.`}
       />
       <div className="panel rounded-xl p-2">
         <div className="px-3 py-2 text-xs text-muted-foreground border-b border-border">

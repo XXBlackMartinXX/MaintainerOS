@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { enableDemoMode } from "@/hooks/use-demo-mode";
+import { PROJECT_META } from "@/lib/project-meta";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -86,7 +87,7 @@ function SiteHeader() {
             size="sm"
             className="text-muted-foreground hover:text-foreground"
           >
-            <a href="https://github.com" target="_blank" rel="noreferrer">
+            <a href={PROJECT_META.repoUrl} target="_blank" rel="noreferrer">
               <Github className="size-4" /> Star on GitHub
             </a>
           </Button>
@@ -431,7 +432,7 @@ function CTASection() {
             </Link>
           </Button>
           <Button asChild size="lg" variant="outline">
-            <a href="https://github.com" target="_blank" rel="noreferrer">
+            <a href={PROJECT_META.repoUrl} target="_blank" rel="noreferrer">
               <Eye className="size-4" /> View source
             </a>
           </Button>
@@ -449,12 +450,12 @@ function SiteFooter() {
           <div className="size-6 rounded-md bg-primary/15 text-primary grid place-items-center ring-1 ring-primary/30">
             <Sparkles className="size-3" />
           </div>
-          <span className="font-medium text-foreground">MaintainerOS</span>
-          <span>· MIT licensed</span>
+          <span className="font-medium text-foreground">{PROJECT_META.projectName}</span>
+          <span>· v{PROJECT_META.version} · MIT licensed</span>
         </div>
         <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
           <a
-            href="https://github.com"
+            href={PROJECT_META.repoUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -462,7 +463,7 @@ function SiteFooter() {
             GitHub repository
           </a>
           <a
-            href="https://github.com"
+            href={PROJECT_META.docsUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -473,7 +474,7 @@ function SiteFooter() {
             Trust Center
           </Link>
           <a
-            href="https://github.com"
+            href={PROJECT_META.securityUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -481,7 +482,7 @@ function SiteFooter() {
             Security
           </a>
           <a
-            href="https://github.com"
+            href={PROJECT_META.codeOfConductUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"
@@ -489,7 +490,7 @@ function SiteFooter() {
             Code of Conduct
           </a>
           <a
-            href="https://github.com"
+            href={PROJECT_META.licenseUrl}
             target="_blank"
             rel="noreferrer"
             className="hover:text-foreground"

@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { getGithubWritePermissions } from "@/lib/github-publish.functions";
 import { useDemoMode } from "@/hooks/use-demo-mode";
 import { useProductTour } from "@/hooks/use-product-tour";
+import { PROJECT_META } from "@/lib/project-meta";
 
 export const Route = createFileRoute("/app/settings")({ component: SettingsPage });
 
@@ -194,6 +195,10 @@ function SettingsPage() {
       <p className="mt-4 text-[11px] text-muted-foreground">
         Audit logs and GitHub publish events are retained for the lifetime of the project. There is
         currently no automatic retention rollover.
+      </p>
+
+      <p className="mt-2 text-[11px] text-muted-foreground">
+        MaintainerOS v{PROJECT_META.version} · public preview
       </p>
 
       <div className="mt-6 flex justify-end">

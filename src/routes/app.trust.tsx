@@ -10,6 +10,7 @@ import {
   Ban,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui-bits";
+import { PROJECT_META } from "@/lib/project-meta";
 
 export const Route = createFileRoute("/app/trust")({
   component: TrustPage,
@@ -151,12 +152,17 @@ function TrustPage() {
         </Card>
       </div>
 
-      <div className="mt-6 panel rounded-xl p-4 text-xs text-muted-foreground">
-        Questions? See{" "}
-        <Link to="/app/actions" className="text-primary underline">
-          the AI Action Log
-        </Link>{" "}
-        for every recorded action, or open an issue on the project repository.
+      <div className="mt-6 panel rounded-xl p-4 text-xs text-muted-foreground flex flex-wrap items-center justify-between gap-2">
+        <span>
+          Questions? See{" "}
+          <Link to="/app/actions" className="text-primary underline">
+            the AI Action Log
+          </Link>{" "}
+          for every recorded action, or open an issue on the project repository.
+        </span>
+        <span className="font-mono text-[11px]">
+          {PROJECT_META.projectName} v{PROJECT_META.version}
+        </span>
       </div>
     </div>
   );
