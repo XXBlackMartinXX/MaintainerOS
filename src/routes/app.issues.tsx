@@ -24,6 +24,7 @@ import { DataSourceBadge } from "@/components/data-source-badge";
 import { SyncNowButton } from "@/components/sync-now-button";
 import { EmptyRepositoryState, EmptySyncedDataState } from "@/components/empty-states";
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
+import { useHasSession } from "@/hooks/use-has-session";
 import { fetchIssues, fetchLabels } from "@/lib/github.functions";
 import { triageIssue, listTriageForRepo, updateTriageDraft, getAiStatus } from "@/lib/ai.functions";
 import {
