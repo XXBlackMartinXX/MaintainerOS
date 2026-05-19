@@ -8,7 +8,7 @@ export const PROJECT_META = {
   tagline: "An honest, AI-assisted operations center for open-source maintainers.",
   version: "0.1.0",
 
-  // Replace these with the real public repo URL once the repository is published.
+  // Public repository URLs — already configured.
   repoUrl: "https://github.com/XXBlackMartinXX/MaintainerOS",
   docsUrl: "https://github.com/XXBlackMartinXX/MaintainerOS/tree/main/docs",
   licenseUrl: "https://github.com/XXBlackMartinXX/MaintainerOS/blob/main/LICENSE",
