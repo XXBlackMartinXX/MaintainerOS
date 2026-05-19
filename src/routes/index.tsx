@@ -38,9 +38,13 @@ function Landing() {
       <SiteHeader />
       <Hero />
       <SocialNote />
+      <HowItWorks />
       <Features />
       <UseCases />
+      <ApprovalFirst />
+      <DemoSection />
       <Privacy />
+      <Roadmap />
       <Pricing />
       <CTASection />
       <SiteFooter />
