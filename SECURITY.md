@@ -5,7 +5,10 @@
 If you believe you have found a security vulnerability in MaintainerOS,
 please report it privately. **Do not open a public issue.**
 
-Email: `security@example.com`
+Email: `TODO_SECURITY_CONTACT_EMAIL`
+
+> The repository owner (XXBlackMartinXX) can replace this with a real
+> security contact before accepting security reports.
 
 Please include:
 
