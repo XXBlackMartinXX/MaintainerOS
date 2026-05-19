@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowRight,
   Github,
@@ -12,8 +12,11 @@ import {
   Check,
   Lock,
   Eye,
+  PlayCircle,
+  Map,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { enableDemoMode } from "@/hooks/use-demo-mode";
 
 export const Route = createFileRoute("/")({
   component: Landing,
