@@ -372,11 +372,16 @@ function PullsPage() {
         <SummaryPanel
           pr={selectedPr}
           summary={selectedSummary}
+          perms={permsQ.data}
           onClose={() => setSelectedId(null)}
           onUpdate={async (patch) => {
             await updateFn({ data: { summary_id: selectedSummary.id, ...patch } });
             await qc.invalidateQueries({ queryKey: ["pr-summaries", selected?.id] });
           }}
+          publish={async (allowRepost) =>
+            publishFn({ data: { summary_id: selectedSummary.id, confirm: true, allow_repost: allowRepost } })
+          }
+          listEvents={(id) => listEventsFn({ data: { source_type: "pr_summary", source_id: id } })}
         />
       )}
     </div>
