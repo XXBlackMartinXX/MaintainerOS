@@ -16,6 +16,19 @@ import {
   listReleaseDrafts,
   updateReleaseDraft,
 } from "@/lib/ai-pr.functions";
+import {
+  publishReleaseDraft,
+  getGithubWritePermissions,
+  listPublishEventsForSource,
+} from "@/lib/github-publish.functions";
+import { PublishConfirmDialog } from "@/components/publish-confirm-dialog";
+import {
+  AlreadyPublishedNotice,
+  GitHubPermissionWarning,
+  PublishStatusBadge,
+  getPublishEventForSource,
+} from "@/components/publish-helpers";
+import { Send } from "lucide-react";
 
 export const Route = createFileRoute("/app/changelog")({ component: ChangelogPage });
 
