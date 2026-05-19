@@ -67,7 +67,7 @@ function TrustPage() {
           <p>We never sync private user emails, payment data, or repository secrets.</p>
         </Card>
 
-        <Card icon={Database} title="What is stored in Lovable Cloud">
+        <Card icon={Database} title="What is stored in the backend database">
           <p>
             Synced GitHub data plus AI drafts and audit logs, scoped per repository and protected by
             row-level security.
