@@ -50,6 +50,10 @@ function ChangelogPage() {
   const draftsFn = useServerFn(listReleaseDrafts);
   const updateFn = useServerFn(updateReleaseDraft);
 
+  const permsFn = useServerFn(getGithubWritePermissions);
+  const publishFn = useServerFn(publishReleaseDraft);
+  const listEventsFn = useServerFn(listPublishEventsForSource);
+
   const summariesQ = useQuery({
     queryKey: ["pr-summaries", selected?.id],
     queryFn: () => summariesFn({ data: { repository_id: selected!.id } }),
@@ -60,6 +64,7 @@ function ChangelogPage() {
     queryFn: () => draftsFn({ data: { repository_id: selected!.id } }),
     enabled: !!selected,
   });
+  const permsQ = useQuery({ queryKey: ["github-perms"], queryFn: () => permsFn() });
 
   const summaries = summariesQ.data?.summaries ?? [];
   const approved = summaries.filter((s) => s.approval_status === "approved");
@@ -72,6 +77,8 @@ function ChangelogPage() {
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [generating, setGenerating] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [repost, setRepost] = useState(false);
 
   const active = useMemo(() => drafts.find((d) => d.id === activeId) ?? null, [drafts, activeId]);
 
