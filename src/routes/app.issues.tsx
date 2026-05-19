@@ -6,7 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import {
   Search, MessageSquare, Loader2, Sparkles, X, Copy, Check, XCircle,
-  AlertTriangle, Pencil, Send, Tag, ExternalLink,
+  AlertTriangle, Pencil, Send, Tag,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui-bits";
 import { RepoSelector } from "@/components/repo-selector";
@@ -14,7 +14,7 @@ import { DataSourceBadge } from "@/components/data-source-badge";
 import { SyncNowButton } from "@/components/sync-now-button";
 import { EmptyRepositoryState, EmptySyncedDataState } from "@/components/empty-states";
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
-import { fetchIssues } from "@/lib/github.functions";
+import { fetchIssues, fetchLabels } from "@/lib/github.functions";
 import { triageIssue, listTriageForRepo, updateTriageDraft, getAiStatus } from "@/lib/ai.functions";
 import {
   publishIssueComment,
@@ -23,6 +23,13 @@ import {
   listPublishEventsForSource,
 } from "@/lib/github-publish.functions";
 import { PublishConfirmDialog } from "@/components/publish-confirm-dialog";
+import {
+  AlreadyPublishedNotice,
+  GitHubPermissionWarning,
+  PublishStatusBadge,
+  getPublishEventForSource,
+  type PublishEvent,
+} from "@/components/publish-helpers";
 import type { TriageResult } from "@/lib/ai/schemas";
 
 export const Route = createFileRoute("/app/issues")({ component: IssuesPage });
@@ -65,6 +72,7 @@ function IssuesPage() {
   const { selected, hasConnectedRepo, isLoading: reposLoading } = useSelectedRepo();
   const qc = useQueryClient();
   const fetchIssuesFn = useServerFn(fetchIssues);
+  const fetchLabelsFn = useServerFn(fetchLabels);
   const listTriageFn = useServerFn(listTriageForRepo);
   const triageFn = useServerFn(triageIssue);
   const updateTriageFn = useServerFn(updateTriageDraft);
@@ -87,6 +95,12 @@ function IssuesPage() {
   const issuesQ = useQuery({
     queryKey: ["issues", selected?.id],
     queryFn: () => fetchIssuesFn({ data: { repository_id: selected!.id } }),
+    enabled: !!selected,
+  });
+
+  const repoLabelsQ = useQuery({
+    queryKey: ["repo-labels", selected?.id],
+    queryFn: () => fetchLabelsFn({ data: { repository_id: selected!.id } }),
     enabled: !!selected,
   });
 
@@ -336,18 +350,32 @@ function IssuesPage() {
           onAnalyze={() => runTriage(selectedIssue.id, !!selectedTriage)}
           analyzing={analyzing.has(selectedIssue.id)}
           aiConfigured={aiConfigured}
+          perms={permsQ.data}
+          repoLabels={(repoLabelsQ.data?.labels ?? []).map((l) => l.name)}
           onUpdate={async (payload) => {
             await updateTriageFn({ data: payload });
             await qc.invalidateQueries({ queryKey: ["triage", selected?.id] });
           }}
+          publishComment={async (triageId, allowRepost) =>
+            publishCommentFn({ data: { triage_id: triageId, confirm: true, allow_repost: allowRepost } })
+          }
+          publishLabels={async (triageId, labels) =>
+            publishLabelsFn({ data: { triage_id: triageId, labels, confirm: true } })
+          }
+          listEvents={(sourceId) =>
+            listEventsFn({ data: { source_type: "issue_triage", source_id: sourceId } })
+          }
         />
       )}
     </div>
   );
 }
 
+type PublishResult = { ok: boolean; githubUrl?: string | null; alreadyPosted?: boolean; previousUrl?: string | null };
+
 function TriagePanel({
   issue, triage, onClose, onAnalyze, analyzing, aiConfigured, onUpdate,
+  perms, repoLabels, publishComment, publishLabels, listEvents,
 }: {
   issue: { id: string; number: number; title: string };
   triage: TriageRow | null;
@@ -356,12 +384,54 @@ function TriagePanel({
   analyzing: boolean;
   aiConfigured: boolean;
   onUpdate: (payload: { triage_id: string; suggested_reply?: string; approval_status?: "pending"|"approved"|"edited"|"rejected"; action?: "approve"|"edit"|"reject"|"copy" }) => Promise<void>;
+  perms?: { hasToken: boolean; canCommentIssues: boolean; canManageLabels: boolean; scopes: string[] };
+  repoLabels: string[];
+  publishComment: (triageId: string, allowRepost: boolean) => Promise<PublishResult>;
+  publishLabels: (triageId: string, labels: string[]) => Promise<PublishResult>;
+  listEvents: (sourceId: string) => Promise<{ events: PublishEvent[] }>;
 }) {
   const [reply, setReply] = useState(triage?.suggested_reply ?? "");
   const [editing, setEditing] = useState(false);
   useEffect(() => { setReply(triage?.suggested_reply ?? ""); setEditing(false); }, [triage?.id, triage?.suggested_reply]);
 
+  const eventsQ = useQuery({
+    queryKey: ["publish-events", "issue_triage", triage?.id],
+    queryFn: () => listEvents(triage!.id),
+    enabled: !!triage?.id,
+  });
+  const events = eventsQ.data?.events ?? [];
+  const commentEvent = getPublishEventForSource(
+    events.filter((e) => e.target_type === "issue"),
+    "success",
+  );
+  const labelsEvent = getPublishEventForSource(
+    events.filter((e) => e.target_type === "issue_labels"),
+    "success",
+  );
+
+  const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+  const [commentRepost, setCommentRepost] = useState(false);
+  const [labelDialogOpen, setLabelDialogOpen] = useState(false);
+  const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+  const repoLabelSet = useMemo(() => new Set(repoLabels), [repoLabels]);
+
+  // Preselect safe labels (those already in the repo) on triage change
+  useEffect(() => {
+    const suggested = triage?.result.suggestedLabels ?? [];
+    setSelectedLabels(suggested.filter((l) => repoLabelSet.has(l)));
+  }, [triage?.id, repoLabelSet]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const r = triage?.result;
+  const isApproved = triage && ["approved", "edited"].includes(triage.approval_status);
+  const canPostComment = !!isApproved && !!perms?.canCommentIssues && reply.trim().length > 0;
+  const canApplyLabels = !!isApproved && !!perms?.canManageLabels && selectedLabels.length > 0;
+  const missingSuggested = (r?.suggestedLabels ?? []).filter((l) => !repoLabelSet.has(l));
+
+  function toggleLabel(name: string) {
+    setSelectedLabels((prev) =>
+      prev.includes(name) ? prev.filter((p) => p !== name) : [...prev, name],
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-40 flex justify-end" onClick={onClose}>
@@ -396,6 +466,7 @@ function TriagePanel({
               <div className="flex items-center gap-2 flex-wrap">
                 <Chip className="border-primary/30 bg-primary/10 text-primary">AI draft · {triage.model}</Chip>
                 <Chip className="border-border bg-surface text-muted-foreground">status: {triage.approval_status}</Chip>
+                {commentEvent && <PublishStatusBadge status="success" />}
               </div>
 
               <Section title="Summary"><p className="text-sm">{r.summary || "—"}</p></Section>
@@ -410,14 +481,6 @@ function TriagePanel({
                 <Field label="Sentiment" value={r.sentiment} />
                 <Field label="Action needed" value={r.maintainerActionNeeded ? "Yes" : "No"} />
               </div>
-
-              {r.suggestedLabels.length > 0 && (
-                <Section title="Suggested labels">
-                  <div className="flex flex-wrap gap-1.5">
-                    {r.suggestedLabels.map((l) => <span key={l} className="rounded-full border border-border bg-surface px-2 py-0.5 text-[11px]">{l}</span>)}
-                  </div>
-                </Section>
-              )}
 
               <Section title="Recommended next action">
                 <p className="text-sm">{r.recommendedNextAction || "—"}</p>
@@ -454,12 +517,125 @@ function TriagePanel({
                 </div>
               </Section>
 
+              {/* Publish to GitHub */}
+              <Section title="Publish to GitHub">
+                {!isApproved && (
+                  <p className="text-xs text-muted-foreground">Approve or edit the draft to enable publishing.</p>
+                )}
+                {isApproved && perms && !perms.canCommentIssues && (
+                  <GitHubPermissionWarning missing="post issue comments" hasToken={perms.hasToken} />
+                )}
+                {commentEvent && (
+                  <div className="mb-2">
+                    <AlreadyPublishedNotice
+                      event={commentEvent}
+                      onRepublish={() => { setCommentRepost(true); setCommentDialogOpen(true); }}
+                    />
+                  </div>
+                )}
+                <button
+                  onClick={() => { setCommentRepost(!!commentEvent); setCommentDialogOpen(true); }}
+                  disabled={!canPostComment}
+                  className="inline-flex items-center gap-1.5 rounded-md bg-primary text-primary-foreground px-3 py-1.5 text-xs font-medium disabled:opacity-50"
+                >
+                  <Send className="size-3" /> {commentEvent ? "Post reply again to GitHub" : "Post reply to GitHub"}
+                </button>
+              </Section>
+
+              {/* Labels */}
+              {r.suggestedLabels.length > 0 && (
+                <Section title="Suggested labels">
+                  <div className="flex flex-wrap gap-1.5 mb-2">
+                    {r.suggestedLabels.map((l) => {
+                      const exists = repoLabelSet.has(l);
+                      const active = selectedLabels.includes(l);
+                      return (
+                        <button
+                          key={l}
+                          onClick={() => exists && toggleLabel(l)}
+                          disabled={!exists}
+                          className={`rounded-full border px-2 py-0.5 text-[11px] transition-colors ${
+                            active
+                              ? "border-primary/50 bg-primary/15 text-primary"
+                              : exists
+                                ? "border-border bg-surface hover:bg-accent"
+                                : "border-warning/40 bg-warning/10 text-warning cursor-not-allowed"
+                          }`}
+                          title={exists ? "Click to toggle" : "Label does not exist in this repo"}
+                        >
+                          <Tag className="size-2.5 inline mr-1" />
+                          {l}{!exists && " (missing)"}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {missingSuggested.length > 0 && (
+                    <p className="text-[11px] text-warning mb-2">
+                      {missingSuggested.length} suggested label{missingSuggested.length === 1 ? "" : "s"} don't exist in this repo. MaintainerOS will not create new labels automatically.
+                    </p>
+                  )}
+                  {isApproved && perms && !perms.canManageLabels && (
+                    <GitHubPermissionWarning missing="manage labels" hasToken={perms.hasToken} />
+                  )}
+                  {labelsEvent && (
+                    <div className="mb-2">
+                      <AlreadyPublishedNotice
+                        event={labelsEvent}
+                        republishLabel="Apply labels again"
+                        onRepublish={() => setLabelDialogOpen(true)}
+                      />
+                    </div>
+                  )}
+                  <button
+                    onClick={() => setLabelDialogOpen(true)}
+                    disabled={!canApplyLabels}
+                    className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent disabled:opacity-50"
+                  >
+                    <Tag className="size-3" /> Apply selected labels ({selectedLabels.length})
+                  </button>
+                </Section>
+              )}
+
               {r.riskNotes.length > 0 && <Section title="Risk notes"><ul className="list-disc pl-5 text-sm space-y-1">{r.riskNotes.map((n, i) => <li key={i}>{n}</li>)}</ul></Section>}
               {r.safetyNotes.length > 0 && <Section title="Safety notes (review recommended)"><ul className="list-disc pl-5 text-sm space-y-1 text-warning">{r.safetyNotes.map((n, i) => <li key={i}>{n}</li>)}</ul></Section>}
 
               <button onClick={onAnalyze} disabled={!aiConfigured || analyzing} className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3 py-1.5 text-xs hover:bg-accent disabled:opacity-50">
                 {analyzing ? <Loader2 className="size-3 animate-spin" /> : <Sparkles className="size-3" />} Reanalyze
               </button>
+
+              <PublishConfirmDialog
+                open={commentDialogOpen}
+                onOpenChange={(v) => { setCommentDialogOpen(v); if (!v) setCommentRepost(false); }}
+                kind="issue_comment"
+                previousUrl={commentRepost ? commentEvent?.github_url : null}
+                preview={<pre className="whitespace-pre-wrap font-mono text-xs">{reply}</pre>}
+                onConfirm={async () => {
+                  const res = await publishComment(triage.id, commentRepost);
+                  await eventsQ.refetch();
+                  return res;
+                }}
+              />
+              <PublishConfirmDialog
+                open={labelDialogOpen}
+                onOpenChange={setLabelDialogOpen}
+                kind="issue_labels"
+                previousUrl={labelsEvent ? labelsEvent.github_url : null}
+                preview={
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedLabels.map((l) => (
+                      <span key={l} className="rounded-full border border-primary/40 bg-primary/10 text-primary px-2 py-0.5 text-[11px]">
+                        {l}
+                      </span>
+                    ))}
+                  </div>
+                }
+                disabled={selectedLabels.length === 0}
+                onConfirm={async () => {
+                  const res = await publishLabels(triage.id, selectedLabels);
+                  await eventsQ.refetch();
+                  return res;
+                }}
+              />
             </>
             )
           )}

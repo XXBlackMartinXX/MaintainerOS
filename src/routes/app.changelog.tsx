@@ -16,6 +16,19 @@ import {
   listReleaseDrafts,
   updateReleaseDraft,
 } from "@/lib/ai-pr.functions";
+import {
+  publishReleaseDraft,
+  getGithubWritePermissions,
+  listPublishEventsForSource,
+} from "@/lib/github-publish.functions";
+import { PublishConfirmDialog } from "@/components/publish-confirm-dialog";
+import {
+  AlreadyPublishedNotice,
+  GitHubPermissionWarning,
+  PublishStatusBadge,
+  getPublishEventForSource,
+} from "@/components/publish-helpers";
+import { Send } from "lucide-react";
 
 export const Route = createFileRoute("/app/changelog")({ component: ChangelogPage });
 
@@ -37,6 +50,10 @@ function ChangelogPage() {
   const draftsFn = useServerFn(listReleaseDrafts);
   const updateFn = useServerFn(updateReleaseDraft);
 
+  const permsFn = useServerFn(getGithubWritePermissions);
+  const publishFn = useServerFn(publishReleaseDraft);
+  const listEventsFn = useServerFn(listPublishEventsForSource);
+
   const summariesQ = useQuery({
     queryKey: ["pr-summaries", selected?.id],
     queryFn: () => summariesFn({ data: { repository_id: selected!.id } }),
@@ -47,6 +64,7 @@ function ChangelogPage() {
     queryFn: () => draftsFn({ data: { repository_id: selected!.id } }),
     enabled: !!selected,
   });
+  const permsQ = useQuery({ queryKey: ["github-perms"], queryFn: () => permsFn() });
 
   const summaries = summariesQ.data?.summaries ?? [];
   const approved = summaries.filter((s) => s.approval_status === "approved");
@@ -59,8 +77,18 @@ function ChangelogPage() {
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [generating, setGenerating] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [repost, setRepost] = useState(false);
 
   const active = useMemo(() => drafts.find((d) => d.id === activeId) ?? null, [drafts, activeId]);
+
+  const eventsQ = useQuery({
+    queryKey: ["publish-events", "release_draft", active?.id],
+    queryFn: () => listEventsFn({ data: { source_type: "release_draft", source_id: active!.id } }),
+    enabled: !!active?.id,
+  });
+  const event = getPublishEventForSource(eventsQ.data?.events, "success");
+  const canPublish = !!active && active.status === "approved" && !!permsQ.data?.canCreateReleases && !!body && !!version;
 
   useEffect(() => {
     if (active) {
@@ -238,8 +266,50 @@ function ChangelogPage() {
                 >
                   <Check className="size-3.5" /> Approve
                 </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={!canPublish}
+                  onClick={() => { setRepost(!!event); setPublishOpen(true); }}
+                >
+                  <Send className="size-3.5" /> {event ? "Create draft again" : "Create GitHub release draft"}
+                </Button>
+                {event && <PublishStatusBadge status="success" />}
               </div>
             </div>
+            {active && active.status === "approved" && permsQ.data && !permsQ.data.canCreateReleases && (
+              <div className="px-4 pt-3">
+                <GitHubPermissionWarning missing="create releases" hasToken={permsQ.data.hasToken} />
+              </div>
+            )}
+            {event && (
+              <div className="px-4 pt-3">
+                <AlreadyPublishedNotice
+                  event={event}
+                  republishLabel="Create draft again"
+                  onRepublish={() => { setRepost(true); setPublishOpen(true); }}
+                />
+              </div>
+            )}
+            <PublishConfirmDialog
+              open={publishOpen}
+              onOpenChange={(v) => { setPublishOpen(v); if (!v) setRepost(false); }}
+              kind="release_draft"
+              previousUrl={repost ? event?.github_url : null}
+              preview={
+                <div className="space-y-2 text-xs">
+                  <div><span className="text-muted-foreground">Tag:</span> <span className="font-mono">{version.startsWith("v") ? version : `v${version}`}</span></div>
+                  <div><span className="text-muted-foreground">Title:</span> {title || "(empty)"}</div>
+                  <pre className="whitespace-pre-wrap font-mono text-xs mt-2 border-t border-border pt-2">{body}</pre>
+                </div>
+              }
+              onConfirm={async () => {
+                if (!active) return { ok: false };
+                const res = await publishFn({ data: { draft_id: active.id, confirm: true, allow_repost: repost } });
+                await eventsQ.refetch();
+                return res;
+              }}
+            />
             <textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}

@@ -29,6 +29,21 @@ import {
   listPrSummariesForRepo,
   updatePrSummaryDraft,
 } from "@/lib/ai-pr.functions";
+import {
+  publishPrSummary,
+  formatPrSummaryComment,
+  getGithubWritePermissions,
+  listPublishEventsForSource,
+} from "@/lib/github-publish.functions";
+import { PublishConfirmDialog } from "@/components/publish-confirm-dialog";
+import {
+  AlreadyPublishedNotice,
+  GitHubPermissionWarning,
+  PublishStatusBadge,
+  getPublishEventForSource,
+  type PublishEvent,
+} from "@/components/publish-helpers";
+import { Send } from "lucide-react";
 
 export const Route = createFileRoute("/app/pulls")({ component: PullsPage });
 
@@ -52,6 +67,11 @@ function PullsPage() {
   const listFn = useServerFn(listPrSummariesForRepo);
   const summarizeFn = useServerFn(summarizePullRequest);
   const updateFn = useServerFn(updatePrSummaryDraft);
+  const permsFn = useServerFn(getGithubWritePermissions);
+  const publishFn = useServerFn(publishPrSummary);
+  const listEventsFn = useServerFn(listPublishEventsForSource);
+
+  const permsQ = useQuery({ queryKey: ["github-perms"], queryFn: () => permsFn() });
 
   const pullsQ = useQuery({
     queryKey: ["pulls", selected?.id],
@@ -352,11 +372,16 @@ function PullsPage() {
         <SummaryPanel
           pr={selectedPr}
           summary={selectedSummary}
+          perms={permsQ.data}
           onClose={() => setSelectedId(null)}
           onUpdate={async (patch) => {
             await updateFn({ data: { summary_id: selectedSummary.id, ...patch } });
             await qc.invalidateQueries({ queryKey: ["pr-summaries", selected?.id] });
           }}
+          publish={async (allowRepost) =>
+            publishFn({ data: { summary_id: selectedSummary.id, confirm: true, allow_repost: allowRepost } })
+          }
+          listEvents={(id) => listEventsFn({ data: { source_type: "pr_summary", source_id: id } })}
         />
       )}
     </div>
@@ -368,6 +393,9 @@ function SummaryPanel({
   summary,
   onClose,
   onUpdate,
+  perms,
+  publish,
+  listEvents,
 }: {
   pr: { id: string; number: number; title: string };
   summary: SummaryRow;
@@ -377,12 +405,33 @@ function SummaryPanel({
     approval_status?: "pending" | "approved" | "edited" | "rejected";
     action?: "approve" | "edit" | "reject" | "copy";
   }) => Promise<void>;
+  perms?: { hasToken: boolean; canCommentPulls: boolean; scopes: string[] };
+  publish: (allowRepost: boolean) => Promise<{ ok: boolean; githubUrl?: string | null; alreadyPosted?: boolean; previousUrl?: string | null }>;
+  listEvents: (id: string) => Promise<{ events: PublishEvent[] }>;
 }) {
   const r = summary.result as Record<string, unknown>;
   const [note, setNote] = useState(summary.release_note_candidate ?? String(r.releaseNoteCandidate ?? ""));
   const [saving, setSaving] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [repost, setRepost] = useState(false);
 
   const arr = (k: string) => (Array.isArray(r[k]) ? (r[k] as string[]) : []);
+
+  const eventsQ = useQuery({
+    queryKey: ["publish-events", "pr_summary", summary.id],
+    queryFn: () => listEvents(summary.id),
+  });
+  const event = getPublishEventForSource(eventsQ.data?.events, "success");
+
+  const isApproved = ["approved", "edited"].includes(summary.approval_status);
+  const previewMd = formatPrSummaryComment({
+    plainEnglishSummary: typeof r.plainEnglishSummary === "string" ? r.plainEnglishSummary : undefined,
+    suggestedReviewFocus: arr("suggestedReviewFocus"),
+    testingNotes: arr("testingNotes"),
+    securityNotes: arr("securityNotes"),
+    missingContext: arr("missingContext"),
+  });
+  const canPost = isApproved && !!perms?.canCommentPulls && previewMd.trim().length > 0;
 
   async function act(action: "approve" | "edit" | "reject" | "copy", status?: "approved" | "edited" | "rejected") {
     setSaving(true);
@@ -467,9 +516,48 @@ function SummaryPanel({
               <Copy className="size-3.5" /> Copy release note
             </Button>
           </div>
+
+          <div className="pt-2 border-t border-border space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="text-[11px] uppercase tracking-wide text-muted-foreground">Publish to GitHub</div>
+              {event && <PublishStatusBadge status="success" />}
+            </div>
+            {!isApproved && <p className="text-xs text-muted-foreground">Approve or edit this summary to enable publishing.</p>}
+            {isApproved && perms && !perms.canCommentPulls && (
+              <GitHubPermissionWarning missing="post PR comments" hasToken={perms.hasToken} />
+            )}
+            {event && (
+              <AlreadyPublishedNotice
+                event={event}
+                republishLabel="Post summary again"
+                onRepublish={() => { setRepost(true); setDialogOpen(true); }}
+              />
+            )}
+            <Button
+              size="sm"
+              disabled={!canPost}
+              onClick={() => { setRepost(!!event); setDialogOpen(true); }}
+            >
+              <Send className="size-3.5" /> {event ? "Post summary again to GitHub PR" : "Post summary to GitHub PR"}
+            </Button>
+          </div>
+
           <p className="text-[11px] text-muted-foreground">
-            AI drafts are advisory. Nothing is posted to GitHub automatically.
+            AI drafts are advisory. Nothing is posted to GitHub without your explicit confirmation.
           </p>
+
+          <PublishConfirmDialog
+            open={dialogOpen}
+            onOpenChange={(v) => { setDialogOpen(v); if (!v) setRepost(false); }}
+            kind="pr_comment"
+            previousUrl={repost ? event?.github_url : null}
+            preview={<pre className="whitespace-pre-wrap font-mono text-xs">{previewMd}</pre>}
+            onConfirm={async () => {
+              const res = await publish(repost);
+              await eventsQ.refetch();
+              return res;
+            }}
+          />
         </div>
       </aside>
     </div>
