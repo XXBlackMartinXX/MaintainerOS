@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { enableDemoMode } from "@/hooks/use-demo-mode";
+import { PROJECT_META } from "@/lib/project-meta";
 
 export const Route = createFileRoute("/")({
   component: Landing,
