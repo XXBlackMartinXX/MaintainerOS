@@ -4,24 +4,31 @@ import { TopNav } from "@/components/top-nav";
 import { DemoBanner } from "@/components/demo-banner";
 import { ProductTour } from "@/components/product-tour";
 import { useDemoMode } from "@/hooks/use-demo-mode";
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase, isSupabaseConfigured } from "@/integrations/supabase/safe-client";
 
 export const Route = createFileRoute("/app")({
   beforeLoad: async () => {
     // SSR: skip auth gate, let the client decide.
     if (typeof window === "undefined") return;
-    // Demo-mode visitors are always allowed.
+    // Demo-mode visitors are always allowed — no Supabase needed.
     if (window.localStorage.getItem("mos.demoMode") === "1") return;
+    // If Supabase isn't configured at all, send them to /login which
+    // renders a friendly setup warning instead of crashing the layout.
+    if (!isSupabaseConfigured()) {
+      throw redirect({ to: "/login" });
+    }
+    const sb = getSupabase();
+    if (!sb) {
+      throw redirect({ to: "/login" });
+    }
     try {
-      const { data } = await supabase.auth.getSession();
+      const { data } = await sb.auth.getSession();
       if (!data.session) {
         throw redirect({ to: "/login" });
       }
     } catch (err) {
-      // Re-throw router redirects; swallow Supabase init errors so a missing
-      // backend doesn't blank the whole app — surface a friendly state instead.
       if (err && typeof err === "object" && "isRedirect" in err) throw err;
-      console.error("[app] auth check failed; redirecting to /login", err);
+      console.error("[app] auth check failed; redirecting to /login");
       throw redirect({ to: "/login" });
     }
   },
