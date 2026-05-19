@@ -274,6 +274,54 @@ export type Database = {
         }
         Relationships: []
       }
+      pull_request_ai_summaries: {
+        Row: {
+          approval_status: string
+          created_at: string
+          id: string
+          input_body_snapshot: string | null
+          input_metadata_snapshot: Json
+          input_title_snapshot: string
+          model: string
+          pull_request_id: string
+          release_note_candidate: string | null
+          repository_id: string
+          result: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_status?: string
+          created_at?: string
+          id?: string
+          input_body_snapshot?: string | null
+          input_metadata_snapshot?: Json
+          input_title_snapshot: string
+          model: string
+          pull_request_id: string
+          release_note_candidate?: string | null
+          repository_id: string
+          result?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_status?: string
+          created_at?: string
+          id?: string
+          input_body_snapshot?: string | null
+          input_metadata_snapshot?: Json
+          input_title_snapshot?: string
+          model?: string
+          pull_request_id?: string
+          release_note_candidate?: string | null
+          repository_id?: string
+          result?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       pull_requests: {
         Row: {
           additions: number | null
@@ -341,6 +389,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      release_drafts: {
+        Row: {
+          body_markdown: string
+          created_at: string
+          id: string
+          repository_id: string
+          result: Json
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+          version: string
+        }
+        Insert: {
+          body_markdown?: string
+          created_at?: string
+          id?: string
+          repository_id: string
+          result?: Json
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+          version?: string
+        }
+        Update: {
+          body_markdown?: string
+          created_at?: string
+          id?: string
+          repository_id?: string
+          result?: Json
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+          version?: string
+        }
+        Relationships: []
       }
       repositories: {
         Row: {
