@@ -2,10 +2,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Github, ShieldCheck, ShieldAlert, Loader2 } from "lucide-react";
+import { Github, ShieldCheck, ShieldAlert, Loader2, Sparkles, PlayCircle, AlertTriangle } from "lucide-react";
 import { PageHeader, DemoBadge } from "@/components/ui-bits";
 import { Button } from "@/components/ui/button";
 import { getGithubWritePermissions } from "@/lib/github-publish.functions";
+import { useDemoMode } from "@/hooks/use-demo-mode";
+import { useProductTour } from "@/hooks/use-product-tour";
 
 export const Route = createFileRoute("/app/settings")({ component: SettingsPage });
 
@@ -13,9 +15,12 @@ function SettingsPage() {
   const [tone, setTone] = useState("friendly");
   const [sensitivity, setSensitivity] = useState("balanced");
   const [autoDraft, setAutoDraft] = useState(true);
+  const [writesEnabled, setWritesEnabled] = useState(true);
   const [labels, setLabels] = useState("bug, enhancement, docs, good-first-issue");
+  const { enabled: demo, setDemo } = useDemoMode();
+  const { restart: restartTour } = useProductTour();
   const permsFn = useServerFn(getGithubWritePermissions);
-  const permsQ = useQuery({ queryKey: ["github-perms"], queryFn: () => permsFn() });
+  const permsQ = useQuery({ queryKey: ["github-perms"], queryFn: () => permsFn(), enabled: !demo });
   const perms = permsQ.data;
 
   return (
