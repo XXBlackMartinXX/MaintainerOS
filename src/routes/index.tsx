@@ -154,15 +154,15 @@ function HeroPreview() {
             <div className="col-span-12 sm:col-span-9 p-4 space-y-3">
               <div className="text-xs text-muted-foreground">AI triage queue · 5 issues</div>
               {[
-                { t: "Memory leak when streaming large payloads", s: "high", p: "P1" },
-                { t: "Add TypeScript generics to createClient<T>", s: "low", p: "P2" },
-                { t: "Possible prototype pollution in config merge", s: "critical", p: "P0" },
+                { n: 1284, t: "Memory leak when streaming large payloads", s: "high", p: "P1" },
+                { n: 1271, t: "Add TypeScript generics to createClient<T>", s: "low", p: "P2" },
+                { n: 1269, t: "Possible prototype pollution in config merge", s: "critical", p: "P0" },
               ].map((row) => (
                 <div
                   key={row.t}
                   className="flex items-center gap-3 rounded-md border border-border bg-surface px-3 py-2 text-xs"
                 >
-                  <span className="font-mono text-muted-foreground">#{Math.floor(1200 + Math.random() * 90)}</span>
+                  <span className="font-mono text-muted-foreground">#{row.n}</span>
                   <span className="flex-1 truncate text-foreground">{row.t}</span>
                   <span className="rounded border border-border-strong px-1.5 py-0.5 font-mono text-muted-foreground">
                     {row.p}
