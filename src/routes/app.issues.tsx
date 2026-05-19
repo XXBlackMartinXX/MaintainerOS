@@ -94,14 +94,18 @@ function IssuesPage() {
   const publishLabelsFn = useServerFn(publishIssueLabels);
   const listEventsFn = useServerFn(listPublishEventsForSource);
 
+  const hasSession = useHasSession();
+
   const aiStatusQ = useQuery({
     queryKey: ["ai-status"],
     queryFn: () => aiStatusFn(),
+    enabled: hasSession === true,
   });
 
   const permsQ = useQuery({
     queryKey: ["github-perms"],
     queryFn: () => permsFn(),
+    enabled: hasSession === true,
   });
 
   const issuesQ = useQuery({
