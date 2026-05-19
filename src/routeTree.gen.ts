@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SetupRouteImport } from './routes/setup'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DemoRouteImport } from './routes/demo'
@@ -31,6 +32,11 @@ import { Route as AppContributorsRouteImport } from './routes/app.contributors'
 import { Route as AppChangelogRouteImport } from './routes/app.changelog'
 import { Route as AppActionsRouteImport } from './routes/app.actions'
 
+const SetupRoute = SetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
@@ -143,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/demo': typeof DemoRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/setup': typeof SetupRoute
   '/app/actions': typeof AppActionsRoute
   '/app/changelog': typeof AppChangelogRoute
   '/app/contributors': typeof AppContributorsRoute
@@ -165,6 +172,7 @@ export interface FileRoutesByTo {
   '/demo': typeof DemoRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/setup': typeof SetupRoute
   '/app/actions': typeof AppActionsRoute
   '/app/changelog': typeof AppChangelogRoute
   '/app/contributors': typeof AppContributorsRoute
@@ -189,6 +197,7 @@ export interface FileRoutesById {
   '/demo': typeof DemoRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/setup': typeof SetupRoute
   '/app/actions': typeof AppActionsRoute
   '/app/changelog': typeof AppChangelogRoute
   '/app/contributors': typeof AppContributorsRoute
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
     | '/demo'
     | '/login'
     | '/onboarding'
+    | '/setup'
     | '/app/actions'
     | '/app/changelog'
     | '/app/contributors'
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/demo'
     | '/login'
     | '/onboarding'
+    | '/setup'
     | '/app/actions'
     | '/app/changelog'
     | '/app/contributors'
@@ -259,6 +270,7 @@ export interface FileRouteTypes {
     | '/demo'
     | '/login'
     | '/onboarding'
+    | '/setup'
     | '/app/actions'
     | '/app/changelog'
     | '/app/contributors'
@@ -283,11 +295,19 @@ export interface RootRouteChildren {
   DemoRoute: typeof DemoRoute
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
+  SetupRoute: typeof SetupRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/setup': {
+      id: '/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof SetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
@@ -482,6 +502,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoRoute: DemoRoute,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
+  SetupRoute: SetupRoute,
   AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
