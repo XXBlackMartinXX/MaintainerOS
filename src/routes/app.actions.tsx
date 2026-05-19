@@ -7,6 +7,7 @@ import { Loader2, ChevronRight, X, Github, ExternalLink, ChevronDown } from "luc
 import { PageHeader } from "@/components/ui-bits";
 import { listAuditLogs } from "@/lib/ai.functions";
 import { getPublishEventForAudit } from "@/lib/github-publish.functions";
+import { useHasSession } from "@/hooks/use-has-session";
 
 export const Route = createFileRoute("/app/actions")({ component: ActionsPage });
 
