@@ -21,7 +21,7 @@ const STEPS = ["Connect GitHub", "Choose repositories", "Enable AI features", "M
 function Onboarding() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
-  const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [selected, setSelected] = useState(() => new Set<number>());
   const [connecting, setConnecting] = useState(false);
   const listRepos = useServerFn(listGithubRepos);
   const connect = useServerFn(connectRepositories);
