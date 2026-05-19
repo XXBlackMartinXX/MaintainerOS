@@ -89,17 +89,6 @@ function Onboarding() {
                 </p>
               </div>
             )}
-            {step === 1 && (
-              <ul className="space-y-2">
-                {["acme/atlas", "acme/lumen", "acme/prism-ui"].map((r) => (
-                  <li key={r} className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm">
-                    <input type="checkbox" defaultChecked className="size-4 accent-primary" />
-                    <Github className="size-3.5 text-muted-foreground" />
-                    <span>{r}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
             {step === 2 && (
               <ul className="space-y-2">
                 {["Issue triage", "PR summaries", "Changelog generation", "Documentation suggestions", "Security analysis"].map((f) => (
