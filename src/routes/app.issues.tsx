@@ -72,6 +72,7 @@ function IssuesPage() {
   const { selected, hasConnectedRepo, isLoading: reposLoading } = useSelectedRepo();
   const qc = useQueryClient();
   const fetchIssuesFn = useServerFn(fetchIssues);
+  const fetchLabelsFn = useServerFn(fetchLabels);
   const listTriageFn = useServerFn(listTriageForRepo);
   const triageFn = useServerFn(triageIssue);
   const updateTriageFn = useServerFn(updateTriageDraft);
@@ -94,6 +95,12 @@ function IssuesPage() {
   const issuesQ = useQuery({
     queryKey: ["issues", selected?.id],
     queryFn: () => fetchIssuesFn({ data: { repository_id: selected!.id } }),
+    enabled: !!selected,
+  });
+
+  const repoLabelsQ = useQuery({
+    queryKey: ["repo-labels", selected?.id],
+    queryFn: () => fetchLabelsFn({ data: { repository_id: selected!.id } }),
     enabled: !!selected,
   });
 
