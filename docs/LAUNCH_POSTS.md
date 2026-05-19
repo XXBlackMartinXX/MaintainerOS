@@ -1,8 +1,7 @@
 # Launch post drafts
 
 Honest, cautious copy for the v0.1.0 public preview. **No fake traction, no
-"production proven" claims, no invented users or stars.** Edit before
-posting; replace `https://github.com/XXBlackMartinXX/MaintainerOS` with the real URL.
+"production proven" claims, no invented users or stars.**
 
 ---
 
