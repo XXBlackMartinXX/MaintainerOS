@@ -7,8 +7,8 @@ please report it privately. **Do not open a public issue.**
 
 Email: `TODO_SECURITY_CONTACT_EMAIL`
 
-> The repository owner (XXBlackMartinXX) can replace this with a real
-> security contact before accepting security reports.
+> The repository owner should replace this placeholder with a real security
+> contact before accepting vulnerability reports.
 
 Please include:
 
