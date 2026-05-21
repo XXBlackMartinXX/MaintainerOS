@@ -127,7 +127,8 @@ For the full step-by-step walkthrough, see
 5. Create a GitHub OAuth App at <https://github.com/settings/developers>.
 6. Set the OAuth App **Authorization callback URL** to the value shown in
    Supabase Auth → Providers → GitHub
-   (`https://<project-ref>.supabase.co/auth/v1/callback`).
+   (`https://<your-supabase-project-ref>.supabase.co/auth/v1/callback`).
+   The exact callback URL can also be copied from `/setup`.
 7. In Supabase Auth → Providers → GitHub, enable the provider and paste the
    GitHub OAuth Client ID and Client Secret.
 8. In Supabase Auth → URL Configuration, add your deployed app URL and
@@ -175,10 +176,10 @@ Prompts include only the relevant issue / PR / repository context, every
 response is validated with a Zod schema, and every call is written to the
 audit log with model, action, and outcome.
 
-The current implementation expects `LOVABLE_API_KEY` for the managed AI
-gateway. Set it in your hosting environment's server secrets. If it is
-missing, AI generation buttons are disabled in the UI and a configuration
-warning is shown instead of placeholder output.
+The current implementation expects `LOVABLE_API_KEY` as the server-side key
+for the managed AI gateway. Set it in your hosting environment's server
+secrets. If it is missing, AI generation buttons are disabled in the UI and a
+configuration warning is shown instead of placeholder output.
 
 See [`docs/AI_SAFETY.md`](./docs/AI_SAFETY.md) for the safety policy that
 governs every AI prompt.
