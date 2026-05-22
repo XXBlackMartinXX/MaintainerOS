@@ -231,3 +231,5 @@ file security reports as public GitHub issues.
 ## License
 
 [MIT](./LICENSE)
+
+MaintainerOS is currently an initial public preview.
