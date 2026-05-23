@@ -234,3 +234,5 @@ file security reports as public GitHub issues.
 [MIT](./LICENSE)
 
 MaintainerOS is currently an initial public preview.
+
+MaintainerOS is currently an initial public preview and should be reviewed carefully before production use.
