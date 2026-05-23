@@ -128,7 +128,8 @@ For the full step-by-step walkthrough, see
 6. Set the OAuth App **Authorization callback URL** to the value shown in
    Supabase Auth → Providers → GitHub
    (`https://<your-supabase-project-ref>.supabase.co/auth/v1/callback`).
-   The exact callback URL can also be copied from `/setup`.
+   The exact Supabase callback URL can be copied from `/setup` after
+   `VITE_SUPABASE_URL` is configured.
 7. In Supabase Auth → Providers → GitHub, enable the provider and paste the
    GitHub OAuth Client ID and Client Secret.
 8. In Supabase Auth → URL Configuration, add your deployed app URL and
