@@ -26,7 +26,7 @@ repetitive operational work:
 The cost of low-quality maintainer output is high: bad triage replies
 erode contributor trust, hasty PR comments cause regressions, and
 neglected documentation discourages first-time contributors. Tools that
-reduce this load *without* removing the human from the loop have
+reduce this load _without_ removing the human from the loop have
 outsized leverage on the open-source ecosystem.
 
 ## Who benefits

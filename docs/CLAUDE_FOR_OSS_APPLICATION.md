@@ -37,7 +37,7 @@ poorly with project size:
 - **Repository readiness and security hygiene.** SECURITY.md,
   CONTRIBUTING.md, CODE_OF_CONDUCT.md, and release process documents are
   uneven across projects.
-- **Need for *safe* AI assistance.** Existing tools either fully automate
+- **Need for _safe_ AI assistance.** Existing tools either fully automate
   these actions (and post low-quality output to real issues) or do not
   exist at all. Maintainers cannot afford an AI that acts on their
   behalf without review.
