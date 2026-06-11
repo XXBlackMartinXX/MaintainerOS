@@ -38,8 +38,7 @@ describe("RLS static policy checks (Option B)", () => {
 
     // github_publish_events has no INSERT policy
     const publishInserts = parsed.policies.filter(
-      (p) =>
-        p.table === "github_publish_events" && (p.command === "INSERT" || p.command === "ALL"),
+      (p) => p.table === "github_publish_events" && (p.command === "INSERT" || p.command === "ALL"),
     );
     expect(publishInserts).toHaveLength(0);
 

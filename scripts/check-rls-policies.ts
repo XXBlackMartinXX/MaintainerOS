@@ -16,7 +16,9 @@ const parsed = parseMigrations(files);
 const issues = runChecks(parsed);
 
 if (issues.length === 0) {
-  console.log(`OK — RLS policy checks passed (${files.length} migrations, ${parsed.policies.length} policies).`);
+  console.log(
+    `OK — RLS policy checks passed (${files.length} migrations, ${parsed.policies.length} policies).`,
+  );
   process.exit(0);
 }
 

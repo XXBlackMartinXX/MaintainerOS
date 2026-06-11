@@ -17,6 +17,7 @@ These checks require two authenticated test users (User A, User B) and at least 
 For each row, expected behavior is "denied" via PostgREST returning `[]` (RLS hides the row) or a permission error.
 
 ### User isolation
+
 - [ ] User B `select * from profiles where id = <UserA.id>` → returns no rows.
 - [ ] User B `update settings set ai_tone='x' where user_id = <UserA.id>` → 0 rows updated.
 - [ ] User B `select * from audit_logs where user_id = <UserA.id>` → returns no rows.
@@ -24,6 +25,7 @@ For each row, expected behavior is "denied" via PostgREST returning `[]` (RLS hi
 - [ ] User B `select * from github_publish_events where user_id = <UserA.id>` → returns no rows.
 
 ### Repo isolation
+
 - [ ] User B `select * from repositories where id = <UserA.repo>` → returns no rows.
 - [ ] User B `select * from issues where repository_id = <UserA.repo>` → returns no rows.
 - [ ] User B `select * from pull_requests where repository_id = <UserA.repo>` → returns no rows.
@@ -34,16 +36,19 @@ For each row, expected behavior is "denied" via PostgREST returning `[]` (RLS hi
 - [ ] User B `insert into release_drafts` for UserA's repo → denied.
 
 ### Draft tables — no client-side approval
+
 - [ ] User A `update issue_triage_results set approval_status='approved'` directly via PostgREST → denied (no UPDATE policy).
 - [ ] Same for `documentation_drafts`, `pull_request_ai_summaries`, `release_drafts`.
 - [ ] Approval succeeds only via the server function (which uses the service-role client + ownership check).
 
 ### Token isolation
+
 - [ ] User A `select * from user_github_tokens` (authenticated PostgREST) → empty / permission denied.
 - [ ] User B same as above → empty / permission denied.
 - [ ] Any server function that returns token-related data never includes `access_token` or `refresh_token` in its response payload (grep + manual review).
 
 ### Publish events
+
 - [ ] User A `insert into github_publish_events (...)` via authenticated PostgREST → denied (no INSERT policy).
 - [ ] Events appear only after a server-mediated approve-then-publish flow.
 
@@ -57,6 +62,7 @@ For each row, expected behavior is "denied" via PostgREST returning `[]` (RLS hi
 ## Future work — Option A
 
 A future phase should add:
+
 - A `docker-compose.yml` (or Supabase CLI) bringing up Postgres + PostgREST + GoTrue.
 - A `tests/rls/` suite running through `@supabase/supabase-js` with two anon JWTs signed using the local Auth secret.
 - A CI job gated to non-PRs from forks (to avoid leaking the local-only JWT secret to forks).

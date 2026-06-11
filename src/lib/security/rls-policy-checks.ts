@@ -23,8 +23,7 @@ export type ParsedMigrations = {
   policies: ParsedPolicy[];
 };
 
-const RLS_ENABLE_RE =
-  /alter\s+table\s+public\.([a-z_]+)\s+enable\s+row\s+level\s+security\s*;/gi;
+const RLS_ENABLE_RE = /alter\s+table\s+public\.([a-z_]+)\s+enable\s+row\s+level\s+security\s*;/gi;
 const DROP_POLICY_RE =
   /drop\s+policy\s+(?:if\s+exists\s+)?"([^"]+)"\s+on\s+public\.([a-z_]+)\s*;/gi;
 const POLICY_HEAD_RE =
@@ -236,7 +235,10 @@ export function runChecks(parsed: ParsedMigrations): CheckIssue[] {
     const ps = byTable(t);
     const inserts = ps.filter((p) => p.command === "INSERT" || p.command === "ALL");
     if (inserts.length === 0) {
-      issues.push({ id: "DRAFT_INSERT_MISSING", message: `Draft table ${t} has no INSERT policy.` });
+      issues.push({
+        id: "DRAFT_INSERT_MISSING",
+        message: `Draft table ${t} has no INSERT policy.`,
+      });
     }
     for (const i of inserts) {
       const w = i.withCheck ?? "";
