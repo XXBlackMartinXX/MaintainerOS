@@ -117,11 +117,11 @@ Each gate is binary. Production status is the AND of all P0 gates.
 
 ## Status today
 
-| Area              | Status                          |
-| ----------------- | ------------------------------- |
-| Public preview    | Achieved                        |
-| Production target | Not yet — P0 gates incomplete   |
-| Sensitive-repo    | Blocked until P0 gates pass     |
+| Area              | Status                        |
+| ----------------- | ----------------------------- |
+| Public preview    | Achieved                      |
+| Production target | Not yet — P0 gates incomplete |
+| Sensitive-repo    | Blocked until P0 gates pass   |
 
 Specific known gaps (non-exhaustive):
 

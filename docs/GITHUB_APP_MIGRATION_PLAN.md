@@ -23,14 +23,14 @@ Concretely, a GitHub App lets us:
 
 ## Proposed permissions
 
-| Permission              | Level | Why                                        |
-| ----------------------- | ----- | ------------------------------------------ |
-| Metadata                | Read  | Required by every App.                     |
-| Contents                | Read  | Default branch, files used for docs/AI.    |
-| Issues                  | Write | Post AI-drafted comments, apply labels.    |
-| Pull requests           | Write | Post AI-drafted PR review comments.        |
-| Releases                | Write | Create **draft** releases only.            |
-| Members (org)           | Read  | Show org repo lists.                       |
+| Permission    | Level | Why                                     |
+| ------------- | ----- | --------------------------------------- |
+| Metadata      | Read  | Required by every App.                  |
+| Contents      | Read  | Default branch, files used for docs/AI. |
+| Issues        | Write | Post AI-drafted comments, apply labels. |
+| Pull requests | Write | Post AI-drafted PR review comments.     |
+| Releases      | Write | Create **draft** releases only.         |
+| Members (org) | Read  | Show org repo lists.                    |
 
 Repositories: **selected repositories only** — never "All repositories"
 by default. We will document this prominently in the install flow.

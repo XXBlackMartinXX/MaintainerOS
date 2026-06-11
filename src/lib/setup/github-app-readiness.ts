@@ -27,9 +27,7 @@ const LABELS: Record<keyof GithubAppReadinessInput, string> = {
   githubAppWebhookSecret: "GITHUB_APP_WEBHOOK_SECRET",
 };
 
-export function classifyGithubAppReadiness(
-  input: GithubAppReadinessInput,
-): GithubAppReadiness {
+export function classifyGithubAppReadiness(input: GithubAppReadinessInput): GithubAppReadiness {
   const keys = Object.keys(LABELS) as (keyof GithubAppReadinessInput)[];
   const setCount = keys.filter((k) => input[k]).length;
   const missing = keys.filter((k) => !input[k]).map((k) => LABELS[k]);

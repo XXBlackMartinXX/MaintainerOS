@@ -37,19 +37,19 @@ Browser ──► TanStack Start server fns ──► GitHub REST API
   4. A duplicate-protection check against `github_publish_events`.
   5. A row inserted into `audit_logs` capturing target id, source draft id,
      and outcome.
-  Releases are always created with `draft: true`. Labels are only added,
-  never removed.
+     Releases are always created with `draft: true`. Labels are only added,
+     never removed.
 
 ## OAuth scopes
 
 The current sign-in requests:
 
-| Scope          | Why                                                  |
-| -------------- | ---------------------------------------------------- |
-| `read:user`    | Surface the maintainer's display name and avatar.    |
-| `user:email`   | Identify the account for Supabase profile creation.  |
-| `repo`         | Read private repos, post comments, manage labels, create draft releases. |
-| `read:org`     | Enumerate organization repositories the user maintains. |
+| Scope        | Why                                                                      |
+| ------------ | ------------------------------------------------------------------------ |
+| `read:user`  | Surface the maintainer's display name and avatar.                        |
+| `user:email` | Identify the account for Supabase profile creation.                      |
+| `repo`       | Read private repos, post comments, manage labels, create draft releases. |
+| `read:org`   | Enumerate organization repositories the user maintains.                  |
 
 `repo` is a broad scope: granting it to MaintainerOS gives the user's
 OAuth session write access to every repository the user can write to. This
@@ -62,16 +62,16 @@ cost of losing private-repo support and most write actions.
 
 ## Read-only vs write-capable actions
 
-| Action                       | Code path                                              | Write? |
-| ---------------------------- | ------------------------------------------------------ | ------ |
-| List user repos              | `github.functions.ts → listMyRepos`                    | no     |
-| Sync issues / PRs / commits  | `github.functions.ts → syncRepository`                 | no     |
-| AI issue triage drafts       | `ai.functions.ts`                                      | no     |
-| AI PR summary drafts         | `ai-pr.functions.ts`                                   | no     |
-| Post issue comment           | `github-publish.functions.ts → publishIssueComment`    | yes    |
-| Apply issue labels           | `github-publish.functions.ts → publishIssueLabels`     | yes    |
-| Post PR comment              | `github-publish.functions.ts → publishPrSummary`       | yes    |
-| Create draft release         | `github-publish.functions.ts → publishReleaseDraft`    | yes (draft only) |
+| Action                      | Code path                                           | Write?           |
+| --------------------------- | --------------------------------------------------- | ---------------- |
+| List user repos             | `github.functions.ts → listMyRepos`                 | no               |
+| Sync issues / PRs / commits | `github.functions.ts → syncRepository`              | no               |
+| AI issue triage drafts      | `ai.functions.ts`                                   | no               |
+| AI PR summary drafts        | `ai-pr.functions.ts`                                | no               |
+| Post issue comment          | `github-publish.functions.ts → publishIssueComment` | yes              |
+| Apply issue labels          | `github-publish.functions.ts → publishIssueLabels`  | yes              |
+| Post PR comment             | `github-publish.functions.ts → publishPrSummary`    | yes              |
+| Create draft release        | `github-publish.functions.ts → publishReleaseDraft` | yes (draft only) |
 
 ## Approval-gated publishing model
 
