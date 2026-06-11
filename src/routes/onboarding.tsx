@@ -90,14 +90,17 @@ function Onboarding() {
           <div className="mt-6 min-h-[200px]">
             {step === 0 && (
               <div className="text-center py-6">
-                <p className="text-sm text-muted-foreground mb-4">
-                  Sign in with GitHub to let MaintainerOS read your repositories.
+                <div className="mx-auto size-10 rounded-md bg-primary/15 text-primary grid place-items-center ring-1 ring-primary/30">
+                  <Check className="size-5" />
+                </div>
+                <p className="mt-4 text-sm text-foreground font-medium">
+                  GitHub connected
                 </p>
-                <Button size="lg">
-                  <Github className="size-4" /> Continue with GitHub
-                </Button>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  We can read your repositories. Nothing is posted to GitHub without your approval.
+                </p>
                 <p className="mt-3 text-[11px] text-muted-foreground">
-                  Read-only by default. Nothing is posted without your approval.
+                  Read-only by default. You'll choose which repositories to connect next.
                 </p>
               </div>
             )}
