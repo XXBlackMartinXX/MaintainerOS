@@ -99,3 +99,29 @@ links, settings, Trust Center, and launch copy all read from this file.
 ## Pre-publication checklist
 
 See [`RELEASE_CHECKLIST.md`](./RELEASE_CHECKLIST.md) for the full list.
+
+## Project maturity and claims
+
+MaintainerOS is an initial public preview (v0.1.0, pre-1.0). It is not
+production-ready and does not claim adoption, stars, downloads, sponsors,
+or paying users. Demo mode is isolated; real Supabase/GitHub OAuth is
+required for non-demo use. Security and readiness signals are advisory
+only — they are not a substitute for human review.
+
+When writing public-facing copy, do not claim:
+
+- production usage or adoption metrics that have not been verified;
+- formal security certification;
+- partnership with or approval by Anthropic or any other vendor.
+
+## Claude for Open Source application
+
+The application package lives in:
+
+- [`CLAUDE_FOR_OSS_APPLICATION.md`](./CLAUDE_FOR_OSS_APPLICATION.md) —
+  reviewer-facing narrative.
+- [`PROJECT_IMPACT.md`](./PROJECT_IMPACT.md) — problem, users, and impact.
+- [`CLAUDE_FOR_OSS_CHECKLIST.md`](./CLAUDE_FOR_OSS_CHECKLIST.md) —
+  pre-submission checklist.
+
+Run through the checklist manually before submitting.
