@@ -32,6 +32,7 @@ const nav = [
   { to: "/app/readiness", label: "Readiness", icon: CheckSquare },
   { to: "/app/moderation", label: "Moderation", icon: ShieldCheck },
   { to: "/app/roadmap", label: "Roadmap", icon: Map },
+  { to: "/app/approval-queue", label: "Approval Queue", icon: ClipboardCheck },
   { to: "/app/actions", label: "AI Action Log", icon: History },
   { to: "/app/trust", label: "Trust Center", icon: Lock },
   { to: "/app/qa", label: "QA Checklist", icon: ClipboardCheck },

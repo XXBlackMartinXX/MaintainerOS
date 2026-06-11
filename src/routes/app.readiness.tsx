@@ -1,14 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { CheckCircle2, Circle, Loader2, ArrowRight } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, ArrowRight, Download } from "lucide-react";
 import { PageHeader } from "@/components/ui-bits";
+import { Button } from "@/components/ui/button";
 import { RepoSelector } from "@/components/repo-selector";
 import { DataSourceBadge } from "@/components/data-source-badge";
 import { EmptyRepositoryState } from "@/components/empty-states";
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
+import { useDemoMode } from "@/hooks/use-demo-mode";
 import { listDocumentationDrafts, getRepoReadiness } from "@/lib/docs.functions";
+import { listApprovalQueue } from "@/lib/approval-queue.functions";
+import { listAuditLogs } from "@/lib/ai.functions";
+import { buildRepoHealthChecks } from "@/lib/repo-health/checks";
+import { generateMaintainerReport } from "@/lib/reports/maintainer-report";
 import { DOC_TYPE_LABELS, type DocType } from "@/lib/ai/prompts/docs-generator";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/app/readiness")({ component: ReadinessPage });
 
@@ -23,8 +30,11 @@ type Item = {
 
 function ReadinessPage() {
   const { selected, isLoading, hasConnectedRepo } = useSelectedRepo();
+  const { enabled: demo } = useDemoMode();
   const listFn = useServerFn(listDocumentationDrafts);
   const readinessFn = useServerFn(getRepoReadiness);
+  const queueFn = useServerFn(listApprovalQueue);
+  const auditFn = useServerFn(listAuditLogs);
 
   const draftsQ = useQuery({
     queryKey: ["docs-drafts-all", selected?.id],
@@ -34,6 +44,16 @@ function ReadinessPage() {
   const readinessQ = useQuery({
     queryKey: ["readiness", selected?.id],
     queryFn: () => readinessFn({ data: { repository_id: selected!.id } }),
+    enabled: !!selected,
+  });
+  const queueQ = useQuery({
+    queryKey: ["approval-queue", selected?.id],
+    queryFn: () => queueFn({ data: { repository_id: selected!.id } }),
+    enabled: !!selected,
+  });
+  const auditQ = useQuery({
+    queryKey: ["audit-logs-recent"],
+    queryFn: () => auditFn({ data: { limit: 25 } }),
     enabled: !!selected,
   });
 
@@ -146,6 +166,48 @@ function ReadinessPage() {
   const completed = items.filter((i) => i.done).length;
   const pct = Math.round((completed / items.length) * 100);
 
+  function handleDownloadReport() {
+    if (!selected) return;
+    const draftStatusByType: Record<string, string> = {};
+    for (const d of drafts) draftStatusByType[d.doc_type] = d.approval_status;
+    const checks = buildRepoHealthChecks({
+      draftStatusByType,
+      syncFreshDays: r?.syncFreshDays ?? null,
+      hasWriteScope: r?.hasWriteScope ?? false,
+      demo,
+    });
+    const md = generateMaintainerReport({
+      repoFullName: selected.full_name,
+      generatedAt: new Date(),
+      mode: demo ? "demo" : "live",
+      checks,
+      pendingItems: queueQ.data?.items ?? [],
+      recentAudit: (auditQ.data?.logs ?? []).map((l: { action: string; created_at: string }) => ({
+        action: l.action,
+        createdAt: l.created_at,
+      })),
+      knownLimitations: [
+        "MaintainerOS does not yet read repository file contents.",
+        "No live OAuth or GitHub-write integration tests.",
+        "Advisory signals are heuristic and not a formal security audit.",
+      ],
+    });
+    try {
+      const blob = new Blob([md], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `maintainer-report-${selected.full_name.replace(/[^a-z0-9._-]+/gi, "_")}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast.success("Maintainer report downloaded");
+    } catch {
+      toast.error("Could not generate report");
+    }
+  }
+
   return (
     <div>
       <PageHeader
@@ -153,6 +215,10 @@ function ReadinessPage() {
         description="Advisory checklist of basics every healthy open-source project should have. Heuristic signals only — not a substitute for a manual review. Generated drafts count toward progress but still need to be edited and committed manually."
         actions={
           <div className="flex items-center gap-2">
+            <Button size="sm" variant="outline" onClick={handleDownloadReport}>
+              <Download className="size-3.5" />
+              Download report
+            </Button>
             <DataSourceBadge variant="partial" />
             <RepoSelector />
           </div>

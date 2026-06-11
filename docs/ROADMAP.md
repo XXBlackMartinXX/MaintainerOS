@@ -18,13 +18,25 @@ What you can do today:
 - Full AI Action Log and publish audit trail
 - Demo mode with clearly-labeled sample data
 - Trust Center and readiness checklist
+- Approval Queue aggregating pending AI drafts across triage, PR summaries,
+  release drafts, and documentation — view-only summary; publish actions
+  still happen on the source page with the confirmation dialog
+- Exportable maintainer report (Markdown, advisory only)
+- Vitest test suite (56 tests) covering pure helpers: AI schemas, env feature
+  flags, demo mode, publish helpers, GitHub write permission evaluation,
+  repo-health classification, approval-queue filtering/sorting, maintainer
+  report generation, and setup checklist classification
 
 Known gaps for this milestone:
 
-- No automated test suite
+- No live OAuth / GitHub-write integration tests
 - No public screenshots captured yet
 - No hosted demo deployment yet
 - Sync is on-demand only
+- No RLS integration test against a real database
+- No formal security audit
+- Repo file contents are not yet inspected — readiness signals rely on
+  metadata + AI draft presence
 
 ## v0.2.0 — Stability and setup
 
