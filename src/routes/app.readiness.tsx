@@ -1,14 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { CheckCircle2, Circle, Loader2, ArrowRight } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, ArrowRight, Download } from "lucide-react";
 import { PageHeader } from "@/components/ui-bits";
+import { Button } from "@/components/ui/button";
 import { RepoSelector } from "@/components/repo-selector";
 import { DataSourceBadge } from "@/components/data-source-badge";
 import { EmptyRepositoryState } from "@/components/empty-states";
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
+import { useDemoMode } from "@/hooks/use-demo-mode";
 import { listDocumentationDrafts, getRepoReadiness } from "@/lib/docs.functions";
+import { listApprovalQueue } from "@/lib/approval-queue.functions";
+import { listAuditLogs } from "@/lib/ai.functions";
+import { buildRepoHealthChecks } from "@/lib/repo-health/checks";
+import { generateMaintainerReport } from "@/lib/reports/maintainer-report";
 import { DOC_TYPE_LABELS, type DocType } from "@/lib/ai/prompts/docs-generator";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/app/readiness")({ component: ReadinessPage });
 
@@ -23,8 +30,11 @@ type Item = {
 
 function ReadinessPage() {
   const { selected, isLoading, hasConnectedRepo } = useSelectedRepo();
+  const { enabled: demo } = useDemoMode();
   const listFn = useServerFn(listDocumentationDrafts);
   const readinessFn = useServerFn(getRepoReadiness);
+  const queueFn = useServerFn(listApprovalQueue);
+  const auditFn = useServerFn(listAuditLogs);
 
   const draftsQ = useQuery({
     queryKey: ["docs-drafts-all", selected?.id],
@@ -34,6 +44,16 @@ function ReadinessPage() {
   const readinessQ = useQuery({
     queryKey: ["readiness", selected?.id],
     queryFn: () => readinessFn({ data: { repository_id: selected!.id } }),
+    enabled: !!selected,
+  });
+  const queueQ = useQuery({
+    queryKey: ["approval-queue", selected?.id],
+    queryFn: () => queueFn({ data: { repository_id: selected!.id } }),
+    enabled: !!selected,
+  });
+  const auditQ = useQuery({
+    queryKey: ["audit-logs-recent"],
+    queryFn: () => auditFn({ data: { limit: 25 } }),
     enabled: !!selected,
   });
 
