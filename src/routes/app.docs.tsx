@@ -76,7 +76,7 @@ function DocsPage() {
     enabled: !!selected,
   });
 
-  const drafts = (draftsQ.data?.drafts ?? []) as DraftRow[];
+  const drafts = useMemo(() => (draftsQ.data?.drafts ?? []) as DraftRow[], [draftsQ.data]);
   const activeDraft = useMemo(
     () => drafts.find((d) => d.id === activeDraftId) ?? drafts[0] ?? null,
     [drafts, activeDraftId],
@@ -90,7 +90,8 @@ function DocsPage() {
       setEditedBody("");
       setEditedTitle("");
     }
-  }, [activeDraft?.id]);
+    // Only react to draft identity changes — body/title may update externally.
+  }, [activeDraft?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const generateMut = useMutation({
     mutationFn: () => generateFn({ data: { repository_id: selected!.id, doc_type: docType } }),
