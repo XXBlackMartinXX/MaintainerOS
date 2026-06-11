@@ -1,61 +1,59 @@
 # Testing
 
-MaintainerOS does **not** currently ship an automated test suite. Quality is
-enforced by `bun run lint`, `bun run typecheck`, `bun run build`, and a
-manual smoke-test checklist. **Production readiness is blocked until a real
-test suite exists.**
+MaintainerOS uses [Vitest](https://vitest.dev) for unit tests. The suite is
+deterministic, runs in jsdom, and **never** makes live calls to Supabase,
+GitHub, or the AI gateway. CI runs `bun run test` between lint and build.
 
-This document records the recommended future plan so that contributions can
-land against a shared target.
+## Running locally
 
-## Current gap
+```bash
+bun install
+bun run test         # one-shot
+bun run test:watch   # interactive
+```
 
-- No unit tests.
-- No integration tests against the database or GitHub API.
-- No end-to-end tests of the UI flows.
-- No CI test job (CI currently runs lint, typecheck, and build only — see
-  `.github/workflows/ci.yml`).
+No secrets are required. Tests do not read `.env`.
 
-## Recommended future test plan
+## What is covered
 
-### 1. Unit tests (Vitest)
+| Area | File | What it asserts |
+| --- | --- | --- |
+| Env / feature gating | `src/lib/env.test.ts` | `hasFeature` / `requireFeature` correctly detect missing Supabase, AI gateway, GitHub OAuth; error messages do not leak secret values. |
+| Demo mode | `src/hooks/use-demo-mode.test.ts` | `enableDemoMode` uses the stable `mos.demoMode` key, is idempotent, dispatches the `mos:demo-mode` event, and does not require Supabase. |
+| AI response schemas | `src/lib/ai/schemas.test.ts` | Triage, PR summary, changelog, and documentation Zod schemas accept valid drafts and reject unknown enums, out-of-range confidence, and empty required fields. |
+| Publish helpers | `src/components/publish-helpers.test.ts` | `getPublishEventForSource` filters by status; `formatPublishedAt` returns relative time and falls back safely on invalid input. |
 
-Highest-value pure-logic targets, in priority order:
+## What is intentionally mocked or skipped
 
-- `src/lib/env.ts` — environment detection and feature gating.
-- `src/hooks/use-demo-mode.ts` and `src/lib/demo-data.ts` — demo mode
-  helpers and sample data shape.
-- `src/lib/ai/schemas.ts` — Zod schema validation for every AI response
-  shape (triage, PR summary, changelog, docs).
-- `src/components/publish-helpers.tsx` and the duplicate-protection logic
-  used by `src/lib/github-publish.functions.ts`.
+- **No network calls.** Server functions (`src/lib/*.functions.ts`) talk to
+  Supabase and GitHub through the admin client and per-user OAuth tokens.
+  Exercising them in unit tests would require real credentials, so they are
+  out of scope here.
+- **No real AI calls.** Only the response schemas are tested; the gateway
+  itself is exercised manually.
+- **No router/auth integration.** Route components are not rendered in
+  tests — TanStack Router, Supabase Auth, and React Query would each need a
+  significant harness.
 
-These tests should not require network access, secrets, or a live Supabase
-or GitHub connection.
+## What is not covered yet
 
-### 2. Integration tests
+- Server-function happy paths and error paths (would need a local Postgres
+  with the `supabase/migrations/` schema applied).
+- Row-level security policies (allow vs deny).
+- GitHub API client behaviour (would need a mocked fetch layer).
+- End-to-end UI flows (Playwright is deferred — see below).
 
-- Server functions in `src/lib/*.functions.ts` exercised against a local
-  Postgres with the migrations in `supabase/migrations/` applied.
-- Row-level security policies verified via the `has_repo_access` security
-  definer function (both allow and deny paths).
-- GitHub API client (`src/lib/github/*.server.ts`) exercised against a
-  mocked fetch layer — never against a real token in CI.
+## Future tests
 
-### 3. End-to-end tests (Playwright)
+1. **Integration tests** against a local Postgres with migrations applied,
+   asserting RLS via `has_repo_access`.
+2. **GitHub client tests** with a `fetch` mock — never against a real token.
+3. **Playwright E2E** of the public marketing routes, `/demo`, `/login`
+   (unconfigured state), and `/setup` once a stable preview is available.
 
-- Public marketing routes render and link correctly.
-- `/demo` enters demo mode and disables every publish/sync button with the
-  expected tooltip copy.
-- `/login` reflects the configured-vs-unconfigured Supabase state.
-- `/setup` diagnostics page renders all rows.
+## Production readiness
 
-E2E tests must run against demo mode or stubbed backends — never against a
-real user's GitHub account.
-
-## Constraints
-
-- Tests must not require real Supabase service role keys, GitHub tokens, or
-  AI gateway keys.
-- Tests must not call the live GitHub API or post to any real repository.
-- Tests must not depend on Lovable-specific runtime behaviour.
+The current suite raises the credibility of the public preview but does
+**not** by itself unblock a 1.0 production claim — integration and E2E
+coverage are still required, plus a real audit of RLS policies and the
+publish/approval pipeline.
