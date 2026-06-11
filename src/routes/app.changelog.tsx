@@ -75,7 +75,7 @@ function ChangelogPage() {
   const summaries = summariesQ.data?.summaries ?? [];
   const approved = summaries.filter((s) => s.approval_status === "approved");
 
-  const drafts = (draftsQ.data?.drafts ?? []) as DraftRow[];
+  const drafts = useMemo(() => (draftsQ.data?.drafts ?? []) as DraftRow[], [draftsQ.data]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [version, setVersion] = useState("0.1.0");
   const [title, setTitle] = useState("");
