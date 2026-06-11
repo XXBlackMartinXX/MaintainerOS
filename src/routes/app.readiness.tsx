@@ -166,6 +166,48 @@ function ReadinessPage() {
   const completed = items.filter((i) => i.done).length;
   const pct = Math.round((completed / items.length) * 100);
 
+  function handleDownloadReport() {
+    if (!selected) return;
+    const draftStatusByType: Record<string, string> = {};
+    for (const d of drafts) draftStatusByType[d.doc_type] = d.approval_status;
+    const checks = buildRepoHealthChecks({
+      draftStatusByType,
+      syncFreshDays: r?.syncFreshDays ?? null,
+      hasWriteScope: r?.hasWriteScope ?? false,
+      demo,
+    });
+    const md = generateMaintainerReport({
+      repoFullName: selected.full_name,
+      generatedAt: new Date(),
+      mode: demo ? "demo" : "live",
+      checks,
+      pendingItems: queueQ.data?.items ?? [],
+      recentAudit: (auditQ.data?.logs ?? []).map((l: { action: string; created_at: string }) => ({
+        action: l.action,
+        createdAt: l.created_at,
+      })),
+      knownLimitations: [
+        "MaintainerOS does not yet read repository file contents.",
+        "No live OAuth or GitHub-write integration tests.",
+        "Advisory signals are heuristic and not a formal security audit.",
+      ],
+    });
+    try {
+      const blob = new Blob([md], { type: "text/markdown" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `maintainer-report-${selected.full_name.replace(/[^a-z0-9._-]+/gi, "_")}.md`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast.success("Maintainer report downloaded");
+    } catch {
+      toast.error("Could not generate report");
+    }
+  }
+
   return (
     <div>
       <PageHeader
@@ -173,6 +215,10 @@ function ReadinessPage() {
         description="Advisory checklist of basics every healthy open-source project should have. Heuristic signals only — not a substitute for a manual review. Generated drafts count toward progress but still need to be edited and committed manually."
         actions={
           <div className="flex items-center gap-2">
+            <Button size="sm" variant="outline" onClick={handleDownloadReport}>
+              <Download className="size-3.5" />
+              Download report
+            </Button>
             <DataSourceBadge variant="partial" />
             <RepoSelector />
           </div>
