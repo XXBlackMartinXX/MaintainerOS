@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
 
+# Principle of least privilege: CI only needs to read the repo. No write,
+# no package, no id-token, no secrets.
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
