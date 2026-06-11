@@ -21,6 +21,7 @@ impression from screenshots. Empty placeholders make the project look
 unfinished.
 
 **Suggested implementation:**
+
 - Run the app in demo mode (`/demo` → `/app`).
 - Capture each screen listed in `docs/screenshots/README.md` at
   ~1600×1000.

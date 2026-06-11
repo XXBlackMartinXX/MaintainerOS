@@ -1,9 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  getPublishEventForSource,
-  formatPublishedAt,
-  type PublishEvent,
-} from "./publish-helpers";
+import { getPublishEventForSource, formatPublishedAt, type PublishEvent } from "./publish-helpers";
 
 const ev = (over: Partial<PublishEvent>): PublishEvent => ({
   id: "1",

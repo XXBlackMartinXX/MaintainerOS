@@ -6,17 +6,17 @@ publishing the repository publicly. **Do not invent or mock screenshots.**
 
 Recommended captures (PNG, 1600×1000 or similar):
 
-| File | What it should show |
-|---|---|
-| `landing.png` | Public landing page (`/`) — hero + "How it works". |
-| `dashboard.png` | `/app` dashboard with synced or demo data. |
-| `issue-triage.png` | `/app/issues` with the AI triage side panel open on a real issue. |
-| `pr-summary.png` | `/app/pulls` with an AI PR summary draft visible. |
-| `changelog.png` | `/app/changelog` showing a generated draft grouped by Added / Changed / Fixed. |
+| File                 | What it should show                                                            |
+| -------------------- | ------------------------------------------------------------------------------ |
+| `landing.png`        | Public landing page (`/`) — hero + "How it works".                             |
+| `dashboard.png`      | `/app` dashboard with synced or demo data.                                     |
+| `issue-triage.png`   | `/app/issues` with the AI triage side panel open on a real issue.              |
+| `pr-summary.png`     | `/app/pulls` with an AI PR summary draft visible.                              |
+| `changelog.png`      | `/app/changelog` showing a generated draft grouped by Added / Changed / Fixed. |
 | `docs-generator.png` | `/app/docs` with a generated README draft and confidence/safety notes visible. |
-| `trust-center.png` | `/app/trust` showing the safety and approval policy cards. |
-| `readiness.png` | `/app/readiness` showing the open-source readiness checklist. |
-| `audit-log.png` | `/app/actions` filtered to GitHub publish events. |
+| `trust-center.png`   | `/app/trust` showing the safety and approval policy cards.                     |
+| `readiness.png`      | `/app/readiness` showing the open-source readiness checklist.                  |
+| `audit-log.png`      | `/app/actions` filtered to GitHub publish events.                              |
 
 Guidelines:
 

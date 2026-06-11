@@ -63,7 +63,7 @@ See `.env.example` for the canonical list.
 
 - AI calls are server-side only.
 - All GitHub writes require: approved/edited draft + click + confirmation
-  + duplicate check + audit log entry.
+  - duplicate check + audit log entry.
 - Releases are always created as `draft: true`.
 - No automatic commenting, labeling, merging, closing, or release
   publishing — anywhere.
