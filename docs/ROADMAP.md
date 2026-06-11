@@ -77,3 +77,24 @@ Focus: lower the barrier to evaluating the product.
 - Contributor scoring or ranking
 - Replacing CODEOWNERS or human code review
 - Fabricated metrics, stars, downloads, or testimonials
+
+## Claude-assisted development opportunities
+
+If MaintainerOS receives Claude for Open Source access, priority uses
+are documented in
+[`CLAUDE_FOR_OSS_APPLICATION.md`](./CLAUDE_FOR_OSS_APPLICATION.md):
+
+- Expand integration and end-to-end tests around routes that currently
+  rely on pure-helper unit tests.
+- Add RLS integration tests against a real Postgres.
+- Add contract tests for the approval-gated GitHub publish path.
+- Refine AI prompts and Zod schemas for reviewability.
+- Improve `/setup` clarity and self-hosting docs.
+
+## Production-readiness blockers (current)
+
+- No live OAuth or GitHub-write integration tests.
+- No RLS integration test against a real database.
+- No formal third-party security audit.
+- Hosted demo deployment not yet published.
+- Public screenshots pending.
