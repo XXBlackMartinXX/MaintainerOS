@@ -26,8 +26,9 @@ const SOURCE_LABEL: Record<QueueItem["source"], string> = {
 };
 
 function escape(value: string): string {
-  // Strip any control chars that would corrupt Markdown.
-  return value.replace(/[\u0000-\u001f\u007f]/g, " ");
+  // Strip control chars that would corrupt Markdown (preserve tab \t and newline \n).
+  // eslint-disable-next-line no-control-regex
+  return value.replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g, " ");
 }
 
 export function generateMaintainerReport(input: MaintainerReportInput): string {

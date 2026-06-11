@@ -89,6 +89,7 @@ describe("generateMaintainerReport", () => {
       recentAudit: [],
       knownLimitations: [],
     });
-    expect(md).not.toMatch(/[\u0000-\u001f\u007f]/);
+    // eslint-disable-next-line no-control-regex
+    expect(md).not.toMatch(/[\u0000-\u0008\u000b-\u001f\u007f]/);
   });
 });
