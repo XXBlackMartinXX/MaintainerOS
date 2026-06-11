@@ -15,6 +15,25 @@ adoption, stars, downloads, or paying users.
 > is marked `"private": true` so it cannot be accidentally published to a
 > registry. Clone and run it locally or deploy it to your own host.
 
+### Production status
+
+| Target                            | Status                                                  |
+| --------------------------------- | ------------------------------------------------------- |
+| Public preview                    | Achieved                                                |
+| Production-ready (controlled use) | **Not yet** — see [`docs/PRODUCTION_READINESS.md`](docs/PRODUCTION_READINESS.md) |
+| Sensitive-repository pilots       | **Blocked** until P0 gates pass                         |
+
+MaintainerOS is not production-ready and is **not recommended for
+sensitive repositories** at this time. The remaining gates (RLS
+integration tests, GitHub App least-privilege model, GitHub write
+integration tests, prompt-injection hardening, observability, external
+review) are tracked in
+[`docs/PRODUCTION_READINESS.md`](docs/PRODUCTION_READINESS.md) and
+[`docs/PRODUCTION_CHECKLIST.md`](docs/PRODUCTION_CHECKLIST.md). The
+project intentionally does not display a "production-ready" badge until
+those gates pass and an external review has been completed (or its
+absence has been documented).
+
 ## Features
 
 - GitHub OAuth and on-demand repository sync (issues, PRs, contributors,
@@ -215,6 +234,8 @@ governs every AI prompt.
 - [docs/screenshots/README.md](./docs/screenshots/README.md)
 - [docs/THREAT_MODEL.md](./docs/THREAT_MODEL.md)
 - [docs/SECURITY_REVIEW_CHECKLIST.md](./docs/SECURITY_REVIEW_CHECKLIST.md)
+- [docs/PRODUCTION_READINESS.md](./docs/PRODUCTION_READINESS.md)
+- [docs/PRODUCTION_CHECKLIST.md](./docs/PRODUCTION_CHECKLIST.md)
 - [docs/TESTING.md](./docs/TESTING.md)
 - [docs/PROJECT_IMPACT.md](./docs/PROJECT_IMPACT.md)
 - [docs/CLAUDE_FOR_OSS_APPLICATION.md](./docs/CLAUDE_FOR_OSS_APPLICATION.md)
