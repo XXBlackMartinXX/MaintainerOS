@@ -30,6 +30,7 @@ import { Route as AppHealthRouteImport } from './routes/app.health'
 import { Route as AppDocsRouteImport } from './routes/app.docs'
 import { Route as AppContributorsRouteImport } from './routes/app.contributors'
 import { Route as AppChangelogRouteImport } from './routes/app.changelog'
+import { Route as AppApprovalQueueRouteImport } from './routes/app.approval-queue'
 import { Route as AppActionsRouteImport } from './routes/app.actions'
 
 const SetupRoute = SetupRouteImport.update({
@@ -137,6 +138,11 @@ const AppChangelogRoute = AppChangelogRouteImport.update({
   path: '/changelog',
   getParentRoute: () => AppRoute,
 } as any)
+const AppApprovalQueueRoute = AppApprovalQueueRouteImport.update({
+  id: '/approval-queue',
+  path: '/approval-queue',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppActionsRoute = AppActionsRouteImport.update({
   id: '/actions',
   path: '/actions',
@@ -151,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
   '/app/actions': typeof AppActionsRoute
+  '/app/approval-queue': typeof AppApprovalQueueRoute
   '/app/changelog': typeof AppChangelogRoute
   '/app/contributors': typeof AppContributorsRoute
   '/app/docs': typeof AppDocsRoute
@@ -174,6 +181,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
   '/app/actions': typeof AppActionsRoute
+  '/app/approval-queue': typeof AppApprovalQueueRoute
   '/app/changelog': typeof AppChangelogRoute
   '/app/contributors': typeof AppContributorsRoute
   '/app/docs': typeof AppDocsRoute
@@ -199,6 +207,7 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/setup': typeof SetupRoute
   '/app/actions': typeof AppActionsRoute
+  '/app/approval-queue': typeof AppApprovalQueueRoute
   '/app/changelog': typeof AppChangelogRoute
   '/app/contributors': typeof AppContributorsRoute
   '/app/docs': typeof AppDocsRoute
@@ -225,6 +234,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/setup'
     | '/app/actions'
+    | '/app/approval-queue'
     | '/app/changelog'
     | '/app/contributors'
     | '/app/docs'
@@ -248,6 +258,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/setup'
     | '/app/actions'
+    | '/app/approval-queue'
     | '/app/changelog'
     | '/app/contributors'
     | '/app/docs'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/setup'
     | '/app/actions'
+    | '/app/approval-queue'
     | '/app/changelog'
     | '/app/contributors'
     | '/app/docs'
@@ -448,6 +460,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppChangelogRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/approval-queue': {
+      id: '/app/approval-queue'
+      path: '/approval-queue'
+      fullPath: '/app/approval-queue'
+      preLoaderRoute: typeof AppApprovalQueueRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/actions': {
       id: '/app/actions'
       path: '/actions'
@@ -460,6 +479,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppActionsRoute: typeof AppActionsRoute
+  AppApprovalQueueRoute: typeof AppApprovalQueueRoute
   AppChangelogRoute: typeof AppChangelogRoute
   AppContributorsRoute: typeof AppContributorsRoute
   AppDocsRoute: typeof AppDocsRoute
@@ -478,6 +498,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppActionsRoute: AppActionsRoute,
+  AppApprovalQueueRoute: AppApprovalQueueRoute,
   AppChangelogRoute: AppChangelogRoute,
   AppContributorsRoute: AppContributorsRoute,
   AppDocsRoute: AppDocsRoute,
