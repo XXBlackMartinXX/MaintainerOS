@@ -17,11 +17,11 @@ adoption, stars, downloads, or paying users.
 
 ### Production status
 
-| Target                            | Status                                                  |
-| --------------------------------- | ------------------------------------------------------- |
-| Public preview                    | Achieved                                                |
+| Target                            | Status                                                                           |
+| --------------------------------- | -------------------------------------------------------------------------------- |
+| Public preview                    | Achieved                                                                         |
 | Production-ready (controlled use) | **Not yet** — see [`docs/PRODUCTION_READINESS.md`](docs/PRODUCTION_READINESS.md) |
-| Sensitive-repository pilots       | **Blocked** until P0 gates pass                         |
+| Sensitive-repository pilots       | **Blocked** until P0 gates pass                                                  |
 
 MaintainerOS is not production-ready and is **not recommended for
 sensitive repositories** at this time. The remaining gates (RLS

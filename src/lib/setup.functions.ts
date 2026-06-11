@@ -10,6 +10,13 @@ export interface ServerConfigStatus {
   githubWebhookSecret: boolean;
   lovableApiKey: boolean;
   supabaseProjectRef: string | null;
+  // Future GitHub App readiness (scaffold only — not consumed at runtime yet).
+  githubAppId: boolean;
+  githubAppPrivateKey: boolean;
+  githubAppClientId: boolean;
+  githubAppClientSecret: boolean;
+  githubAppWebhookSecret: boolean;
+  githubAppReady: boolean;
 }
 
 /**
@@ -37,6 +44,12 @@ export const getServerConfigStatus = createServerFn({ method: "GET" }).handler(
       githubWebhookSecret: Boolean(env.githubWebhookSecret),
       lovableApiKey: Boolean(env.lovableApiKey),
       supabaseProjectRef: projectRef,
+      githubAppId: Boolean(env.githubAppId),
+      githubAppPrivateKey: Boolean(env.githubAppPrivateKey),
+      githubAppClientId: Boolean(env.githubAppClientId),
+      githubAppClientSecret: Boolean(env.githubAppClientSecret),
+      githubAppWebhookSecret: Boolean(env.githubAppWebhookSecret),
+      githubAppReady: Boolean(env.githubAppId && env.githubAppPrivateKey),
     };
   },
 );

@@ -29,7 +29,8 @@ export type ServerFeature =
   | "supabase-admin"
   | "github-oauth"
   | "ai-gateway"
-  | "github-write";
+  | "github-write"
+  | "github-app";
 
 export interface ServerEnvShape {
   supabaseUrl?: string;
@@ -39,6 +40,14 @@ export interface ServerEnvShape {
   githubClientSecret?: string;
   githubWebhookSecret?: string;
   lovableApiKey?: string;
+  // ── Future GitHub App support (scaffold only; see docs/GITHUB_APP_MIGRATION_PLAN.md).
+  // Detected but NOT consumed by any runtime path yet. Their absence must
+  // never break the current OAuth flow.
+  githubAppId?: string;
+  githubAppPrivateKey?: string;
+  githubAppClientId?: string;
+  githubAppClientSecret?: string;
+  githubAppWebhookSecret?: string;
 }
 
 /**
@@ -54,6 +63,11 @@ export function serverEnv(): ServerEnvShape {
     githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
     githubWebhookSecret: process.env.GITHUB_WEBHOOK_SECRET,
     lovableApiKey: process.env.LOVABLE_API_KEY,
+    githubAppId: process.env.GITHUB_APP_ID,
+    githubAppPrivateKey: process.env.GITHUB_APP_PRIVATE_KEY,
+    githubAppClientId: process.env.GITHUB_APP_CLIENT_ID,
+    githubAppClientSecret: process.env.GITHUB_APP_CLIENT_SECRET,
+    githubAppWebhookSecret: process.env.GITHUB_APP_WEBHOOK_SECRET,
   };
 }
 
@@ -71,6 +85,10 @@ export function hasFeature(feature: ServerFeature, env = serverEnv()): boolean {
       // OAuth must be configured; the per-user token is checked separately
       // at call time via Supabase Auth.
       return Boolean(env.githubClientId && env.githubClientSecret);
+    case "github-app":
+      // Scaffold detection only. Returning true does NOT activate any
+      // runtime path — see docs/GITHUB_APP_MIGRATION_PLAN.md.
+      return Boolean(env.githubAppId && env.githubAppPrivateKey);
   }
 }
 
@@ -90,6 +108,8 @@ export function requireFeature(feature: ServerFeature, env = serverEnv()): void 
     "ai-gateway":
       "managed AI gateway is not configured. Set LOVABLE_API_KEY in your backend secrets.",
     "github-write": "GitHub write actions require GitHub OAuth to be configured.",
+    "github-app":
+      "GitHub App support is not configured. This is a future-only scaffold; set GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY when the App migration lands.",
   };
   throw new Error(msg[feature]);
 }
