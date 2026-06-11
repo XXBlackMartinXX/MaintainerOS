@@ -38,5 +38,8 @@ jobs:
       - name: Test
         run: bun run test
 
+      - name: RLS policy static checks
+        run: bun run check:rls
+
       - name: Build
         run: bun run build

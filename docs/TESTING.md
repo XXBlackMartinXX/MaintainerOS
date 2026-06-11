@@ -16,12 +16,18 @@ No secrets are required. Tests do not read `.env`.
 
 ## What is covered
 
-| Area                 | File                                     | What it asserts                                                                                                                                                |
-| -------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Env / feature gating | `src/lib/env.test.ts`                    | `hasFeature` / `requireFeature` correctly detect missing Supabase, AI gateway, GitHub OAuth; error messages do not leak secret values.                         |
-| Demo mode            | `src/hooks/use-demo-mode.test.ts`        | `enableDemoMode` uses the stable `mos.demoMode` key, is idempotent, dispatches the `mos:demo-mode` event, and does not require Supabase.                       |
-| AI response schemas  | `src/lib/ai/schemas.test.ts`             | Triage, PR summary, changelog, and documentation Zod schemas accept valid drafts and reject unknown enums, out-of-range confidence, and empty required fields. |
-| Publish helpers      | `src/components/publish-helpers.test.ts` | `getPublishEventForSource` filters by status; `formatPublishedAt` returns relative time and falls back safely on invalid input.                                |
+| Area                 | File                                         | What it asserts                                                                                                                                                                                                                   |
+| -------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Env / feature gating | `src/lib/env.test.ts`                        | `hasFeature` / `requireFeature` correctly detect missing Supabase, AI gateway, GitHub OAuth; error messages do not leak secret values.                                                                                            |
+| Demo mode            | `src/hooks/use-demo-mode.test.ts`            | `enableDemoMode` uses the stable `mos.demoMode` key, is idempotent, dispatches the `mos:demo-mode` event, and does not require Supabase.                                                                                          |
+| AI response schemas  | `src/lib/ai/schemas.test.ts`                 | Triage, PR summary, changelog, and documentation Zod schemas accept valid drafts and reject unknown enums, out-of-range confidence, and empty required fields.                                                                    |
+| Publish helpers      | `src/components/publish-helpers.test.ts`     | `getPublishEventForSource` filters by status; `formatPublishedAt` returns relative time and falls back safely on invalid input.                                                                                                   |
+| RLS static policies  | `src/lib/security/rls-policy-checks.test.ts` | Parses `supabase/migrations/` and asserts every access-control invariant in `docs/RLS_ACCESS_CONTROL.md` (RLS enabled, no permissive policies, draft tables have no UPDATE policy, `user_github_tokens` has zero policies, etc.). |
+
+The same RLS checks can be run independently via `bun run check:rls`, which
+CI also invokes between `bun run test` and `bun run build`. Static checks
+guard against accidental migration regressions; runtime allow/deny verification
+remains manual — see `docs/RLS_TEST_PLAN.md`.
 
 ## What is intentionally mocked or skipped
 

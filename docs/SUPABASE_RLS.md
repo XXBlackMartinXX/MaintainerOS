@@ -40,6 +40,13 @@ These tables are **read-only** to authenticated users; writes happen exclusively
 
 In the Supabase database tab, every table must show "RLS enabled". The included `supabase--linter` tool also flags any table missing RLS.
 
+CI also runs a static policy check (`bun run check:rls` and the
+`rls-policy-checks.test.ts` vitest suite) that parses every migration under
+`supabase/migrations/` and asserts the access-control invariants in
+`docs/RLS_ACCESS_CONTROL.md`. Static checks guard the migration surface
+against regressions but are not a substitute for runtime RLS verification —
+see `docs/RLS_TEST_PLAN.md` for the manual runtime checklist.
+
 ## Common patterns
 
 ```sql
