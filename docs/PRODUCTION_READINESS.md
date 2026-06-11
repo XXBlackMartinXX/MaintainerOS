@@ -57,9 +57,10 @@ Each gate is binary. Production status is the AND of all P0 gates.
 
 - [ ] No service-role key in any client bundle (verified by grep + build inspection)
 - [ ] No GitHub token in any client bundle or log
-- [ ] RLS enabled on every user-data table (verified by `supabase--linter`)
-- [ ] RLS cross-user and cross-repo isolation proven by integration tests
-- [ ] Token table (`user_github_tokens`) inaccessible to `anon` and `authenticated`
+- [x] RLS enabled on every user-data table (verified by `supabase--linter` and `bun run check:rls`)
+- [x] RLS policy structure for the invariants in `docs/RLS_ACCESS_CONTROL.md` asserted by static checks in CI (`src/lib/security/rls-policy-checks.test.ts`)
+- [ ] RLS cross-user and cross-repo isolation proven by **runtime** integration tests (Option A — tracked, not yet implemented)
+- [x] Token table (`user_github_tokens`) has zero policies for `anon`/`authenticated` (asserted by static check)
 - [ ] Secret scanning, push protection, CodeQL, Dependabot enabled in GitHub
 - [ ] Private vulnerability reporting enabled in GitHub
 - [ ] Prompt-injection defenses documented and unit-tested

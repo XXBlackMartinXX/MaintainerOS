@@ -13,6 +13,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "check:rls": "bun run scripts/check-rls-policies.ts",
     "format": "prettier --write ."
   },
   "dependencies": {

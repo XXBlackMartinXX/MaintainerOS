@@ -28,14 +28,17 @@ owner task (cannot be automated from inside the app).
 
 ## P2 — Supabase RLS verification
 
-- [ ] `docs/RLS_TESTING.md`
-- [ ] CI service container (Postgres) running migrations
-- [ ] Seed harness for User A / User B / Repo A / Repo B
-- [ ] RLS integration tests: cross-user reads/writes blocked
-- [ ] RLS integration tests: token table inaccessible to non-service roles
-- [ ] SQL policy comments on every policy
-- [ ] Migration rollback documentation
-- [ ] Backup / restore documentation
+- [x] `docs/RLS_ACCESS_CONTROL.md` (invariants + table inventory)
+- [x] `docs/RLS_TEST_PLAN.md` (manual runtime checklist + future Option A plan)
+- [x] Static policy assertions (`src/lib/security/rls-policy-checks.ts` + vitest suite)
+- [x] CI step: `bun run check:rls`
+- [ ] [m] CI service container (Postgres) running migrations (Option A, future)
+- [ ] [m] Seed harness for User A / User B / Repo A / Repo B (Option A, future)
+- [ ] [m] RLS integration tests: cross-user reads/writes blocked (Option A, future)
+- [ ] [m] RLS integration tests: token table inaccessible to non-service roles (Option A, future)
+- [ ] SQL policy comments on every policy (deferred)
+- [ ] Migration rollback documentation (deferred)
+- [ ] Backup / restore documentation (deferred)
 
 ## P3 — AI prompt-injection hardening
 
