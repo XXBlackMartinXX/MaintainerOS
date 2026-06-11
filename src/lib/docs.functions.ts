@@ -210,7 +210,9 @@ export const updateDocumentationDraft = createServerFn({ method: "POST" })
     if (data.approval_status) patch.approval_status = data.approval_status;
 
     if (Object.keys(patch).length > 1) {
-      const { error } = await context.supabase
+      // Updates run via the service-role client (no user UPDATE policy on
+      // this table). Ownership is enforced explicitly via .eq("user_id", ...).
+      const { error } = await supabaseAdmin
         .from("documentation_drafts")
         .update(patch)
         .eq("id", data.draft_id)

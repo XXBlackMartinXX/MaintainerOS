@@ -195,7 +195,9 @@ export const updatePrSummaryDraft = createServerFn({ method: "POST" })
     if (data.approval_status) patch.approval_status = data.approval_status;
 
     if (Object.keys(patch).length > 1) {
-      const { error } = await context.supabase
+      // Updates run via the service-role client (no user UPDATE policy on
+      // this table). Ownership is enforced explicitly via .eq("user_id", ...).
+      const { error } = await supabaseAdmin
         .from("pull_request_ai_summaries")
         .update(patch)
         .eq("id", data.summary_id)
@@ -373,7 +375,9 @@ export const updateReleaseDraft = createServerFn({ method: "POST" })
     if (data.status) patch.status = data.status;
 
     if (Object.keys(patch).length > 1) {
-      const { error } = await context.supabase
+      // Updates run via the service-role client (no user UPDATE policy on
+      // this table). Ownership is enforced explicitly via .eq("user_id", ...).
+      const { error } = await supabaseAdmin
         .from("release_drafts")
         .update(patch)
         .eq("id", data.draft_id)
