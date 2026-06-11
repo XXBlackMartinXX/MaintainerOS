@@ -55,10 +55,11 @@ MaintainerOS is built to assist maintainers, not to act on their behalf.
 
 ## Screenshots
 
-> **TODO** — screenshots have not been captured yet. See
-> [`docs/screenshots/README.md`](docs/screenshots/README.md) for the
-> capture list (landing, dashboard, issue triage, PR summary, changelog,
-> docs generator, trust center, readiness, audit log).
+Screenshots are pending and will be captured from demo mode (with the demo
+banner visible) before the first public release. No real user data, fake
+metrics, testimonials, or production claims will appear in them. See
+[`docs/screenshots/README.md`](docs/screenshots/README.md) for the capture
+list and guidelines.
 
 ## Tech stack
 
@@ -233,6 +234,6 @@ file security reports as public GitHub issues.
 
 [MIT](./LICENSE)
 
-MaintainerOS is currently an initial public preview.
-
-MaintainerOS is currently an initial public preview and should be reviewed carefully before production use.
+MaintainerOS is currently an initial public preview and should be evaluated
+on non-critical repositories before any production use. AI outputs are
+drafts that require human review and explicit approval before publishing.

@@ -1,16 +1,22 @@
 # Security Policy
 
+> **Maintainer TODO:** Before accepting security reports publicly, enable
+> GitHub private vulnerability reporting on this repository, or add a
+> dedicated security contact address here.
+
 ## Reporting a vulnerability
 
 If you believe you have found a security vulnerability in MaintainerOS,
-please report it privately. **Do not open a public issue.**
+please report it privately. **Do not open a public issue containing
+vulnerability details.**
 
-Email: `TODO_SECURITY_CONTACT_EMAIL`
+Security reports should be submitted through GitHub's private vulnerability
+reporting feature if enabled for this repository. If private reporting is
+not enabled, open a minimal public issue asking the maintainer to enable
+private vulnerability reporting; do not include sensitive vulnerability
+details in the public issue.
 
-> The repository owner should replace this placeholder with a real security
-> contact before accepting vulnerability reports.
-
-Please include:
+Please include (via the private channel only):
 
 - A description of the issue
 - Steps to reproduce
