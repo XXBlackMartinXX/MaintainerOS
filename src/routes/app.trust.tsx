@@ -146,8 +146,14 @@ function TrustPage() {
               MaintainerOS does not currently commit documentation to GitHub — you copy approved
               drafts manually.
             </li>
-            <li>Security readiness signals are heuristics, not guarantees.</li>
-            <li>Repository health scores are advisory and based on synced data only.</li>
+            <li>
+              Security readiness signals are advisory heuristics, not a substitute for a security
+              review. Verify before relying on any result.
+            </li>
+            <li>
+              Repository health scores are advisory and based on synced metadata only — some checks
+              do not yet inspect repository file contents.
+            </li>
           </ul>
         </Card>
       </div>
