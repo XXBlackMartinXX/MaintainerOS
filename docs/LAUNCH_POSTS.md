@@ -37,9 +37,9 @@ Honest, cautious copy for the v0.1.0 public preview. **No fake traction, no
 > What it does:
 > • Syncs issues, PRs, contributors, and releases from your GitHub repos
 > • Generates AI drafts for issue triage, PR summaries, changelogs, and
->   docs
+> docs
 > • Every output is an editable draft — nothing is posted to GitHub until
->   you click, confirm, and pass a duplicate check
+> you click, confirm, and pass a duplicate check
 > • Full audit log + demo mode with clearly-labeled sample data
 >
 > What it isn't: production-tested at scale, a replacement for human

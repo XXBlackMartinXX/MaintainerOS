@@ -116,8 +116,6 @@ For the full step-by-step walkthrough, see
 [`docs/PRODUCTION_AUTH_SETUP.md`](docs/PRODUCTION_AUTH_SETUP.md) or visit
 `/setup` in the deployed app for a live configuration checklist.
 
-
-
 1. Create a Supabase project.
 2. Copy the Project URL into `VITE_SUPABASE_URL` (and `SUPABASE_URL` if your
    host does not auto-inject the server copy).
@@ -253,4 +251,3 @@ on non-critical repositories before any production use. AI outputs are
 drafts that require human review and explicit approval before publishing.
 Workspace state is synced to GitHub `main` via the Lovable GitHub connector.
 Latest workspace sync verification: 2026-06-11.
-
