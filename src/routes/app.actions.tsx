@@ -108,7 +108,7 @@ function ActionsPage() {
   });
   const [selected, setSelected] = useState<LogRow | null>(null);
 
-  const logs = (logsQ.data?.logs ?? []) as LogRow[];
+  const logs = useMemo(() => (logsQ.data?.logs ?? []) as LogRow[], [logsQ.data]);
   const counts = useMemo(() => {
     const c = { total: logs.length, success: 0, failed: 0, attempted: 0, duplicate: 0 };
     for (const l of logs) {

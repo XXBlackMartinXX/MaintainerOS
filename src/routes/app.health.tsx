@@ -156,7 +156,7 @@ function HealthPage() {
   const header = (
     <PageHeader
       title="Repo health"
-      description="A weighted score across signals that matter for sustainable open source. All scoring is transparent and shown below."
+      description="Advisory weighted score across signals that matter for sustainable open source. Heuristic only — scoring is transparent and shown below."
       actions={
         <>
           {selected && hasData && <DataSourceBadge variant={anyMissing ? "partial" : "live"} />}

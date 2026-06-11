@@ -108,7 +108,7 @@ function SecurityPage() {
       <div>
         <PageHeader
           title="Security Readiness"
-          description="Practical security readiness signals — cautious by design."
+          description="Advisory signals only — not a substitute for a security review."
         />
         <EmptyRepositoryState />
       </div>

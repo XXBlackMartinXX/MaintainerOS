@@ -91,8 +91,11 @@ function PullsPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [bulkProgress, setBulkProgress] = useState<{ done: number; total: number } | null>(null);
 
-  const pulls = pullsQ.data?.pulls ?? [];
-  const summaries = (summariesQ.data?.summaries ?? []) as SummaryRow[];
+  const pulls = useMemo(() => pullsQ.data?.pulls ?? [], [pullsQ.data]);
+  const summaries = useMemo(
+    () => (summariesQ.data?.summaries ?? []) as SummaryRow[],
+    [summariesQ.data],
+  );
   const summaryByPr = useMemo(() => {
     const m = new Map<string, SummaryRow>();
     for (const s of summaries) m.set(s.pull_request_id, s);

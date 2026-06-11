@@ -138,8 +138,8 @@ function IssuesPage() {
   const [bulkProgress, setBulkProgress] = useState({ done: 0, total: 0 });
   const [selectedIssueId, setSelectedIssueId] = useState<string | null>(null);
 
-  const issues = issuesQ.data?.issues ?? [];
-  const triageRows = (triageQ.data?.triage ?? []) as TriageRow[];
+  const issues = useMemo(() => issuesQ.data?.issues ?? [], [issuesQ.data]);
+  const triageRows = useMemo(() => (triageQ.data?.triage ?? []) as TriageRow[], [triageQ.data]);
   const triageByIssue = useMemo(() => {
     const map = new Map<string, TriageRow>();
     for (const t of triageRows) map.set(t.issue_id, t);
