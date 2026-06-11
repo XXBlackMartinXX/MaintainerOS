@@ -14,12 +14,13 @@ owner task (cannot be automated from inside the app).
 - [x] README "Production status" section
 - [ ] All later docs cross-link back to `PRODUCTION_READINESS.md`
 
-## P1 — GitHub integration hardening
+## P1 — GitHub integration hardening (design + scaffold complete)
 
-- [ ] `docs/GITHUB_APP_MODEL.md` (design)
-- [ ] `docs/OAUTH_AND_PERMISSIONS.md`
-- [ ] Permission classifier helper + tests
-- [ ] Read-only mode UI state
+- [x] `docs/GITHUB_INTEGRATION.md` (current architecture + limitations)
+- [x] `docs/GITHUB_APP_MIGRATION_PLAN.md` (future App design)
+- [x] Future GitHub App env var detection in `src/lib/env.ts`
+- [x] Future GitHub App booleans in `getServerConfigStatus`
+- [x] `classifyGithubAppReadiness` helper + tests
 - [ ] Token lifecycle: detect expired/revoked, reconnect flow
 - [ ] Repo-level permission display in UI
 - [m] Create GitHub App in GitHub settings
