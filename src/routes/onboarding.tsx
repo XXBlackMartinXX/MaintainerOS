@@ -93,9 +93,7 @@ function Onboarding() {
                 <div className="mx-auto size-10 rounded-md bg-primary/15 text-primary grid place-items-center ring-1 ring-primary/30">
                   <Check className="size-5" />
                 </div>
-                <p className="mt-4 text-sm text-foreground font-medium">
-                  GitHub connected
-                </p>
+                <p className="mt-4 text-sm text-foreground font-medium">GitHub connected</p>
                 <p className="mt-1 text-sm text-muted-foreground">
                   We can read your repositories. Nothing is posted to GitHub without your approval.
                 </p>

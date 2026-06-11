@@ -25,7 +25,11 @@ function CopyField({ value, label }: { value: string; label?: string }) {
       aria-label={`Copy ${label ?? "value"}`}
     >
       <code className="flex-1 truncate">{value}</code>
-      {copied ? <Check className="size-3 flex-none text-success" /> : <Copy className="size-3 flex-none text-muted-foreground" />}
+      {copied ? (
+        <Check className="size-3 flex-none text-success" />
+      ) : (
+        <Copy className="size-3 flex-none text-muted-foreground" />
+      )}
     </button>
   );
 }
@@ -75,9 +79,7 @@ function StatusRow({ row }: { row: Row }) {
             {row.ok ? "configured" : row.required ? "missing (required)" : "missing (optional)"}
           </span>
         </div>
-        {row.hint && !row.ok && (
-          <p className="mt-1 text-xs text-muted-foreground">{row.hint}</p>
-        )}
+        {row.hint && !row.ok && <p className="mt-1 text-xs text-muted-foreground">{row.hint}</p>}
       </div>
     </div>
   );

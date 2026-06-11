@@ -91,13 +91,39 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:title", content: "MaintainerOS — AI operations center for open-source maintainers" },
-      { name: "twitter:title", content: "MaintainerOS — AI operations center for open-source maintainers" },
-      { name: "description", content: "An AI operations center for open-source maintainers, streamlining issue triage, PR summaries, and more." },
-      { property: "og:description", content: "An AI operations center for open-source maintainers, streamlining issue triage, PR summaries, and more." },
-      { name: "twitter:description", content: "An AI operations center for open-source maintainers, streamlining issue triage, PR summaries, and more." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c2e9a21b-9c3c-47df-922d-7ffbb66bc5f4/id-preview-ad23ef30--00feff26-a896-46df-bf28-ac575d1a7899.lovable.app-1779213400662.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c2e9a21b-9c3c-47df-922d-7ffbb66bc5f4/id-preview-ad23ef30--00feff26-a896-46df-bf28-ac575d1a7899.lovable.app-1779213400662.png" },
+      {
+        property: "og:title",
+        content: "MaintainerOS — AI operations center for open-source maintainers",
+      },
+      {
+        name: "twitter:title",
+        content: "MaintainerOS — AI operations center for open-source maintainers",
+      },
+      {
+        name: "description",
+        content:
+          "An AI operations center for open-source maintainers, streamlining issue triage, PR summaries, and more.",
+      },
+      {
+        property: "og:description",
+        content:
+          "An AI operations center for open-source maintainers, streamlining issue triage, PR summaries, and more.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "An AI operations center for open-source maintainers, streamlining issue triage, PR summaries, and more.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c2e9a21b-9c3c-47df-922d-7ffbb66bc5f4/id-preview-ad23ef30--00feff26-a896-46df-bf28-ac575d1a7899.lovable.app-1779213400662.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c2e9a21b-9c3c-47df-922d-7ffbb66bc5f4/id-preview-ad23ef30--00feff26-a896-46df-bf28-ac575d1a7899.lovable.app-1779213400662.png",
+      },
     ],
     links: [
       {

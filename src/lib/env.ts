@@ -81,7 +81,8 @@ export function hasFeature(feature: ServerFeature, env = serverEnv()): boolean {
 export function requireFeature(feature: ServerFeature, env = serverEnv()): void {
   if (hasFeature(feature, env)) return;
   const msg: Record<ServerFeature, string> = {
-    supabase: "the backend (Supabase) is not configured. Missing SUPABASE_URL or SUPABASE_PUBLISHABLE_KEY.",
+    supabase:
+      "the backend (Supabase) is not configured. Missing SUPABASE_URL or SUPABASE_PUBLISHABLE_KEY.",
     "supabase-admin":
       "Server-side database access is not configured. Missing SUPABASE_SERVICE_ROLE_KEY.",
     "github-oauth":

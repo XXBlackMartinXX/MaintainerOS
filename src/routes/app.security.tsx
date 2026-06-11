@@ -196,7 +196,7 @@ function SecurityPage() {
     <div>
       <PageHeader
         title="Security Readiness"
-        description='Advisory signals only. These checks are heuristic, are not a substitute for a security review, and may not inspect repository file contents yet — verify before relying on any result.'
+        description="Advisory signals only. These checks are heuristic, are not a substitute for a security review, and may not inspect repository file contents yet — verify before relying on any result."
         actions={
           <div className="flex items-center gap-2">
             <DataSourceBadge variant="partial" />
