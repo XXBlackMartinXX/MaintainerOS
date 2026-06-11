@@ -63,9 +63,7 @@ export function generateMaintainerReport(input: MaintainerReportInput): string {
     lines.push("_No pending drafts._");
   } else {
     for (const i of input.pendingItems) {
-      lines.push(
-        `- **${SOURCE_LABEL[i.source]}** · ${i.approvalStatus} — ${escape(i.title)}`,
-      );
+      lines.push(`- **${SOURCE_LABEL[i.source]}** · ${i.approvalStatus} — ${escape(i.title)}`);
     }
   }
   lines.push("");

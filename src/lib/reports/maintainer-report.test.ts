@@ -62,10 +62,7 @@ describe("generateMaintainerReport", () => {
       repoFullName: "acme/atlas",
       generatedAt: fixedDate,
       mode: "live",
-      checks: [
-        sampleCheck,
-        { ...sampleCheck, key: "x", name: "Audit logging", status: "present" },
-      ],
+      checks: [sampleCheck, { ...sampleCheck, key: "x", name: "Audit logging", status: "present" }],
       pendingItems: [],
       recentAudit: [],
       knownLimitations: [],

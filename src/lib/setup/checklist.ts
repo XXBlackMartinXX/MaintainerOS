@@ -39,7 +39,8 @@ export function buildSetupChecklist(input: SetupChecklistInput): SetupChecklistI
       label: "Server Supabase env vars",
       status: required(input.supabaseServerConfigured),
       why: "Required for server functions to read/write privileged data.",
-      nextStep: "Ensure SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, and SUPABASE_SERVICE_ROLE_KEY are set.",
+      nextStep:
+        "Ensure SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, and SUPABASE_SERVICE_ROLE_KEY are set.",
       handledBy: "lovable",
     },
     {
@@ -82,7 +83,8 @@ export function buildSetupChecklist(input: SetupChecklistInput): SetupChecklistI
       label: "Deployment URL known",
       status: required(input.deploymentUrlKnown),
       why: "Needed to set OAuth callback URLs and link from documentation.",
-      nextStep: "Decide on a published URL and record it in your GitHub OAuth app + Supabase config.",
+      nextStep:
+        "Decide on a published URL and record it in your GitHub OAuth app + Supabase config.",
       handledBy: "owner",
     },
     {

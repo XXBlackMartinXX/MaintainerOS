@@ -42,9 +42,7 @@ export const listApprovalQueue = createServerFn({ method: "GET" })
         .limit(limit),
       supabase
         .from("pull_request_ai_summaries")
-        .select(
-          "id, release_note_candidate, model, approval_status, updated_at, repository_id",
-        )
+        .select("id, release_note_candidate, model, approval_status, updated_at, repository_id")
         .eq("repository_id", repoId)
         .order("updated_at", { ascending: false })
         .limit(limit),
