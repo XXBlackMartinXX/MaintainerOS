@@ -150,7 +150,7 @@ function ReadinessPage() {
     <div>
       <PageHeader
         title="Open-source readiness"
-        description="A practical checklist of the basics every healthy open-source project should have. Generated drafts count — they still need to be edited and committed manually."
+        description="Advisory checklist of basics every healthy open-source project should have. Heuristic signals only — not a substitute for a manual review. Generated drafts count toward progress but still need to be edited and committed manually."
         actions={
           <div className="flex items-center gap-2">
             <DataSourceBadge variant="partial" />

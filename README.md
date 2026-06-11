@@ -55,10 +55,11 @@ MaintainerOS is built to assist maintainers, not to act on their behalf.
 
 ## Screenshots
 
-> **TODO** — screenshots have not been captured yet. See
-> [`docs/screenshots/README.md`](docs/screenshots/README.md) for the
-> capture list (landing, dashboard, issue triage, PR summary, changelog,
-> docs generator, trust center, readiness, audit log).
+Screenshots are pending and will be captured from demo mode (with the demo
+banner visible) before the first public release. No real user data, fake
+metrics, testimonials, or production claims will appear in them. See
+[`docs/screenshots/README.md`](docs/screenshots/README.md) for the capture
+list and guidelines.
 
 ## Tech stack
 
@@ -147,9 +148,23 @@ For the full step-by-step walkthrough, see
 3. In your Supabase project: **Authentication → Providers → GitHub**, paste
    the Client ID and Client Secret, and enable the provider.
 4. Recommended scopes: `read:user user:email repo read:org`.
-   - `repo` is required to comment on issues, comment on PRs, apply labels,
-     and create draft releases on private repositories.
-   - `public_repo` is sufficient for the same actions on public repositories.
+   - `read:user` and `user:email` are used only to sign you in and show
+     your GitHub identity.
+   - `repo` is broad and grants read/write access to all repositories you
+     can access, including private ones. It is required to comment on
+     issues, comment on PRs, apply labels, and create draft releases on
+     **private** repositories.
+   - `public_repo` is sufficient for the same write actions on **public**
+     repositories only and is the narrower choice when you do not need
+     private repository access.
+   - `read:org` is used to list the organizations you belong to so you
+     can pick the right repository to connect.
+   - Evaluate these permissions before connecting sensitive repositories.
+     MaintainerOS applies approval gates and a duplicate-protection check
+     before every GitHub write action, releases are always created as
+     drafts, and access tokens are stored server-side only — but the
+     OAuth scope you grant still bounds what the application is
+     technically able to do.
 
 On first sign-in the GitHub access token is persisted in the service-role
 protected `user_github_tokens` table. Tokens are never returned to the
@@ -233,6 +248,6 @@ file security reports as public GitHub issues.
 
 [MIT](./LICENSE)
 
-MaintainerOS is currently an initial public preview.
-
-MaintainerOS is currently an initial public preview and should be reviewed carefully before production use.
+MaintainerOS is currently an initial public preview and should be evaluated
+on non-critical repositories before any production use. AI outputs are
+drafts that require human review and explicit approval before publishing.
