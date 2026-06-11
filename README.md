@@ -9,7 +9,8 @@ publishing.
 
 Initial public preview. MaintainerOS is pre-1.0 and should be tested on
 non-critical repositories first. The project does not claim production
-adoption, stars, downloads, or paying users.
+adoption, stars, downloads, or paying users. Current testing status is
+documented in [`docs/TESTING.md`](docs/TESTING.md).
 
 > This repository is an **application**, not an npm package. `package.json`
 > is marked `"private": true` so it cannot be accidentally published to a
