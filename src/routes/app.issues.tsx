@@ -139,10 +139,7 @@ function IssuesPage() {
   const [selectedIssueId, setSelectedIssueId] = useState<string | null>(null);
 
   const issues = useMemo(() => issuesQ.data?.issues ?? [], [issuesQ.data]);
-  const triageRows = useMemo(
-    () => (triageQ.data?.triage ?? []) as TriageRow[],
-    [triageQ.data],
-  );
+  const triageRows = useMemo(() => (triageQ.data?.triage ?? []) as TriageRow[], [triageQ.data]);
   const triageByIssue = useMemo(() => {
     const map = new Map<string, TriageRow>();
     for (const t of triageRows) map.set(t.issue_id, t);
