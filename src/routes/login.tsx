@@ -21,9 +21,7 @@ function LoginPage() {
   useEffect(() => {
     // Surface OAuth errors that Supabase appends to the URL hash on failure.
     if (typeof window !== "undefined") {
-      const hash = window.location.hash.startsWith("#")
-        ? window.location.hash.slice(1)
-        : "";
+      const hash = window.location.hash.startsWith("#") ? window.location.hash.slice(1) : "";
       const params = new URLSearchParams(hash);
       const err = params.get("error_description") || params.get("error");
       if (err) {
@@ -33,9 +31,12 @@ function LoginPage() {
     }
     const sb = getSupabase();
     if (!sb) return;
-    sb.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/app" });
-    }).catch(() => {});
+    sb.auth
+      .getSession()
+      .then(({ data }) => {
+        if (data.session) navigate({ to: "/app" });
+      })
+      .catch(() => {});
   }, [navigate]);
 
   const signInWithGitHub = async () => {
@@ -75,14 +76,18 @@ function LoginPage() {
           <div className="mt-4 rounded-md border border-warning/30 bg-warning/10 p-3 text-left text-xs text-warning">
             <p className="font-medium">Backend setup required</p>
             <p className="mt-1 text-warning/80">
-              Sign-in is unavailable because the deployment is missing Supabase
-              environment variables. Set <code>VITE_SUPABASE_URL</code> and{" "}
-              <code>VITE_SUPABASE_ANON_KEY</code> and redeploy.
+              Sign-in is unavailable because the deployment is missing Supabase environment
+              variables. Set <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code>{" "}
+              and redeploy.
             </p>
             <div className="mt-2 flex flex-wrap gap-2">
-              <Link to="/setup" className="underline">Open setup diagnostics</Link>
+              <Link to="/setup" className="underline">
+                Open setup diagnostics
+              </Link>
               <span aria-hidden>·</span>
-              <Link to="/demo" className="underline">Try the demo</Link>
+              <Link to="/demo" className="underline">
+                Try the demo
+              </Link>
             </div>
           </div>
         )}
@@ -99,10 +104,18 @@ function LoginPage() {
           <p className="mt-3 text-[11px] text-muted-foreground">
             If sign-in fails, ensure the GitHub provider is enabled in Supabase Auth and the
             callback URL matches. See{" "}
-            <Link to="/setup" className="underline">setup diagnostics</Link>.
+            <Link to="/setup" className="underline">
+              setup diagnostics
+            </Link>
+            .
           </p>
         )}
-        <Button size="lg" className="mt-6 w-full" onClick={signInWithGitHub} disabled={loading || !configured}>
+        <Button
+          size="lg"
+          className="mt-6 w-full"
+          onClick={signInWithGitHub}
+          disabled={loading || !configured}
+        >
           <Github className="size-4" /> {loading ? "Redirecting…" : "Continue with GitHub"}
         </Button>
         <p className="mt-4 inline-flex items-center gap-1.5 text-[11px] text-muted-foreground">

@@ -4,7 +4,6 @@ import { useServerFn } from "@tanstack/react-start";
 import { listConnectedRepos } from "@/lib/github.functions";
 import { getSupabase } from "@/integrations/supabase/safe-client";
 
-
 const STORAGE_KEY = "maintainer-os.selected-repo-id";
 const EVENT = "maintainer-os:selected-repo-changed";
 
@@ -55,11 +54,14 @@ export function useConnectedRepos() {
       return;
     }
     let active = true;
-    sb.auth.getSession().then(({ data }) => {
-      if (active) setHasSession(!!data.session);
-    }).catch(() => {
-      if (active) setHasSession(false);
-    });
+    sb.auth
+      .getSession()
+      .then(({ data }) => {
+        if (active) setHasSession(!!data.session);
+      })
+      .catch(() => {
+        if (active) setHasSession(false);
+      });
     const { data: sub } = sb.auth.onAuthStateChange((_e, session) => {
       setHasSession(!!session);
     });
@@ -76,7 +78,6 @@ export function useConnectedRepos() {
     enabled: hasSession === true,
   });
 }
-
 
 export function useSelectedRepo() {
   const { data, isLoading } = useConnectedRepos();
