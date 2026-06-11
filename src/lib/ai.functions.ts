@@ -205,7 +205,9 @@ export const updateTriageDraft = createServerFn({ method: "POST" })
     if (data.approval_status) patch.approval_status = data.approval_status;
 
     if (Object.keys(patch).length > 1) {
-      const { error } = await context.supabase
+      // Updates run via the service-role client so that the user-facing UPDATE
+      // policy can remain absent. Ownership is enforced explicitly here.
+      const { error } = await supabaseAdmin
         .from("issue_triage_results")
         .update(patch)
         .eq("id", data.triage_id)
