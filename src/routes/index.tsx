@@ -419,6 +419,11 @@ function Pricing() {
 }
 
 function CTASection() {
+  const navigate = useNavigate();
+  const tryDemo = () => {
+    enableDemoMode();
+    navigate({ to: "/app" });
+  };
   return (
     <section className="py-24 border-t border-border/60">
       <div className="max-w-4xl mx-auto px-4 md:px-6 text-center">
@@ -426,10 +431,8 @@ function CTASection() {
           Spend less time on triage. More time on the project you love.
         </h2>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Button asChild size="lg">
-            <Link to="/app">
-              <Github className="size-4" /> Open the demo
-            </Link>
+          <Button size="lg" onClick={tryDemo}>
+            <PlayCircle className="size-4" /> Open the demo
           </Button>
           <Button asChild size="lg" variant="outline">
             <a href={PROJECT_META.repoUrl} target="_blank" rel="noreferrer">
