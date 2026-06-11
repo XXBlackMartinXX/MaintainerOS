@@ -251,4 +251,5 @@ file security reports as public GitHub issues.
 MaintainerOS is currently an initial public preview and should be evaluated
 on non-critical repositories before any production use. AI outputs are
 drafts that require human review and explicit approval before publishing.
-Workspace state is synced to GitHub `main` via the Lovable connector.
+Workspace state is synced to GitHub `main` via the Lovable GitHub connector.
+
