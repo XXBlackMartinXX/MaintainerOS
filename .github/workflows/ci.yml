@@ -44,5 +44,10 @@ jobs:
       - name: Public-claims scan
         run: bun run check:claims
 
+      - name: Repository operations check
+        run: bun run check:repo
+
+
+
       - name: Build
         run: bun run build

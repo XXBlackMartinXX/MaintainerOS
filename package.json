@@ -15,6 +15,7 @@
     "test:watch": "vitest",
     "check:rls": "bun run scripts/check-rls-policies.ts",
     "check:claims": "bun run scripts/check-public-claims.ts",
+    "check:repo": "bun run scripts/check-repo-ops.ts",
     "sandbox:preflight": "bun run scripts/sandbox-preflight.ts",
     "test:rls:runtime": "bash scripts/run-rls-runtime-tests.sh",
     "format": "prettier --write ."
