@@ -22,8 +22,8 @@ inviting any external reviewer.
 - [ ] Enable **CodeQL / default code scanning**.
 - [ ] Enable **Dependabot alerts** and **Dependabot security updates**.
 - [ ] Add `Description`, `Website`, and `Topics` on the GitHub About panel
-      (website: `https://maintainer-os.lovable.app`;
-      (suggested topics: `github`, `maintainer-tools`, `open-source`,
+      (website: `https://maintainer-os.lovable.app`; suggested topics:
+      `github`, `maintainer-tools`, `open-source`,
       `ai-drafts`, `human-in-the-loop`, `tanstack-start`, `supabase`).
 - [ ] Configure branch protection on `main` and tag protection for `v*`
       per [`docs/REPOSITORY_OPERATIONS.md`](./REPOSITORY_OPERATIONS.md).

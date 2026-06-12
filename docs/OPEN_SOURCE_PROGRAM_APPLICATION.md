@@ -47,9 +47,9 @@ clicks, confirms, and reviews a preview.
 
 ## What is still preview / experimental
 
-- No automated test suite yet (manual smoke checks only)
+- 97 Vitest unit/integration tests pass; no browser end-to-end suite yet
 - Public screenshots not yet captured
-- No hosted demo deployment yet
+- Public demo is available at <https://maintainer-os.lovable.app/demo>
 - Sync is on-demand only (no webhooks or background polling)
 - Repository health and security readiness are heuristics, not guarantees
 
@@ -119,7 +119,7 @@ public preview with no claimed adoption.
 > to get serious external review of the safety model — the approval
 > gates, the audit log, the RLS policies, and the draft-only writes —
 > before the project is recommended to maintainers of larger projects.
-> Funding or credit support would go directly toward the work in the
-> v0.2.0 roadmap: a real automated test suite, a hosted demo, an
-> accessibility pass, and a self-hosting guide. The project is MIT
+> Funding or credit support would go directly toward expanding browser
+> and live-integration verification, accessibility, and self-hosting
+> guidance. The project is MIT
 > licensed and will remain so.

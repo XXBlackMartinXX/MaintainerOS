@@ -12,7 +12,7 @@ Recommended captures (PNG, 1600×1000 or similar):
 | `dashboard.png`      | Demo dashboard with the persistent demo banner visible.                        |
 | `repo-health.png`    | `/app/health` or `/app/readiness` with advisory language visible.               |
 | `approval-queue.png` | `/app/approval-queue` with a sample draft awaiting human approval.              |
-| `issue-triage.png`   | `/app/issues` with the AI triage side panel open on a real issue.              |
+| `issue-triage.png`   | `/app/issues` with the AI triage side panel open on a sample issue.            |
 | `pr-summary.png`     | `/app/pulls` with an AI PR summary draft visible.                              |
 | `changelog.png`      | `/app/changelog` showing a generated draft grouped by Added / Changed / Fixed. |
 | `docs-generator.png` | `/app/docs` with a generated README draft and confidence/safety notes visible. |

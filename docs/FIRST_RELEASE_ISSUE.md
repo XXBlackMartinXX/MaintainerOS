@@ -9,23 +9,24 @@ Copy the block below into a new GitHub issue titled
 
 - [ ] Fill the GitHub **About** section (description, topics, website)
       — see `docs/OPEN_SOURCE_PROGRAM_APPLICATION.md` for suggested copy
-- [ ] Set a real security contact in `SECURITY.md`
-      (replace `TODO_SECURITY_CONTACT_EMAIL`)
-- [ ] Deploy the public demo and set `PROJECT_META.demoUrl`
-      in `src/lib/project-meta.ts` (replace `TODO_PUBLIC_DEMO_URL`)
+- [ ] Enable private vulnerability reporting and verify `SECURITY.md`
+      points reporters to that private channel
+- [ ] Verify <https://maintainer-os.lovable.app/demo> loads and keeps the
+      demo banner visible
 - [ ] Capture screenshots listed in `docs/screenshots/README.md`
       and reference them from the main `README.md`
 - [ ] Verify `README.md` reads cleanly end-to-end
 - [ ] Verify `.env` is not tracked and no secrets are committed
       (`git ls-files | grep -E '^\.env$'` should return nothing)
-- [ ] Run `bun run lint`, `bun run typecheck`, `bun run build`
+- [ ] Run `bun run typecheck`, `bun run test`, `bun run check:rls`,
+      `bun run check:claims`, `bun run check:repo`, and `bun run build`
 
 ## Launch
 
 - [ ] Create the GitHub release `v0.1.0` as a **draft**
       using `docs/RELEASE_NOTES_v0.1.0.md` as the body
 - [ ] Final review of the draft release
-- [ ] Publish the `v0.1.0` release
+- [ ] Leave the `v0.1.0` release as a draft pre-release pending final review
 - [ ] Open the good-first-issues from
       `docs/GOOD_FIRST_ISSUES.md` (one issue per entry)
 
@@ -40,5 +41,5 @@ Copy the block below into a new GitHub issue titled
 ---
 
 **Definition of done:** the repository looks credible to a first-time
-visitor, the demo URL works, screenshots are real, and the v0.1.0
-release is published.
+visitor, the demo URL works, screenshots are real, and the v0.1.0 draft
+pre-release is ready for owner review.
