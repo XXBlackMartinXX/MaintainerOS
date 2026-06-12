@@ -80,3 +80,20 @@ publish/approval pipeline.
 
 These checks are intentionally static-text scans. They are fast,
 deterministic, and do not require rendering React.
+
+## P5 — Maintainer features
+
+- `src/lib/repo-health/checks.test.ts` — exercises draft classification,
+  sync-freshness thresholds, demo-mode limitation decoration, and the new
+  `not_verified` advisory artifact checks (LICENSE, CI workflow, CHANGELOG,
+  `.env.example`, RLS docs, etc.).
+- `src/lib/ai/explainability.test.ts` — verifies the AI-draft explainability
+  helper always carries the "review before publishing" label, has rationale
+  and verification checklists for every draft kind, and contains no
+  forbidden overclaiming language.
+- `src/lib/reports/maintainer-report.test.ts` — verifies the Markdown report
+  carries the advisory disclaimer, labels demo-mode data, never leaks
+  secret-shaped strings, and escapes control characters.
+- `src/lib/setup/checklist.test.ts` — verifies setup items are correctly
+  classified as configured / missing / manual_verification_required.
+

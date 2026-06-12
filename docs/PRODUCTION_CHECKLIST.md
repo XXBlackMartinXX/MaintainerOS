@@ -85,7 +85,18 @@ owner task (cannot be automated from inside the app).
 - [ ] Audit-log states: attempted, succeeded, failed, duplicate-blocked,
       permission-denied
 
-## P5 — Observability and operations
+## P5 — High-value maintainer features (advisory)
+
+- [x] Evidence-based repo health center with status/confidence/evidence/limitation
+- [x] Advisory `not_verified` checks for LICENSE, CI workflow, CHANGELOG,
+      `.env.example`, screenshots, testing docs, RLS docs, readiness docs
+- [x] Central approval queue surfaces drafts; publish remains explicit
+- [x] Markdown maintainer report (advisory, no secrets, demo-labelled)
+- [x] Setup wizard checklist (booleans only)
+- [x] AI draft explainability helper (label, rationale, inputs, checklist, risk band)
+- [x] `docs/FEATURES.md`, `docs/MAINTAINER_REPORT.md`, `docs/SETUP_WIZARD.md`
+
+## P5b — Observability and operations (deferred)
 
 - [ ] Health endpoint (booleans only)
 - [ ] Structured logging guidelines
@@ -94,6 +105,7 @@ owner task (cannot be automated from inside the app).
 - [ ] GitHub sync throttling
 - [ ] `docs/OPERATIONS_RUNBOOK.md`
 - [ ] Alerting checklist
+
 
 ## P6 — Account lifecycle and privacy
 

@@ -65,6 +65,24 @@ const DRAFT_DOCS: DraftDoc[] = [
 ];
 
 /**
+ * Advisory artifacts we cannot yet verify because MaintainerOS does not read
+ * repository file contents. They appear in the health center as
+ * `not_verified` so reviewers can see them as recommended without us
+ * overclaiming presence.
+ */
+const UNVERIFIED_ARTIFACTS: Array<{ key: string; name: string; nextAction: string }> = [
+  { key: "license_file", name: "LICENSE file", nextAction: "Commit a LICENSE file at the repository root." },
+  { key: "ci_workflow", name: "CI workflow", nextAction: "Add a CI workflow (e.g. .github/workflows/ci.yml) running typecheck, lint, tests, and build." },
+  { key: "changelog_file", name: "CHANGELOG", nextAction: "Maintain a CHANGELOG.md or generate release notes from PR summaries." },
+  { key: "dependency_manifest", name: "Dependency manifest", nextAction: "Ensure a package.json / lockfile (or language equivalent) is committed." },
+  { key: "env_example", name: ".env.example", nextAction: "Commit a .env.example documenting required environment variables (no secrets)." },
+  { key: "screenshot_docs", name: "Screenshot / docs assets", nextAction: "Add screenshots or a docs/ folder showing the product in use." },
+  { key: "testing_docs", name: "Testing documentation", nextAction: "Add docs explaining how to run tests locally and in CI." },
+  { key: "rls_docs", name: "RLS / access-control documentation", nextAction: "If you use Supabase or another row-level DB, document policies and access model." },
+  { key: "production_readiness_docs", name: "Production-readiness documentation", nextAction: "Document deployment, secrets, monitoring, and the production-readiness checklist." },
+];
+
+/**
  * Classify draft availability for one document type.
  * A draft alone never proves the file lives in the repo — only that an
  * AI-assisted starting point exists. We therefore use "partial" (not "present")
@@ -115,6 +133,19 @@ export function buildRepoHealthChecks(input: RepoHealthInput): RepoHealthCheck[]
         : `Last sync finished ${input.syncFreshDays} day${input.syncFreshDays === 1 ? "" : "s"} ago.`,
     nextAction: "Run a sync from the dashboard.",
   });
+
+  for (const a of UNVERIFIED_ARTIFACTS) {
+    checks.push({
+      key: a.key,
+      name: a.name,
+      status: "not_verified",
+      confidence: "low",
+      evidence: "Advisory check. MaintainerOS does not yet read repository file contents.",
+      limitation:
+        "Presence of this file is not verified against the live repository tree.",
+      nextAction: a.nextAction,
+    });
+  }
 
   checks.push({
     key: "write_scope",
