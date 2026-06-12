@@ -58,6 +58,28 @@ These are intentionally static-text checks, not React renders. They are
 fast, deterministic, and do not require a DOM or `@testing-library/react`,
 which keeps the CI suite small and stable.
 
+## UX copy invariants (added in P4)
+
+`src/lib/reliability/product-copy.test.ts` enforces the project's
+product-language standards by scanning shipped source files:
+
+- A central `src/lib/product-copy.ts` exports the canonical safety
+  labels (`AI draft`, `Human approval required`, `Advisory signal`,
+  `Public preview`, `Demo data`, `Setup required`, `Draft release`,
+  `Sensitive repositories are not recommended yet`, etc.) and the
+  longer reusable copy blocks for empty / setup / advisory surfaces.
+- A `FORBIDDEN_COPY` list prevents accidental overclaiming language
+  (`production-ready`, `enterprise-grade`, `guaranteed`,
+  `AI will publish`, `auto-publish`, `SOC 2 certified`,
+  `penetration tested`, …). The test fails if any of these phrases
+  appears in a shipped `src/` file.
+- Advisory wording is pinned on the trust, security, readiness, and
+  health surfaces so a future refactor cannot silently turn a
+  heuristic check into a guarantee.
+- `EmptyRepositoryState` surfaces a "Try the demo instead" path and
+  documents that demo mode uses sample data only.
+
+
 ## Manual smoke checklist
 
 Run this before publishing a release or after non-trivial UX changes. No

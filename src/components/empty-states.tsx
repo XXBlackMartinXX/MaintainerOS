@@ -2,10 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { Github, Database } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SyncNowButton } from "@/components/sync-now-button";
+import { PRODUCT_COPY } from "@/lib/product-copy";
 
 export function EmptyRepositoryState({
   title = "No repository connected",
-  description = "Connect a GitHub repository to start syncing live issues, pull requests, and contributors.",
+  description = PRODUCT_COPY.noRepositoryBody,
 }: {
   title?: string;
   description?: string;
@@ -17,13 +18,19 @@ export function EmptyRepositoryState({
       </div>
       <h3 className="mt-4 font-medium">{title}</h3>
       <p className="mt-1 text-sm text-muted-foreground max-w-md mx-auto">{description}</p>
-      <div className="mt-5">
+      <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
         <Button asChild>
           <Link to="/onboarding">
             <Github className="size-4" /> Connect a repository
           </Link>
         </Button>
+        <Button asChild variant="outline">
+          <Link to="/demo">Try the demo instead</Link>
+        </Button>
       </div>
+      <p className="mt-3 text-[11px] text-muted-foreground">
+        Demo mode uses sample data only — it never calls GitHub or the AI gateway.
+      </p>
     </div>
   );
 }

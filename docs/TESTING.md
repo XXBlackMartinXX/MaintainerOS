@@ -65,3 +65,18 @@ The current suite raises the credibility of the public preview but does
 **not** by itself unblock a 1.0 production claim — integration and E2E
 coverage are still required, plus a real audit of RLS policies and the
 publish/approval pipeline.
+
+## P4 — UX copy invariants
+
+- `src/lib/reliability/product-copy.test.ts` exercises:
+  - `PRODUCT_LABELS` and `PRODUCT_COPY` exports (keys + non-empty strings)
+  - `FORBIDDEN_COPY` lint — fails the build if any shipped `src/` file
+    contains overclaiming language such as `production-ready`,
+    `enterprise-grade`, `guaranteed`, `auto-publish`, `SOC 2 certified`,
+    or `penetration tested`
+  - Advisory wording on `/app/security`, `/app/readiness`, `/app/health`,
+    and `/app/trust`
+  - `EmptyRepositoryState` exposes a demo-mode path
+
+These checks are intentionally static-text scans. They are fast,
+deterministic, and do not require rendering React.

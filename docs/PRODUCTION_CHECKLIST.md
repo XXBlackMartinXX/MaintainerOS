@@ -49,6 +49,18 @@ owner task (cannot be automated from inside the app).
 - [ ] Playwright E2E for demo / missing-config / approval dialog (deferred — see `FLOW_TESTING.md`)
 - [m] Manual smoke checklist run before each release
 
+## Product professionalism and UX precision (P4 in recommended ordering)
+
+- [x] Central product-copy module (`src/lib/product-copy.ts`) with canonical
+      safety labels and reusable empty/setup/advisory strings
+- [x] `FORBIDDEN_COPY` lint test fails on overclaiming language anywhere in `src/`
+- [x] Advisory wording invariants on `/app/security`, `/app/readiness`,
+      `/app/health`, and `/app/trust`
+- [x] `EmptyRepositoryState` offers a demo-mode escape hatch and labels
+      sample data explicitly
+- [x] `AdvisoryNotice` component for trust/security/readiness surfaces
+
+
 ## AI prompt-injection hardening
 
 
