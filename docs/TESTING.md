@@ -23,6 +23,8 @@ No secrets are required. Tests do not read `.env`.
 | AI response schemas  | `src/lib/ai/schemas.test.ts`                 | Triage, PR summary, changelog, and documentation Zod schemas accept valid drafts and reject unknown enums, out-of-range confidence, and empty required fields.                                                                    |
 | Publish helpers      | `src/components/publish-helpers.test.ts`     | `getPublishEventForSource` filters by status; `formatPublishedAt` returns relative time and falls back safely on invalid input.                                                                                                   |
 | RLS static policies  | `src/lib/security/rls-policy-checks.test.ts` | Parses `supabase/migrations/` and asserts every access-control invariant in `docs/RLS_ACCESS_CONTROL.md` (RLS enabled, no permissive policies, draft tables have no UPDATE policy, `user_github_tokens` has zero policies, etc.). |
+| Safe Supabase client | `src/integrations/supabase/safe-client.test.ts` | `isSupabaseConfigured()` / `getSupabase()` never throw when env vars are missing, never expose secrets — what keeps `/login`, `/demo`, marketing routes alive on a fresh deploy.                                                  |
+| Reliability copy     | `src/lib/reliability/copy-invariants.test.ts` | Static-text guards on `/login` missing-config callout, demo banner, and publish-confirm dialog warning copy. See `docs/FLOW_TESTING.md`.                                                                                       |
 
 The same RLS checks can be run independently via `bun run check:rls`, which
 CI also invokes between `bun run test` and `bun run build`. Static checks
