@@ -56,5 +56,5 @@ scaffolded but not yet consumed at runtime. See `docs/SETUP_WIZARD.md`.
 Every AI draft is labelled **"AI draft — review before publishing"** and is
 accompanied by rationale, inputs used, a verification checklist, and a risk
 band derived from model confidence when available. AI drafts are never
-auto-approved and never auto-published. Releases are always created as GitHub
+never approved or published automatically. Releases are always created as GitHub
 draft releases.
