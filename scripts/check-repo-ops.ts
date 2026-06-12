@@ -71,6 +71,20 @@ const required: Required[] = [
     mustContain: ["out of scope", "report findings", "does"],
   },
 
+  // P10 — final external review & submission package
+  {
+    path: "docs/FINAL_READINESS_REPORT.md",
+    mustContain: ["status at a glance", "public preview", "production"],
+  },
+  {
+    path: "docs/FINAL_OWNER_ACTIONS.md",
+    mustContain: ["before the v0.1.0 draft release", "production"],
+  },
+  {
+    path: "docs/CLAUDE_FOR_OSS_SUBMISSION_DRAFT.md",
+    mustContain: ["safety model", "current limitations"],
+  },
+
   // Cross-references from earlier phases that this check guards
   { path: "docs/PRODUCTION_READINESS.md" },
   { path: "docs/PRODUCTION_CHECKLIST.md" },
