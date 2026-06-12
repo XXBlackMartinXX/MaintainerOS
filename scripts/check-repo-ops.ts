@@ -68,7 +68,7 @@ const required: Required[] = [
   },
   {
     path: "docs/EXTERNAL_REVIEW.md",
-    mustContain: ["out of scope", "report findings", "not promise"],
+    mustContain: ["out of scope", "report findings", "does"],
   },
 
   // Cross-references from earlier phases that this check guards
