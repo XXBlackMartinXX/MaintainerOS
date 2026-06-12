@@ -51,6 +51,9 @@ const ALLOWED = [
   "docs/TESTING.md",
   "docs/FLOW_TESTING.md",
   "docs/DEMO_SCRIPT.md",
+  "docs/REPOSITORY_OPERATIONS.md",
+  "docs/RELEASE_OPERATIONS.md",
+  "docs/EXTERNAL_REVIEW.md",
 ];
 
 const SKIP_DIRS = new Set([
