@@ -27,7 +27,7 @@ describe("user-facing reliability copy", () => {
     const src = read("src/components/demo-banner.tsx");
     expect(src).toMatch(/Demo mode active/);
     expect(src).toMatch(/sample data/i);
-    expect(src).toMatch(/Publishing and GitHub sync are disabled/);
+    expect(src).toMatch(/Publishing\s+and GitHub sync are disabled/);
     expect(src).toMatch(/Exit demo/);
   });
 
