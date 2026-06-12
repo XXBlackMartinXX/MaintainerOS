@@ -80,6 +80,9 @@ metrics, testimonials, or production claims will appear in them. See
 [`docs/screenshots/README.md`](docs/screenshots/README.md) for the capture
 list and guidelines.
 
+**Public demo:** <https://maintainer-os.lovable.app/demo>. Demo mode uses
+clearly labeled sample data and does not call GitHub or the AI gateway.
+
 ## Tech stack
 
 - TanStack Start (React 19, SSR, server functions) on Vite 7
@@ -267,9 +270,8 @@ governs every AI prompt.
 - Production readiness is **not** claimed; see
   [`docs/PRODUCTION_READINESS.md`](docs/PRODUCTION_READINESS.md) for
   the remaining gates.
-- Public demo URL is pending. Demo mode is available in the app at
-  `/demo` once deployed; the `demoUrl` in `src/lib/project-meta.ts`
-  remains a placeholder until a public preview is live.
+- Public demo mode is available at
+  <https://maintainer-os.lovable.app/demo> with clearly labeled sample data.
 - Screenshots are not yet captured.
 - Test GitHub write actions on a test repository before pointing
   MaintainerOS at a real project.

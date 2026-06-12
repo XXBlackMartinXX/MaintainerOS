@@ -18,8 +18,8 @@ export const PROJECT_META = {
   changelogUrl: "https://github.com/XXBlackMartinXX/MaintainerOS/blob/main/CHANGELOG.md",
   releaseNotesUrl: "https://github.com/XXBlackMartinXX/MaintainerOS/releases/tag/v0.1.0",
 
-  // Demo deployment URL — replace once a public preview is live.
-  demoUrl: "TODO_PUBLIC_DEMO_URL",
+  // Public preview; demo mode is available at `${demoUrl}/demo`.
+  demoUrl: "https://maintainer-os.lovable.app",
 } as const;
 
 export type ProjectMeta = typeof PROJECT_META;
