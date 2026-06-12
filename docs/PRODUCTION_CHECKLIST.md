@@ -40,7 +40,17 @@ owner task (cannot be automated from inside the app).
 - [ ] Migration rollback documentation (deferred)
 - [ ] Backup / restore documentation (deferred)
 
-## P3 — AI prompt-injection hardening
+## Core feature reliability (P3 in recommended ordering)
+
+- [x] `docs/FLOW_TESTING.md` (flow inventory + manual smoke checklist)
+- [x] `safe-client` unit tests (unconfigured returns null, no throws, no secret leakage)
+- [x] User-facing reliability copy invariants pinned (login missing-config, demo banner, publish dialog)
+- [x] CI runs `typecheck`, `lint`, `test`, `check:rls`, `build` — no secrets required
+- [ ] Playwright E2E for demo / missing-config / approval dialog (deferred — see `FLOW_TESTING.md`)
+- [m] Manual smoke checklist run before each release
+
+## AI prompt-injection hardening
+
 
 - [ ] `docs/PROMPT_INJECTION_DEFENSES.md`
 - [ ] Untrusted-input framing in every AI prompt
