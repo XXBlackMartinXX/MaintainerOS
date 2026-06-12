@@ -18,7 +18,7 @@ deployment.
 | GitHub OAuth      | redirect URL builders, scope hint copy             | actual sign-in, token issuance, scope grant     | provider not configured, redirect URL mismatch   | wizard hints; tokens stored server-only                         |
 | GitHub REST API   | URL/headers builders, error classifier             | repo list, issue/PR/release sync                | 401/403, 404, 429 rate limit, network            | typed errors, retries bounded, no token echo                    |
 | GitHub writes     | dry-run helpers, approval-gate unit tests          | live comment/label/release write                | duplicate publish, insufficient scope            | approval-gated server fns, duplicate-publish checks             |
-| AI gateway        | config detection, JSON schema validation           | real model call, latency, content quality       | missing key, 402 credits, 429, schema mismatch  | typed errors, drafts only, never auto-publish                   |
+| AI gateway        | config detection, JSON schema validation           | real model call, latency, content quality       | missing key, 402 credits, 429, schema mismatch  | typed errors; outputs are drafts requiring human approval       |
 | Setup diagnostics | booleans-only payload, redact tests                | n/a (already boolean)                           | accidental secret echo                           | server fn returns booleans only; covered by tests               |
 | Audit log         | shape tests, redaction                             | live event capture                              | missing entry, secret leakage                    | inserts scoped server-side; no token fields in payload          |
 
