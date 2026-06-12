@@ -145,3 +145,8 @@ do not require live credentials. It does **not** change the production
 readiness verdict: live OAuth, runtime RLS allow/deny, and end-to-end
 publish-to-GitHub still need to be exercised manually (or, post-1.0,
 under Playwright + a sandbox repo) before a production claim is made.
+
+
+## P6 — Integration boundaries & sandbox verification
+
+See `docs/INTEGRATION_BOUNDARIES.md` for the per-integration boundary audit and `docs/SANDBOX_VERIFICATION.md` for the owner-run live-service checklist. Run `bun run sandbox:preflight` for a non-destructive local config classifier (never prints secret values).

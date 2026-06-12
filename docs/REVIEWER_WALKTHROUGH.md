@@ -95,3 +95,8 @@ issue — that would be a copy regression and CI is supposed to catch it
   vulnerability reporting is the preferred channel once enabled on the
   GitHub repo.
 - Other findings: open a GitHub issue using the bug report template.
+
+
+## P6 — Integration boundaries & sandbox verification
+
+See `docs/INTEGRATION_BOUNDARIES.md` for the per-integration boundary audit and `docs/SANDBOX_VERIFICATION.md` for the owner-run live-service checklist. Run `bun run sandbox:preflight` for a non-destructive local config classifier (never prints secret values).

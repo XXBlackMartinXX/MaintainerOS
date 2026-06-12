@@ -35,3 +35,8 @@ Logic lives in `src/lib/setup/checklist.ts` and is exercised by
 `src/lib/setup/checklist.test.ts`. Server-side boolean status is provided by
 `getServerConfigStatus` in `src/lib/setup.functions.ts`, which **never**
 returns secret values, only `Boolean(env.X)` flags.
+
+
+## P6 — Integration boundaries & sandbox verification
+
+See `docs/INTEGRATION_BOUNDARIES.md` for the per-integration boundary audit and `docs/SANDBOX_VERIFICATION.md` for the owner-run live-service checklist. Run `bun run sandbox:preflight` for a non-destructive local config classifier (never prints secret values).

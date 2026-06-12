@@ -15,6 +15,7 @@
     "test:watch": "vitest",
     "check:rls": "bun run scripts/check-rls-policies.ts",
     "check:claims": "bun run scripts/check-public-claims.ts",
+    "sandbox:preflight": "bun run scripts/sandbox-preflight.ts",
     "format": "prettier --write ."
   },
   "dependencies": {

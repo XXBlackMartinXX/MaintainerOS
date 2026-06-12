@@ -97,3 +97,8 @@ deterministic, and do not require rendering React.
 - `src/lib/setup/checklist.test.ts` — verifies setup items are correctly
   classified as configured / missing / manual_verification_required.
 
+
+
+## P6 — Integration boundaries & sandbox verification
+
+See `docs/INTEGRATION_BOUNDARIES.md` for the per-integration boundary audit and `docs/SANDBOX_VERIFICATION.md` for the owner-run live-service checklist. Run `bun run sandbox:preflight` for a non-destructive local config classifier (never prints secret values).
