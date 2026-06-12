@@ -75,4 +75,15 @@ describe("buildRepoHealthChecks", () => {
     expect(sum.present + sum.partial + sum.missing + sum.not_verified).toBe(sum.total);
     expect(sum.present).toBeGreaterThan(0);
   });
+
+  it("includes unverified advisory artifact checks with limitations", () => {
+    const checks = buildRepoHealthChecks(base);
+    const keys = ["license_file", "ci_workflow", "changelog_file", "env_example", "rls_docs"];
+    for (const k of keys) {
+      const c = checks.find((x) => x.key === k);
+      expect(c, `missing check ${k}`).toBeTruthy();
+      expect(c!.status).toBe("not_verified");
+      expect(c!.limitation).toBeTruthy();
+    }
+  });
 });
