@@ -82,12 +82,12 @@ and a checklist of redirect URLs to add.
 
 **Difficulty:** help wanted
 
-**Description:** The project has no automated test suite. A small set of
-smoke tests covering `/`, `/demo`, `/app`, `/login`, `/setup` would catch
-regressions like the recent route crashes.
+**Description:** The project has 97 Vitest unit/integration tests, but no
+browser end-to-end suite. Smoke tests covering `/`, `/demo`, `/app`,
+`/login`, and `/setup` would catch route-level regressions.
 
-**Why it matters:** Pre-1.0 we rely on manual checks. Even basic smoke
-tests would catch most production-blocking issues.
+**Why it matters:** Pre-1.0 browser flows still rely on manual checks. Even
+basic smoke tests would catch many route-level issues.
 
 **Suggested implementation:** Add Vitest + a lightweight render test or
 Playwright with a single happy-path script per route.

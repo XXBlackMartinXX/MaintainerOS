@@ -6,15 +6,15 @@ question *"what state is the project in right now?"* and is intended to
 be read end-to-end by the maintainer and by any external reviewer.
 
 > **Honest status, in one sentence.** MaintainerOS is a **public preview**.
-> Automated quality gates pass; live verification, owner GitHub-UI
-> settings, screenshots, and external review remain before any
+> Automated quality gates pass and a public demo is live; live-service
+> verification, owner GitHub-UI settings, screenshots, and external review remain before any
 > stronger claim.
 
 ## 1. Status at a glance
 
 | Track | Status | Notes |
 | --- | --- | --- |
-| Public preview | **Mostly ready** | Pending owner GitHub-UI settings + screenshots. |
+| Public preview | **Live** | Public demo at `https://maintainer-os.lovable.app/demo`; owner GitHub-UI settings and screenshots remain. |
 | v0.1.0 draft release | **Manual verification required** | Notes drafted; release stays draft until gates in §7 are green. |
 | Claude-for-OSS submission | **Mostly ready** | Draft application in `docs/CLAUDE_FOR_OSS_SUBMISSION_DRAFT.md`. Owner must verify limitations section before submitting. |
 | Production use | **Blocked** | See `docs/PRODUCTION_READINESS.md`. P0 gates incomplete. |
@@ -40,8 +40,8 @@ be read end-to-end by the maintainer and by any external reviewer.
 - `bun run typecheck`
 - `bun run test` — **97/97 passing across 19 files**
 - `bun run check:rls` — 9 migrations, 27 policies asserted
-- `bun run check:claims` — 231 files, 22 forbidden phrases
-- `bun run check:repo` — 24 required files / structural markers
+- `bun run check:claims` — repository-wide forbidden-language scan
+- `bun run check:repo` — required files / structural markers
 - `bun run build`
 - **CodeQL** weekly + on PR/push (`.github/workflows/codeql.yml`).
 - **Dependency review** on PRs (`.github/workflows/dependency-review.yml`).
@@ -86,16 +86,16 @@ be read end-to-end by the maintainer and by any external reviewer.
 - Owner has not yet enabled private vulnerability reporting, secret
   scanning, push protection, Dependabot alerts/security updates,
   CodeQL alerts surface, or branch protection in the GitHub UI.
-- No screenshots captured.
+- No screenshots committed yet.
 - No live OAuth / live GitHub / live AI integration tests in CI.
 - No Playwright / browser E2E.
 - No formal third-party security review.
 - Runtime RLS harness is owner-run, not a required CI step.
-- `src/lib/project-meta.ts` `demoUrl` still placeholder
-  (`TODO_PUBLIC_DEMO_URL`).
+- Public demo is live at `https://maintainer-os.lovable.app/demo` and the
+  base URL is configured in `src/lib/project-meta.ts`.
 - `.github/FUNDING.yml` placeholders commented out (intentional).
-- `SECURITY.md` security contact still `TODO_SECURITY_CONTACT_EMAIL`
-  pending private vulnerability reporting being enabled.
+- `SECURITY.md` uses neutral private-disclosure guidance; private
+  vulnerability reporting still needs owner confirmation in GitHub.
 
 ## 4. Automated checks and commands
 

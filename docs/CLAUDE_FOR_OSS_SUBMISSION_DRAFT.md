@@ -17,8 +17,15 @@ MaintainerOS
 
 ## Public repository
 
-See `src/lib/project-meta.ts` (`repoUrl`). Update this section with the
-exact URL at submission time.
+<https://github.com/XXBlackMartinXX/MaintainerOS>
+
+## Public preview
+
+<https://maintainer-os.lovable.app/demo>
+
+Demo mode uses clearly labeled sample data and does not call GitHub or the
+AI gateway. Repo-only review is possible, but the application is stronger
+with this public demo available.
 
 ## One-sentence summary
 
@@ -123,6 +130,9 @@ auditable.
 - No adoption metrics are claimed. If the application form requires
   stars / downloads / active users, leave those fields empty or write
   "Not yet measured" rather than fabricate a number.
+- The project does not claim to meet any large-star, download, or usage
+  threshold. The owner must answer eligibility fields from current,
+  independently verified repository data.
 
 ## How Claude would help
 
@@ -156,11 +166,34 @@ the sole approver. No Claude path acts on GitHub.
 
 ## Suggested attachments
 
-- The hosted public preview URL (once configured in
-  `src/lib/project-meta.ts`).
+- The hosted public preview: <https://maintainer-os.lovable.app/demo>.
 - A screenshot showing demo mode with its banner.
 - A screenshot showing the approval queue with at least one AI draft
   awaiting human approval.
 - A screenshot showing the audit log.
 - A link to `docs/FINAL_READINESS_REPORT.md`.
 - A link to `docs/EXTERNAL_REVIEW.md`.
+
+## Copy into the Anthropic form
+
+Use this compact block only after checking the form's current wording and
+verifying that the limitations above still match the repository.
+
+- **Project name:** MaintainerOS
+- **Public repo URL:** <https://github.com/XXBlackMartinXX/MaintainerOS>
+- **Summary:** MaintainerOS is an open-source operations dashboard for
+  GitHub maintainers. Claude helps draft issue triage, PR summaries,
+  changelogs, documentation, and repo-health narratives; every output is
+  editable, every GitHub write requires explicit human approval, and every
+  attempt is audit-logged.
+- **Maintainer role:** Solo maintainer / project owner.
+- **Why it matters:** It reduces repetitive maintenance work without
+  delegating repository decisions or publishing authority to an AI system.
+- **How Claude helps:** Claude acts as a drafting collaborator for triage,
+  review summaries, changelogs, documentation, and advisory narratives.
+  The maintainer remains the sole approver.
+- **Current limitations:** Public preview; no formal third-party security
+  audit; live OAuth, GitHub-write, and AI checks are owner-run; runtime RLS
+  is owner-run rather than required CI; no browser E2E suite; sensitive
+  repositories are not recommended under the current OAuth scope model;
+  adoption and eligibility metrics are not claimed.
