@@ -100,3 +100,8 @@ issue — that would be a copy regression and CI is supposed to catch it
 ## P6 — Integration boundaries & sandbox verification
 
 See `docs/INTEGRATION_BOUNDARIES.md` for the per-integration boundary audit and `docs/SANDBOX_VERIFICATION.md` for the owner-run live-service checklist. Run `bun run sandbox:preflight` for a non-destructive local config classifier (never prints secret values).
+
+
+## P9 — Repository operations & external review
+
+See `docs/REPOSITORY_OPERATIONS.md` for the GitHub-native settings owners must enable (private vulnerability reporting, secret scanning, push protection, Dependabot, CodeQL, branch protection). See `docs/RELEASE_OPERATIONS.md` for the draft-release flow, and `docs/EXTERNAL_REVIEW.md` for the external-review package. Repo files: `.github/workflows/codeql.yml`, `.github/workflows/dependency-review.yml`, `.github/dependabot.yml`. New check: `bun run check:repo`.
