@@ -102,7 +102,10 @@ Only verified artifacts are listed here — no fabricated metrics.
 
 - Public GitHub repository under the MIT license.
 - CI workflow running typecheck, lint, tests, and build on every change.
-- 56 deterministic unit tests (Vitest) — no live network calls.
+- 80 deterministic unit tests (Vitest) — no live network calls.
+- Static RLS policy invariants enforced in CI (`bun run check:rls`).
+- Copy-safety invariants in CI: a `FORBIDDEN_COPY` lint scans every
+  shipped source file for overclaiming language.
 - Threat model and security review checklist committed to the repo.
 - Row-Level Security documentation for every public-schema table.
 - AI safety documentation describing the draft-only / approval-gated
