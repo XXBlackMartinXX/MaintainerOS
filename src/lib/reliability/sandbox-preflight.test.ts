@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { classifyEnv, formatReport } from "../../scripts/sandbox-preflight";
+import { classifyEnv, formatReport } from "./sandbox-preflight";
 
 describe("sandbox preflight", () => {
   it("redacts values: report never echoes secret values", () => {
