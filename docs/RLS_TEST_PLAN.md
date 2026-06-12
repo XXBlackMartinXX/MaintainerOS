@@ -4,11 +4,47 @@ Static policy structure is asserted in `src/lib/security/rls-policy-checks.test.
 
 This document describes the runtime test plan for the access-control invariants.
 
-## Status
+## Status (Phase P8)
 
-- **Option A (live local Postgres / Supabase RLS integration tests):** not implemented in CI for Phase P2. The current CI is a single `bun` job and does not provision Postgres or `supabase start`. Adding a Docker-Compose / Supabase CLI matrix is tracked as a future improvement (see "Future work" below).
-- **Option B (static policy assertions):** implemented. See `src/lib/security/rls-policy-checks.ts`.
-- **Option C (manual checklist):** this document.
+- **Option A (full local Supabase stack with GoTrue):** not implemented. Supabase CLI is not installed in CI; adding it would require Docker-in-Docker on the Bun runner. Tracked under "Future work".
+- **Option B (Postgres-only runtime RLS harness with simulated JWT claims):** **implemented as an owner-run / CI-optional command.** See `scripts/rls-runtime-tests.sql` and `scripts/run-rls-runtime-tests.sh`. Not wired into required CI because it needs a local Postgres service container that the current Bun-only CI does not provision.
+- **Static policy assertions:** implemented and required in CI (`bun run check:rls` + `src/lib/security/rls-policy-checks.test.ts`).
+- **Manual checklist:** still listed below as a fallback when no local DB is available.
+
+## Running the runtime harness (Option B)
+
+Requirements: a local Postgres 14+ database the owner controls. Do NOT point it at production.
+
+```bash
+# Throwaway local Postgres
+docker run --rm -d --name rls-pg -e POSTGRES_PASSWORD=postgres \
+  -p 54329:5432 postgres:15
+export DATABASE_URL=postgres://postgres:postgres@localhost:54329/postgres
+
+# Apply migrations + seed fixtures + run allow/deny assertions
+bun run test:rls:runtime
+```
+
+The harness:
+
+1. Creates the `anon` / `authenticated` / `service_role` roles and a stub `auth.uid()` reading `request.jwt.claims->>'sub'`.
+2. Applies every `supabase/migrations/*.sql` in order.
+3. Seeds two deterministic users (A, B) and two repos, with A a member of repo A only.
+4. Impersonates each user via `set_config('request.jwt.claims', …)` + `SET LOCAL ROLE authenticated` (the same pattern PostgREST uses).
+5. Asserts allow/deny for invariants U-1, U-2, R-1, R-2, D-1, D-2, T-1, A-1. Any failure raises and exits non-zero.
+6. Wraps everything in `BEGIN … ROLLBACK` so the target database is left clean.
+
+The script refuses to run if `DATABASE_URL` looks like a managed/production host, and SQL refuses if the database name is not one of `postgres` / `maintaineros_test` / `rls_test`.
+
+## What the harness does NOT cover
+
+- GoTrue / Supabase Auth flows — `auth.users` rows, password/OAuth login, refresh tokens. We simulate claims directly.
+- Service-role bypass behavior end-to-end — exercised by server-function unit tests, not here.
+- PostgREST-level response shapes (e.g. error codes vs empty arrays). The harness uses raw psql semantics; observed behavior is allow / deny / 0 rows updated.
+- Live production database verification.
+- Any formal external security audit.
+
+
 
 ## Manual runtime verification checklist
 

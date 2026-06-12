@@ -29,13 +29,13 @@ owner task (cannot be automated from inside the app).
 ## P2 — Supabase RLS verification
 
 - [x] `docs/RLS_ACCESS_CONTROL.md` (invariants + table inventory)
-- [x] `docs/RLS_TEST_PLAN.md` (manual runtime checklist + future Option A plan)
+- [x] `docs/RLS_TEST_PLAN.md` (manual runtime checklist + Option B harness + future Option A plan)
 - [x] Static policy assertions (`src/lib/security/rls-policy-checks.ts` + vitest suite)
 - [x] CI step: `bun run check:rls`
-- [ ] [m] CI service container (Postgres) running migrations (Option A, future)
-- [ ] [m] Seed harness for User A / User B / Repo A / Repo B (Option A, future)
-- [ ] [m] RLS integration tests: cross-user reads/writes blocked (Option A, future)
-- [ ] [m] RLS integration tests: token table inaccessible to non-service roles (Option A, future)
+- [x] [m] Owner-run runtime RLS harness — Option B: `bun run test:rls:runtime` (`scripts/rls-runtime-tests.sql` + `scripts/run-rls-runtime-tests.sh`), with deterministic User A / User B / Repo A / Repo B fixtures and allow/deny assertions for invariants U-1, U-2, R-1, R-2, D-1, D-2, T-1, A-1
+- [ ] [m] CI service container (Postgres) wiring `test:rls:runtime` automatically (deferred — requires Docker on CI runner)
+- [ ] [m] Full Supabase / GoTrue stack in CI (Option A, future)
+- [ ] [m] RLS integration tests: token table inaccessible to non-service roles via PostgREST (covered statically + by Option B SELECT path; full PostgREST run deferred)
 - [ ] SQL policy comments on every policy (deferred)
 - [ ] Migration rollback documentation (deferred)
 - [ ] Backup / restore documentation (deferred)
