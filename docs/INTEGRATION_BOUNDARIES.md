@@ -32,8 +32,9 @@ deployment.
   validates the bearer token; rejects requests without it.
 - **OAuth callback** — `src/routes/auth.callback.tsx` (no token rendering).
 - **RLS** — covered statically by `scripts/check-rls-policies.ts` and
-  `src/lib/security/rls-policy-checks.test.ts`. Runtime RLS is not yet
-  exercised (P8).
+  `src/lib/security/rls-policy-checks.test.ts`. Runtime allow/deny is
+  exercised by the owner-run harness `bun run test:rls:runtime`
+  (`scripts/rls-runtime-tests.sql`); see `docs/RLS_TEST_PLAN.md`.
 - **Safe in CI**: env detection, classifier, RLS static scan.
 - **Requires sandbox**: real OAuth callback, RLS-scoped reads/writes,
   session lifecycle.
