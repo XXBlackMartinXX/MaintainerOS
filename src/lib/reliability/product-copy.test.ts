@@ -78,14 +78,11 @@ describe("product-copy constants", () => {
 describe("forbidden overclaiming copy", () => {
   // Files that explicitly discuss forbidden terms (in a "we do NOT
   // claim X" or test/skill sense). They are exempt from the lint scan.
-  const EXEMPT = [
-    "src/lib/product-copy.ts",
-    "src/lib/reliability/product-copy.test.ts",
-  ];
+  const EXEMPT = ["src/lib/product-copy.ts", "src/lib/reliability/product-copy.test.ts"];
 
   it("does not appear in any shipped src/ source file", () => {
     const files = listSourceFiles("src").filter(
-      (p) => !EXEMPT.some((e) => p.endsWith(e.replace(/\//g, require("node:path").sep))),
+      (p) => !EXEMPT.some((e) => p.endsWith(e.replace(/\//g, sep))),
     );
     const offenders: { file: string; phrase: string }[] = [];
     for (const file of files) {
