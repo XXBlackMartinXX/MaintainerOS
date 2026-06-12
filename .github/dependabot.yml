@@ -1,0 +1,43 @@
+# Dependabot configuration.
+#
+# - Conservative: weekly cadence, grouped minor/patch updates.
+# - No auto-merge. Every update goes through PR review + CI.
+# - Covers the npm ecosystem (Bun reads the npm lockfile/manifest for
+#   dependency metadata, so Dependabot's `npm` ecosystem is correct here)
+#   and GitHub Actions.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    groups:
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Major upgrades for these are tracked manually and intentionally
+      # not opened by Dependabot to avoid noisy churn.
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@tanstack/*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
