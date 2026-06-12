@@ -255,8 +255,21 @@ governs every AI prompt.
 ## Limitations
 
 - Pre-1.0. Interfaces, schemas, and behaviour may change without notice.
-- No automated test suite yet. Quality is currently enforced by lint,
-  typecheck, build, and a manual smoke-test checklist.
+- Automated coverage: 97 Vitest tests plus typecheck, static RLS
+  assertions (`check:rls`), public-claims scan (`check:claims`),
+  repo-ops scan (`check:repo`), and production build run in CI.
+- Runtime RLS testing is available as an owner-run harness
+  (`bun run test:rls:runtime`) but is **not** a required CI job yet.
+- Live OAuth, GitHub write, and AI-gateway flows are verified manually
+  via the sandbox preflight (`bun run sandbox:preflight`) — there is
+  no automated live-integration suite.
+- No Playwright / browser end-to-end suite yet.
+- Production readiness is **not** claimed; see
+  [`docs/PRODUCTION_READINESS.md`](docs/PRODUCTION_READINESS.md) for
+  the remaining gates.
+- Public demo URL is pending. Demo mode is available in the app at
+  `/demo` once deployed; the `demoUrl` in `src/lib/project-meta.ts`
+  remains a placeholder until a public preview is live.
 - Screenshots are not yet captured.
 - Test GitHub write actions on a test repository before pointing
   MaintainerOS at a real project.
