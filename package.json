@@ -16,6 +16,7 @@
     "check:rls": "bun run scripts/check-rls-policies.ts",
     "check:claims": "bun run scripts/check-public-claims.ts",
     "sandbox:preflight": "bun run scripts/sandbox-preflight.ts",
+    "test:rls:runtime": "bash scripts/run-rls-runtime-tests.sh",
     "format": "prettier --write ."
   },
   "dependencies": {
