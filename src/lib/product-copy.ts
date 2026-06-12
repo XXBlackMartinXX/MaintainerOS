@@ -62,8 +62,7 @@ export const PRODUCT_COPY = {
     "AI features are unavailable in this environment. Drafts cannot be generated until the managed AI gateway is configured.",
 
   // Errors
-  configErrorPrefix:
-    "This looks like a configuration problem, not a bug in the app.",
+  configErrorPrefix: "This looks like a configuration problem, not a bug in the app.",
   genericErrorPrefix: "Something went wrong while loading this page.",
 } as const;
 
