@@ -127,7 +127,7 @@ describe("empty repository state surfaces demo mode option", () => {
   it("offers a demo path alongside connect-repository", () => {
     const src = read("src/components/empty-states.tsx");
     expect(src).toMatch(/Try the demo/i);
-    expect(src).toMatch(/to=\"\/demo\"/);
+    expect(src).toMatch(/to="\/demo"/);
     expect(src.toLowerCase()).toMatch(/sample data only/);
   });
 });
