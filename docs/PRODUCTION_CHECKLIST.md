@@ -104,7 +104,21 @@ owner task (cannot be automated from inside the app).
 - [ ] `docs/PRIVACY_AND_DATA_HANDLING.md`
 - [m] Verify production Supabase Auth redirect URLs
 
-## P7 — Full test strategy
+## P7 — Public release, demo evidence, and reviewer-readiness packaging
+
+- [x] `docs/RELEASE_NOTES_v0.1.0.md` honest pre-release framing
+- [x] `docs/RELEASE_CHECKLIST.md` covers sandbox-only writes + draft release
+- [x] `docs/screenshots/README.md` — capture plan with "no fake screenshots"
+      guard
+- [x] `docs/DEMO_SCRIPT.md` — reproducible demo walkthrough (sample data only)
+- [x] `docs/REVIEWER_WALKTHROUGH.md` — reviewer-facing tour of the public preview
+- [x] `docs/OWNER_LAUNCH_CHECKLIST.md` — single owner-facing manual-tasks list
+- [x] `docs/CLAUDE_FOR_OSS_APPLICATION.md` refreshed (test count, copy/RLS invariants)
+- [x] Public-claims static scan (`bun run check:claims`) wired into CI
+- [m] Capture honest screenshots from demo mode and update `docs/screenshots/`
+- [m] Create the GitHub draft release (do not publish)
+
+## P7b — Full test strategy (deferred)
 
 - [ ] Vitest unit tests expanded (env, demo, schemas, queue, report,
       permissions, redaction)

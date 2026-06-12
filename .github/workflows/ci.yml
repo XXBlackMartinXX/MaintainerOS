@@ -41,5 +41,8 @@ jobs:
       - name: RLS policy static checks
         run: bun run check:rls
 
+      - name: Public-claims scan
+        run: bun run check:claims
+
       - name: Build
         run: bun run build

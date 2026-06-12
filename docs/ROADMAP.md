@@ -22,10 +22,11 @@ What you can do today:
   release drafts, and documentation — view-only summary; publish actions
   still happen on the source page with the confirmation dialog
 - Exportable maintainer report (Markdown, advisory only)
-- Vitest test suite (56 tests) covering pure helpers: AI schemas, env feature
+- Vitest test suite (80 tests) covering pure helpers: AI schemas, env feature
   flags, demo mode, publish helpers, GitHub write permission evaluation,
   repo-health classification, approval-queue filtering/sorting, maintainer
-  report generation, and setup checklist classification
+  report generation, setup checklist classification, static RLS policy
+  invariants, safe-client behaviour, and user-facing copy invariants
 
 Known gaps for this milestone:
 
