@@ -184,3 +184,8 @@ Progress labels we **will** use:
   audit log) exists in the repo.
 - Marketing copy, README badges, and product UI labels must match this
   document. If they drift, this document wins.
+
+
+## P6 — Integration boundaries & sandbox verification
+
+See `docs/INTEGRATION_BOUNDARIES.md` for the per-integration boundary audit and `docs/SANDBOX_VERIFICATION.md` for the owner-run live-service checklist. Run `bun run sandbox:preflight` for a non-destructive local config classifier (never prints secret values).

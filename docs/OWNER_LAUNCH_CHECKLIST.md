@@ -105,3 +105,8 @@ maintainer. Never run them against a sensitive or production repo.
 - [ ] Scan the repository README, release notes, and any blog/launch post
       for any of the phrases listed in `src/lib/product-copy.ts`
       `FORBIDDEN_COPY`. If found, fix before publishing.
+
+
+## P6 — Integration boundaries & sandbox verification
+
+See `docs/INTEGRATION_BOUNDARIES.md` for the per-integration boundary audit and `docs/SANDBOX_VERIFICATION.md` for the owner-run live-service checklist. Run `bun run sandbox:preflight` for a non-destructive local config classifier (never prints secret values).

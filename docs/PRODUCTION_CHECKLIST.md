@@ -187,3 +187,8 @@ with the right GitHub / Supabase / hosting access:
 - Create a v0.1.0 pre-release (draft, not published)
 - Run / commission an external review (P10)
 - Sign off `PRODUCTION_RELEASE_DECISION.md`
+
+
+## P6 — Integration boundaries & sandbox verification
+
+See `docs/INTEGRATION_BOUNDARIES.md` for the per-integration boundary audit and `docs/SANDBOX_VERIFICATION.md` for the owner-run live-service checklist. Run `bun run sandbox:preflight` for a non-destructive local config classifier (never prints secret values).
