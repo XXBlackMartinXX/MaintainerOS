@@ -10,6 +10,9 @@ describe("safe-client", () => {
     vi.stubEnv("VITE_SUPABASE_URL", "");
     vi.stubEnv("VITE_SUPABASE_PUBLISHABLE_KEY", "");
     vi.stubEnv("VITE_SUPABASE_ANON_KEY", "");
+    vi.stubEnv("SUPABASE_URL", "");
+    vi.stubEnv("SUPABASE_PUBLISHABLE_KEY", "");
+    vi.stubEnv("SUPABASE_ANON_KEY", "");
   });
 
   afterEach(() => {
