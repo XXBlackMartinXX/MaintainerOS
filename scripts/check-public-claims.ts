@@ -54,6 +54,9 @@ const ALLOWED = [
   "docs/REPOSITORY_OPERATIONS.md",
   "docs/RELEASE_OPERATIONS.md",
   "docs/EXTERNAL_REVIEW.md",
+  "docs/FINAL_READINESS_REPORT.md",
+  "docs/FINAL_OWNER_ACTIONS.md",
+  "docs/CLAUDE_FOR_OSS_SUBMISSION_DRAFT.md",
 ];
 
 const SKIP_DIRS = new Set([
