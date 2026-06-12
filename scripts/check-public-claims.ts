@@ -33,6 +33,7 @@ const EXTRA_FORBIDDEN = [
 const ALLOWED = [
   "src/lib/product-copy.ts",
   "src/lib/reliability/product-copy.test.ts",
+  "src/lib/ai/explainability.test.ts",
   "scripts/check-public-claims.ts",
   // Docs that explicitly enumerate forbidden language as a guardrail,
   // discuss the project's "we do NOT claim X" stance, or quote the
