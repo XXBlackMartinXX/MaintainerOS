@@ -1,11 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
-import { resolve, join } from "node:path";
-import {
-  PRODUCT_LABELS,
-  PRODUCT_COPY,
-  FORBIDDEN_COPY,
-} from "../product-copy";
+import { resolve, join, sep } from "node:path";
+import { PRODUCT_LABELS, PRODUCT_COPY, FORBIDDEN_COPY } from "../product-copy";
 
 /**
  * P4 — Product Professionalism and UX Precision invariants.
