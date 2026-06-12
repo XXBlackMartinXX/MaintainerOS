@@ -69,11 +69,12 @@ Implemented and shipped in the public preview:
 - Exportable Markdown maintainer report (advisory).
 - `/setup` diagnostics for required environment configuration.
 - Threat model and security review checklist.
-- CI workflow and a deterministic Vitest suite (56 tests at the time of
+- CI workflow and a deterministic Vitest suite (80 tests at the time of
   writing) covering pure helpers, schemas, demo mode, publish helpers,
   GitHub write permission evaluation, repo-health classification,
-  approval-queue filtering, maintainer report generation, and setup
-  checklist classification.
+  approval-queue filtering, maintainer report generation, setup checklist
+  classification, static RLS policy invariants, safe-client behaviour, and
+  user-facing copy / overclaiming-language invariants.
 
 ## 4. Safety and human-approval model
 
