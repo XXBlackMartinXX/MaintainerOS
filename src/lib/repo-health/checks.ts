@@ -134,6 +134,19 @@ export function buildRepoHealthChecks(input: RepoHealthInput): RepoHealthCheck[]
     nextAction: "Run a sync from the dashboard.",
   });
 
+  for (const a of UNVERIFIED_ARTIFACTS) {
+    checks.push({
+      key: a.key,
+      name: a.name,
+      status: "not_verified",
+      confidence: "low",
+      evidence: "Advisory check. MaintainerOS does not yet read repository file contents.",
+      limitation:
+        "Presence of this file is not verified against the live repository tree.",
+      nextAction: a.nextAction,
+    });
+  }
+
   checks.push({
     key: "write_scope",
     name: "GitHub write scope",
