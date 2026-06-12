@@ -20,7 +20,7 @@ jobs:
       VITE_SUPABASE_ANON_KEY: ci-dummy-anon-key
       VITE_SUPABASE_PUBLISHABLE_KEY: ci-dummy-anon-key
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: oven-sh/setup-bun@v2
         with:
