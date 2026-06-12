@@ -34,12 +34,22 @@ const ALLOWED = [
   "src/lib/product-copy.ts",
   "src/lib/reliability/product-copy.test.ts",
   "scripts/check-public-claims.ts",
-  // Docs that explicitly enumerate forbidden language as a guardrail:
+  // Docs that explicitly enumerate forbidden language as a guardrail,
+  // discuss the project's "we do NOT claim X" stance, or quote the
+  // honest "Production-ready: Not yet" status table.
+  "README.md",
   "docs/PRODUCTION_READINESS.md",
   "docs/OWNER_LAUNCH_CHECKLIST.md",
   "docs/REVIEWER_WALKTHROUGH.md",
   "docs/CLAUDE_FOR_OSS_APPLICATION.md",
+  "docs/CLAUDE_FOR_OSS_CHECKLIST.md",
   "docs/RELEASE_CHECKLIST.md",
+  "docs/GITHUB_INTEGRATION.md",
+  "docs/MAINTAINER_HANDOFF.md",
+  "docs/SECURITY_REVIEW_CHECKLIST.md",
+  "docs/TESTING.md",
+  "docs/FLOW_TESTING.md",
+  "docs/DEMO_SCRIPT.md",
 ];
 
 const SKIP_DIRS = new Set([
