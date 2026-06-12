@@ -98,13 +98,20 @@ cp .env.example .env   # fill in the values described below
 bun run dev
 ```
 
-Quality checks:
+Quality checks (mirrors CI):
 
 ```bash
-bun run lint        # ESLint
-bun run typecheck   # TypeScript (no emit)
-bun run build       # production build
+bun run typecheck     # TypeScript (no emit)
+bun run test          # Vitest unit/integration suite (97 tests)
+bun run check:rls     # Static RLS policy assertions
+bun run check:claims  # Public-claims / forbidden-language scan
+bun run check:repo    # Repository operations file/structure scan
+bun run build         # Production build
 ```
+
+`bun run lint` is also available but currently surfaces pre-existing
+generated / shadcn-ui noise; new code should not add lint errors but
+the existing baseline is not yet zero.
 
 ## Environment variables
 
