@@ -28,8 +28,11 @@ No secrets are required. Tests do not read `.env`.
 
 The same RLS checks can be run independently via `bun run check:rls`, which
 CI also invokes between `bun run test` and `bun run build`. Static checks
-guard against accidental migration regressions; runtime allow/deny verification
-remains manual — see `docs/RLS_TEST_PLAN.md`.
+guard against accidental migration regressions; runtime allow/deny is
+covered by the owner-run harness `bun run test:rls:runtime` against a local
+Postgres (see `docs/RLS_TEST_PLAN.md`). The harness is not wired into
+required CI because it needs a local Postgres service the Bun-only runner
+does not provide.
 
 ## What is intentionally mocked or skipped
 
