@@ -82,3 +82,10 @@ short videos, and giving live walkthroughs of the public preview.
 - Real customer logos, testimonials, star counts, or download counts.
 - A "production-ready" or "SOC 2" badge anywhere.
 - Any UI claim that AI can publish autonomously.
+
+## Required screenshot set
+
+Capture the landing page, demo dashboard, repo health or readiness,
+approval queue, an AI draft flow, audit log, and setup diagnostics. Use the
+filenames and framing guidance in `docs/screenshots/README.md`. Keep the demo
+banner and demo/advisory labels visible, and do not use real private data.

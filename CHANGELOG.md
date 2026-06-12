@@ -43,6 +43,14 @@ maintainer workflow, but pre-1.0 and not production-tested at scale.
   publishing
 - No analytics or third-party tracking on the public landing page
 
+### Verification & operations
+
+- 97 Vitest unit/integration tests across 19 files
+- CI gates for typecheck, lint, tests, static RLS assertions, public-claims
+  scanning, repository-operations structure, and the production build
+- Owner-run runtime RLS harness and live-service sandbox verification guide
+- GitHub-native CodeQL, dependency review, and Dependabot configuration
+
 ### Documentation
 
 - Architecture, Security Model, AI Safety, Demo Mode, Local Development,
@@ -58,4 +66,7 @@ maintainer workflow, but pre-1.0 and not production-tested at scale.
 - Repository health scores are advisory and based on synced data only
 - Sync is on-demand only; no background polling or webhooks yet
 - Single GitHub account per user account (platform limitation)
+- Runtime RLS and live OAuth/GitHub/AI verification remain owner-run rather
+  than required CI jobs
+- No browser end-to-end suite or formal external security review yet
 - No production adoption claims — this is an initial public preview

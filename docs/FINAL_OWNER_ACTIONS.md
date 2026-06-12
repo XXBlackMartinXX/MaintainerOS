@@ -43,8 +43,8 @@ These gates protect the public preview and the future production claim.
        permissions to read-only (workflows raise their own permissions
        explicitly) and disable "Allow GitHub Actions to create and
        approve pull requests".
-7. [ ] Fill the GitHub About panel: description, website (once the
-       demo URL is set in `src/lib/project-meta.ts`), and topics.
+7. [ ] Fill the GitHub About panel: description, website
+       (`https://maintainer-os.lovable.app`), and topics.
 8. [ ] Run `bun run sandbox:preflight` locally and confirm no missing
        required keys for your target mode.
 9. [ ] Run `bun run test:rls:runtime` against a local Postgres per
@@ -57,10 +57,10 @@ These gates protect the public preview and the future production claim.
        and `docs/DEMO_SCRIPT.md`. Confirm: demo banner visible in every
        `/app/*` screenshot; no tokens, emails, or private repo names
        visible.
-12. [ ] Replace `TODO_PUBLIC_DEMO_URL` in `src/lib/project-meta.ts`
-       once the public preview is live, and replace
-       `TODO_SECURITY_CONTACT_EMAIL` in `SECURITY.md` (or rely on
-       private vulnerability reporting once enabled).
+12. [ ] Confirm <https://maintainer-os.lovable.app/demo> loads, enters
+        clearly labeled demo mode, and keeps the demo banner visible.
+        Confirm GitHub private vulnerability reporting is enabled; the
+        repository contains no security-contact placeholder token.
 13. [ ] Re-read `docs/RELEASE_NOTES_v0.1.0.md`. Confirm it still matches
        reality and contains the "Known limitations" section.
 14. [ ] Create the GitHub release per `docs/RELEASE_OPERATIONS.md` §4:
@@ -92,10 +92,10 @@ are true.
        (or the equivalent file at that time), referencing the
        artifacts above.
 
-## C. Optional, before submitting to Claude-for-OSS
+## C. Before submitting to Claude-for-OSS
 
-These are not required by the application form, but each one materially
-improves credibility.
+Complete the first two items; the remaining evidence items materially
+improve credibility when the form permits attachments.
 
 1. [ ] Screenshots from §A captured and embedded in `README.md`.
 2. [ ] One recorded walkthrough (or detailed text walkthrough) of the

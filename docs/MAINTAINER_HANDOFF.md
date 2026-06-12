@@ -92,9 +92,9 @@ See `.env.example` for the canonical list.
 
 ## Where to change project URLs
 
-All public URLs live in **`src/lib/project-meta.ts`**. The repo URL is already
-configured; the `TODO_PUBLIC_DEMO_URL` placeholder still needs to be replaced once a live demo is deployed. Footer
-links, settings, Trust Center, and launch copy all read from this file.
+All public URLs live in **`src/lib/project-meta.ts`**. The repository and
+public-preview URLs are configured there. Footer links, settings, Trust
+Center, and launch copy all read from this file.
 
 ## Pre-publication checklist
 

@@ -22,7 +22,7 @@ What you can do today:
   release drafts, and documentation — view-only summary; publish actions
   still happen on the source page with the confirmation dialog
 - Exportable maintainer report (Markdown, advisory only)
-- Vitest test suite (80 tests) covering pure helpers: AI schemas, env feature
+- Vitest test suite (97 tests across 19 files) covering pure helpers: AI schemas, env feature
   flags, demo mode, publish helpers, GitHub write permission evaluation,
   repo-health classification, approval-queue filtering/sorting, maintainer
   report generation, setup checklist classification, static RLS policy
@@ -32,9 +32,9 @@ Known gaps for this milestone:
 
 - No live OAuth / GitHub-write integration tests
 - No public screenshots captured yet
-- No hosted demo deployment yet
+- Public demo is live; final screenshot evidence is still pending
 - Sync is on-demand only
-- No RLS integration test against a real database
+- Runtime RLS harness is owner-run rather than required CI
 - No formal security audit
 - Repo file contents are not yet inspected — readiness signals rely on
   metadata + AI draft presence
@@ -50,11 +50,11 @@ Focus: make self-hosting and first-run smoother and harder to break.
 - Mobile layout pass for the dashboard
 - Accessibility sweep (aria-labels on icon-only controls)
 
-## v0.3.0 — Hosted demo and onboarding
+## v0.3.0 — Demo and onboarding improvements
 
 Focus: lower the barrier to evaluating the product.
 
-- Public hosted demo deployment with the demo banner visible
+- Public hosted demo verification and evidence refresh
 - 2–3 additional synthetic repositories in demo mode
 - First-run tour improvements
 - Richer empty states with next-step actions

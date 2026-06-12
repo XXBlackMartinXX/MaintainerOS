@@ -35,8 +35,10 @@ In this order:
 
 ## 2. Try the public preview (5–7 minutes)
 
-Follow [`docs/DEMO_SCRIPT.md`](./DEMO_SCRIPT.md). Demo mode runs on
-sample data only; no account or secret is needed.
+Open <https://maintainer-os.lovable.app/demo> and follow
+[`docs/DEMO_SCRIPT.md`](./DEMO_SCRIPT.md). Demo mode runs on sample data
+only; no account or secret is needed. A repo-only review remains possible,
+but the hosted demo makes the review stronger.
 
 Key surfaces to evaluate:
 
@@ -53,7 +55,7 @@ Key surfaces to evaluate:
 
 ## 3. Inspect the CI signals (2 minutes)
 
-The repository's CI runs five checks on every change:
+The repository's CI runs these checks on every change:
 
 | Command | Purpose |
 |---|---|
@@ -62,9 +64,12 @@ The repository's CI runs five checks on every change:
 | `bun run test` | Vitest — pure helpers, schemas, demo, copy invariants |
 | `bun run check:rls` | Static RLS policy invariants over `supabase/migrations/` |
 | `bun run check:claims` | Forbidden-overclaim wording scan |
+| `bun run check:repo` | Required repository-operations artifacts |
 | `bun run build` | Production build |
 
-Recent test count: **80/80 passing**. See `.github/workflows/ci.yml`.
+Current test count: **97/97 passing across 19 files**. The runtime RLS
+harness (`bun run test:rls:runtime`) remains owner-run rather than required
+CI. See `.github/workflows/ci.yml` and `docs/TESTING.md`.
 
 ## 4. What is intentionally not yet verified
 
@@ -74,7 +79,7 @@ but called out here for reviewers:
 - No live OAuth end-to-end test.
 - No live GitHub-write integration test.
 - No live AI-gateway integration test.
-- No runtime RLS allow/deny integration test (static checks only).
+- Runtime RLS allow/deny harness exists but is owner-run, not required CI.
 - No Playwright E2E.
 - No third-party security audit.
 

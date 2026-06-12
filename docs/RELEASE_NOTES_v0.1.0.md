@@ -6,6 +6,7 @@ AI-assisted operations center for open-source maintainers.
 Everything in this release is functionally complete across the core
 maintainer workflow, but the project is pre-1.0 and has not been deployed
 to a production maintainer team at scale. There are no adoption claims.
+This release should be created as a **draft pre-release**.
 
 ## What's inside
 
@@ -24,7 +25,8 @@ to a production maintainer team at scale. There are no adoption claims.
   click and confirmation.
 - **Audit log** — every AI action and GitHub publish event is recorded.
 - **Demo mode** — explore the product with clearly-labeled sample data,
-  no GitHub connection required.
+  no GitHub connection required. The hosted demo is available at
+  <https://maintainer-os.lovable.app/demo>.
 - **Trust Center & Readiness Checklist** — transparent documentation of
   what is read, stored, and written.
 
@@ -38,6 +40,17 @@ to a production maintainer team at scale. There are no adoption claims.
 - Row-level security on all user-data tables.
 - No automatic commenting, labeling, merging, closing, or release
   publishing.
+
+## Verification
+
+- 97 Vitest unit/integration tests pass across 19 files.
+- CI runs typecheck, lint, tests, static RLS assertions, public-claims and
+  repository-operations checks, and a production build.
+- Runtime RLS verification is available through the owner-run
+  `bun run test:rls:runtime` harness; it is not a required CI job.
+- Live OAuth, GitHub sync/write, AI generation, duplicate blocking, and
+  audit-log verification follow the owner-run sandbox procedure in
+  `docs/SANDBOX_VERIFICATION.md`.
 
 ## Setup
 
@@ -60,6 +73,11 @@ auto-injected by the backend (Supabase).
 - Repository health scores are advisory.
 - Sync is on-demand only; no background polling or webhooks.
 - One GitHub account per account (platform limitation).
+- Live-service verification and runtime RLS remain owner-run.
+- No browser end-to-end suite or formal third-party security review yet.
+- Screenshots are pending capture from clearly labeled demo mode.
+- Sensitive repositories are not recommended under the current OAuth scope
+  model; connect a non-sensitive sandbox first.
 
 ## Recommended next steps
 

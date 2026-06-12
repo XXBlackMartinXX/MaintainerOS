@@ -22,8 +22,11 @@ inviting any external reviewer.
 - [ ] Enable **CodeQL / default code scanning**.
 - [ ] Enable **Dependabot alerts** and **Dependabot security updates**.
 - [ ] Add `Description`, `Website`, and `Topics` on the GitHub About panel
-      (suggested topics: `github`, `maintainer-tools`, `open-source`,
+      (website: `https://maintainer-os.lovable.app`; suggested topics:
+      `github`, `maintainer-tools`, `open-source`,
       `ai-drafts`, `human-in-the-loop`, `tanstack-start`, `supabase`).
+- [ ] Configure branch protection on `main` and tag protection for `v*`
+      per [`docs/REPOSITORY_OPERATIONS.md`](./REPOSITORY_OPERATIONS.md).
 
 ## Backend (Supabase) — only required for live mode
 
@@ -40,6 +43,8 @@ inviting any external reviewer.
 
 - [ ] Confirm the deployed `/demo` route works end-to-end with the demo
       banner visible.
+- [ ] Confirm the configured public preview is
+      <https://maintainer-os.lovable.app/demo>.
 - [ ] Confirm the deployed `/setup` route reports booleans only, never
       prints secret values.
 - [ ] Confirm `/login` shows "Backend setup required" cleanly when env is
@@ -90,14 +95,17 @@ maintainer. Never run them against a sensitive or production repo.
 - [ ] Leave the release as a **draft** until the screenshot capture pass
       and reviewer walkthrough have been completed.
 
-## Optional: Claude-for-OSS submission
+## Claude-for-OSS submission
 
-- [ ] Open [`docs/CLAUDE_FOR_OSS_APPLICATION.md`](./CLAUDE_FOR_OSS_APPLICATION.md).
+- [ ] Open
+      [`docs/CLAUDE_FOR_OSS_SUBMISSION_DRAFT.md`](./CLAUDE_FOR_OSS_SUBMISSION_DRAFT.md).
 - [ ] Verify the test count, repo URL, and limitations section match the
       current state of the repository before copying any text into the
       application form.
 - [ ] Do not claim eligibility metrics you have not personally verified
       on GitHub or npm.
+- [ ] Submit only after the owner-controlled repository settings and
+      sandbox verification above are complete.
 
 ## Public-claims sanity check
 
