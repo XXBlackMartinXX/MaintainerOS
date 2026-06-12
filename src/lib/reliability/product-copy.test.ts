@@ -5,7 +5,7 @@ import {
   PRODUCT_LABELS,
   PRODUCT_COPY,
   FORBIDDEN_COPY,
-} from "./product-copy";
+} from "../product-copy";
 
 /**
  * P4 — Product Professionalism and UX Precision invariants.
