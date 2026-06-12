@@ -4,7 +4,7 @@
  * Pure, framework-free utilities used by the UI to render a consistent
  * "why this draft was suggested / what to verify" panel next to any AI
  * output. We deliberately keep this advisory and never claim the draft is
- * correct, safe to publish, or production-ready.
+ * correct or safe to publish without human review.
  */
 
 export type DraftKind =
