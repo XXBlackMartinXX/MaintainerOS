@@ -85,7 +85,9 @@ short videos, and giving live walkthroughs of the public preview.
 
 ## Required screenshot set
 
-Capture the landing page, demo dashboard, repo health or readiness,
-approval queue, an AI draft flow, audit log, and setup diagnostics. Use the
-filenames and framing guidance in `docs/screenshots/README.md`. Keep the demo
-banner and demo/advisory labels visible, and do not use real private data.
+The final public-demo capture set is documented in
+`docs/screenshots/README.md`. It includes the landing page, demo dashboard,
+repo health, audit log, and setup diagnostics. Approval-queue and AI-draft
+captures were omitted because those verified routes did not contain
+screenshot-ready sample items; no states were invented. Keep the demo banner
+and demo/advisory labels visible, and do not use real private data.

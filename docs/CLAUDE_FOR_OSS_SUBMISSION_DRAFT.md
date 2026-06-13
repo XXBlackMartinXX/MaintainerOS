@@ -25,7 +25,7 @@ MaintainerOS
 
 Demo mode uses clearly labeled sample data and does not call GitHub or the
 AI gateway. Repo-only review is possible, but the application is stronger
-with this public demo available.
+with this verified public demo and its sample-data screenshots available.
 
 ## One-sentence summary
 
@@ -167,10 +167,11 @@ the sole approver. No Claude path acts on GitHub.
 ## Suggested attachments
 
 - The hosted public preview: <https://maintainer-os.lovable.app/demo>.
-- A screenshot showing demo mode with its banner.
-- A screenshot showing the approval queue with at least one AI draft
-  awaiting human approval.
-- A screenshot showing the audit log.
+- `docs/screenshots/dashboard-demo.png`, showing demo mode with its banner.
+- `docs/screenshots/repo-health.png`, showing advisory sample-data signals.
+- `docs/screenshots/audit-log.png`, showing illustrative demo events.
+- `docs/screenshots/setup-diagnostics.png`, showing redacted configuration
+  statuses only.
 - A link to `docs/FINAL_READINESS_REPORT.md`.
 - A link to `docs/EXTERNAL_REVIEW.md`.
 

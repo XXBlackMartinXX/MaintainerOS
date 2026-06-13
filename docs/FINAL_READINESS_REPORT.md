@@ -7,14 +7,14 @@ be read end-to-end by the maintainer and by any external reviewer.
 
 > **Honest status, in one sentence.** MaintainerOS is a **public preview**.
 > Automated quality gates pass and a public demo is live; live-service
-> verification, owner GitHub-UI settings, screenshots, and external review remain before any
-> stronger claim.
+> verification, owner GitHub-UI settings, and external review remain before
+> any stronger claim. Validated screenshots now document the public demo.
 
 ## 1. Status at a glance
 
 | Track | Status | Notes |
 | --- | --- | --- |
-| Public preview | **Live** | Public demo at `https://maintainer-os.lovable.app/demo`; owner GitHub-UI settings and screenshots remain. |
+| Public preview | **Live** | Public demo at `https://maintainer-os.lovable.app/demo`; sample-data screenshots are committed, while owner GitHub-UI settings remain. |
 | v0.1.0 draft release | **Manual verification required** | Notes drafted; release stays draft until gates in §7 are green. |
 | Claude-for-OSS submission | **Mostly ready** | Draft application in `docs/CLAUDE_FOR_OSS_SUBMISSION_DRAFT.md`. Owner must verify limitations section before submitting. |
 | Production use | **Blocked** | See `docs/PRODUCTION_READINESS.md`. P0 gates incomplete. |
@@ -80,13 +80,13 @@ be read end-to-end by the maintainer and by any external reviewer.
 - `docs/EXTERNAL_REVIEW.md`
 - `docs/FINAL_OWNER_ACTIONS.md` (this phase)
 - `docs/CLAUDE_FOR_OSS_SUBMISSION_DRAFT.md` (this phase)
+- Validated public-demo screenshots under `docs/screenshots/`.
 
 ## 3. What is **not** ready
 
 - Owner has not yet enabled private vulnerability reporting, secret
   scanning, push protection, Dependabot alerts/security updates,
   CodeQL alerts surface, or branch protection in the GitHub UI.
-- No screenshots committed yet.
 - No live OAuth / live GitHub / live AI integration tests in CI.
 - No Playwright / browser E2E.
 - No formal third-party security review.
@@ -115,8 +115,7 @@ be read end-to-end by the maintainer and by any external reviewer.
 
 See `docs/FINAL_OWNER_ACTIONS.md` for the exact ordered list. Summary:
 GitHub-UI security toggles, branch protection, sandbox verification
-against a non-sensitive test repo, screenshot capture, release notes
-review, draft pre-release.
+against a non-sensitive test repo, release notes review, draft pre-release.
 
 ## 6. Security posture summary
 
@@ -142,7 +141,7 @@ the draft:
 3. Sandbox verification per `docs/SANDBOX_VERIFICATION.md` completed
    against a non-sensitive test repository.
 4. Runtime RLS harness run locally and green.
-5. Screenshots captured per `docs/screenshots/README.md`.
+5. Screenshots remain validated against `docs/screenshots/README.md`.
 6. Release notes reviewed and matched to `docs/RELEASE_NOTES_v0.1.0.md`
    verbatim.
 7. `check:claims` clean for any newly written marketing or launch
@@ -164,12 +163,12 @@ submission. The owner must, before submitting:
   been measured.
 - Confirm no "Anthropic approved" or "production-ready" phrasing has
   been added during adaptation.
-- Capture at least one screenshot showing demo mode and one showing the
-  approval queue.
+- Review the committed sample-data screenshots and their documented omissions
+  in `docs/screenshots/README.md`.
 
 ## 10. Recommended next steps for the owner
 
 The ordered sequence is in `docs/FINAL_OWNER_ACTIONS.md`. The short
 version: enable GitHub-UI gates → branch protection → sandbox
-verification → screenshots → review release notes → create draft
+verification → review screenshots and release notes → create draft
 pre-release → (optionally) submit Claude-for-OSS draft.

@@ -1,33 +1,24 @@
 # Screenshots
 
-No screenshots are committed yet. Capture them from the public preview in
-clearly labeled demo mode before the v0.1.0 release leaves draft status.
-**Do not invent, mock, or generate screenshots.**
+Captured from the public preview at <https://maintainer-os.lovable.app> on
+2026-06-13. Every `/app/*` capture was entered through `/demo` and uses only
+clearly labeled demo/sample data.
 
-Recommended captures (PNG, 1600×1000 or similar):
+| File | Route captured | Description |
+|---|---|---|
+| `landing.png` | `/` | Public-preview landing hero and demo entry point. |
+| `dashboard-demo.png` | `/demo` → `/app` | Demo dashboard with banner, `acme/atlas`, and illustrative dashboard data. |
+| `repo-health.png` | `/app/health` | Advisory repo-health view with demo banner, demo-data badge, and heuristic wording. |
+| `audit-log.png` | `/app/actions` | Demo AI action log with illustrative `demo.*` events. |
+| `setup-diagnostics.png` | `/setup` | Setup diagnostics showing configuration names/statuses and placeholders, never secret values. |
 
-| File                 | What it should show                                                            |
-| -------------------- | ------------------------------------------------------------------------------ |
-| `landing.png`        | Public landing page (`/`) — hero + "How it works".                             |
-| `dashboard.png`      | Demo dashboard with the persistent demo banner visible.                        |
-| `repo-health.png`    | `/app/health` or `/app/readiness` with advisory language visible.               |
-| `approval-queue.png` | `/app/approval-queue` with a sample draft awaiting human approval.              |
-| `issue-triage.png`   | `/app/issues` with the AI triage side panel open on a sample issue.            |
-| `pr-summary.png`     | `/app/pulls` with an AI PR summary draft visible.                              |
-| `changelog.png`      | `/app/changelog` showing a generated draft grouped by Added / Changed / Fixed. |
-| `docs-generator.png` | `/app/docs` with a generated README draft and confidence/safety notes visible. |
-| `trust-center.png`   | `/app/trust` showing the safety and approval policy cards.                     |
-| `readiness.png`      | `/app/readiness` showing the open-source readiness checklist.                  |
-| `audit-log.png`      | `/app/actions` filtered to GitHub publish events.                              |
-| `setup.png`          | `/setup` showing boolean diagnostics only, with no values or secrets.           |
+`approval-queue.png` was omitted because the verified demo route rendered an
+honest empty queue rather than a sample draft awaiting review. `ai-draft.png`
+was omitted because the verified issue-triage route rendered no synced sample
+issues and no open demo AI draft panel. These states were not fabricated.
 
-Guidelines:
-
-- Enter through `/demo` and use demo mode for every `/app/*` capture.
-- Keep the demo banner visible — do not crop it out.
-- Do not show real user emails, tokens, keys, cookies, private repository
-  names, or other private data.
-- Keep `Demo data`, `Demo AI output`, and advisory labels visible wherever
-  they apply.
-- Avoid inventing impressive-looking metrics; if a screen is mostly empty in
-  a clean install, capture the empty state honestly.
+Future recaptures must use the public demo, keep the demo banner and advisory
+labels visible where applicable, and avoid secrets, tokens, cookies/session
+values, private data, private repository names, fabricated metrics,
+testimonials, adoption claims, production-readiness claims, and endorsement
+claims. Do not invent, mock, or generate product screenshots.
