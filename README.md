@@ -74,11 +74,15 @@ MaintainerOS is built to assist maintainers, not to act on their behalf.
 
 ## Screenshots
 
-Screenshots are pending and will be captured from demo mode (with the demo
-banner visible) before the first public release. No real user data, fake
-metrics, testimonials, or production claims will appear in them. See
-[`docs/screenshots/README.md`](docs/screenshots/README.md) for the capture
-list and guidelines.
+Screenshots are captured from demo mode using sample data.
+
+| View | Screenshot |
+|---|---|
+| Landing page | ![Landing page](docs/screenshots/landing.png) |
+| Demo dashboard | ![Demo dashboard](docs/screenshots/dashboard-demo.png) |
+| Repo health | ![Repo health](docs/screenshots/repo-health.png) |
+| Audit log | ![Audit log](docs/screenshots/audit-log.png) |
+| Setup diagnostics | ![Setup diagnostics](docs/screenshots/setup-diagnostics.png) |
 
 **Public demo:** <https://maintainer-os.lovable.app/demo>. Demo mode uses
 clearly labeled sample data and does not call GitHub or the AI gateway.
@@ -272,7 +276,7 @@ governs every AI prompt.
   the remaining gates.
 - Public demo mode is available at
   <https://maintainer-os.lovable.app/demo> with clearly labeled sample data.
-- Screenshots are not yet captured.
+- Final demo screenshots are committed under `docs/screenshots/`.
 - Test GitHub write actions on a test repository before pointing
   MaintainerOS at a real project.
 - AI outputs require human review. They are drafts, not decisions.
