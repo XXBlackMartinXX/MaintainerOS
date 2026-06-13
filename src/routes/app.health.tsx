@@ -8,7 +8,9 @@ import { DataSourceBadge } from "@/components/data-source-badge";
 import { SyncNowButton } from "@/components/sync-now-button";
 import { EmptyRepositoryState, EmptySyncedDataState } from "@/components/empty-states";
 import { useSelectedRepo } from "@/hooks/use-selected-repo";
+import { useDemoMode } from "@/hooks/use-demo-mode";
 import { getRepoHealthInputs } from "@/lib/github.functions";
+import { healthBreakdown } from "@/lib/demo-data";
 
 export const Route = createFileRoute("/app/health")({ component: HealthPage });
 
@@ -135,11 +137,12 @@ function computeScores(d: Inputs): { rows: ScoreRow[]; total: number; recommenda
 
 function HealthPage() {
   const { selected, hasConnectedRepo, isLoading: reposLoading } = useSelectedRepo();
+  const { enabled: demo } = useDemoMode();
   const fn = useServerFn(getRepoHealthInputs);
   const q = useQuery({
     queryKey: ["health", selected?.id],
     queryFn: () => fn({ data: { repository_id: selected!.id } }),
-    enabled: !!selected,
+    enabled: !!selected && !demo,
   });
 
   const hasData =
@@ -159,9 +162,11 @@ function HealthPage() {
       description="Advisory weighted score across signals that matter for sustainable open source. Heuristic only — scoring is transparent and shown below."
       actions={
         <>
-          {selected && hasData && <DataSourceBadge variant={anyMissing ? "partial" : "live"} />}
+          {demo
+            ? selected && <DataSourceBadge variant="demo" />
+            : selected && hasData && <DataSourceBadge variant={anyMissing ? "partial" : "live"} />}
           <RepoSelector />
-          {selected && <SyncNowButton repositoryId={selected.id} />}
+          {selected && <SyncNowButton repositoryId={demo ? null : selected.id} />}
         </>
       }
     />
@@ -179,6 +184,37 @@ function HealthPage() {
       <div>
         {header}
         <EmptyRepositoryState />
+      </div>
+    );
+  if (demo)
+    return (
+      <div>
+        {header}
+        <div className="panel-elevated rounded-xl p-6 mb-4 flex items-center gap-6">
+          <div className="grid place-items-center size-24 rounded-full border-4 border-border">
+            <span className="text-3xl font-bold tabular-nums text-success">
+              {healthBreakdown.overall}
+            </span>
+          </div>
+          <div className="flex-1">
+            <h2 className="text-lg font-semibold tracking-tight">Overall health score</h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              Demo data only. Advisory heuristic signals, not a substitute for a manual review.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {healthBreakdown.categories.map((row) => (
+            <div key={row.key} className="panel rounded-xl p-4">
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-sm font-medium">{row.key}</h3>
+                <span className="text-lg font-semibold tabular-nums">{row.score}</span>
+              </div>
+              <p className="mt-2 text-xs text-muted-foreground">{row.hint}</p>
+            </div>
+          ))}
+        </div>
       </div>
     );
   if (q.isLoading)

@@ -6,6 +6,7 @@ import { getLatestSync } from "@/lib/github.functions";
 import { SyncNowButton } from "@/components/sync-now-button";
 import { DataSourceBadge } from "@/components/data-source-badge";
 import type { ConnectedRepo } from "@/hooks/use-selected-repo";
+import { useDemoMode } from "@/hooks/use-demo-mode";
 
 function StatusPill({ status }: { status: string | null }) {
   const map: Record<string, string> = {
@@ -40,11 +41,12 @@ function Stat({ label, value, Icon }: { label: string; value: number; Icon: type
 }
 
 export function SyncStatusCard({ repo }: { repo: ConnectedRepo | null }) {
+  const { enabled: demo } = useDemoMode();
   const fn = useServerFn(getLatestSync);
   const { data, isLoading } = useQuery({
     queryKey: ["sync", repo?.id],
     queryFn: () => fn({ data: { repository_id: repo!.id } }),
-    enabled: !!repo,
+    enabled: !!repo && !demo,
     refetchInterval: (q) =>
       q.state.data?.job?.status === "running" || q.state.data?.job?.status === "pending"
         ? 3_000
@@ -53,6 +55,38 @@ export function SyncStatusCard({ repo }: { repo: ConnectedRepo | null }) {
 
   const job = data?.job ?? null;
   const rateLimited = !!job?.error && /rate.?limit|secondary rate/i.test(job.error);
+
+  if (demo && repo) {
+    return (
+      <div className="panel-elevated rounded-xl p-5">
+        <div className="flex items-start justify-between gap-3 flex-wrap">
+          <div className="flex items-start gap-3 min-w-0">
+            <div className="size-9 rounded-md bg-surface border border-border grid place-items-center shrink-0">
+              <Github className="size-4 text-muted-foreground" />
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-sm font-semibold tracking-tight truncate">{repo.full_name}</h2>
+                <StatusPill status="success" />
+                <DataSourceBadge variant="demo" />
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Demo repository fixture. GitHub sync is disabled in demo mode.
+              </p>
+            </div>
+          </div>
+          <SyncNowButton repositoryId={null} />
+        </div>
+
+        <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <Stat label="Issues" value={repo.open_issues} Icon={Inbox} />
+          <Stat label="Pull requests" value={12} Icon={GitPullRequest} />
+          <Stat label="Contributors" value={28} Icon={Users} />
+          <Stat label="Labels" value={9} Icon={Tag} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="panel-elevated rounded-xl p-5">

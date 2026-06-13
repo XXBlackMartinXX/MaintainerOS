@@ -3,7 +3,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { TopNav } from "@/components/top-nav";
 import { DemoBanner } from "@/components/demo-banner";
 import { ProductTour } from "@/components/product-tour";
-import { useDemoMode } from "@/hooks/use-demo-mode";
+import { DEMO_MODE_STORAGE_KEY, useDemoMode } from "@/hooks/use-demo-mode";
 import { getSupabase, isSupabaseConfigured } from "@/integrations/supabase/safe-client";
 
 export const Route = createFileRoute("/app")({
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/app")({
     // SSR: skip auth gate, let the client decide.
     if (typeof window === "undefined") return;
     // Demo-mode visitors are always allowed — no Supabase needed.
-    if (window.localStorage.getItem("mos.demoMode") === "1") return;
+    if (window.localStorage.getItem(DEMO_MODE_STORAGE_KEY) === "1") return;
     // If Supabase isn't configured at all, send them to /login which
     // renders a friendly setup warning instead of crashing the layout.
     if (!isSupabaseConfigured()) {
