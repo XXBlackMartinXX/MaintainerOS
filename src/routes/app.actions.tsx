@@ -8,6 +8,8 @@ import { PageHeader } from "@/components/ui-bits";
 import { listAuditLogs } from "@/lib/ai.functions";
 import { getPublishEventForAudit } from "@/lib/github-publish.functions";
 import { useHasSession } from "@/hooks/use-has-session";
+import { useDemoMode } from "@/hooks/use-demo-mode";
+import { demoAILog } from "@/lib/demo-data";
 
 export const Route = createFileRoute("/app/actions")({ component: ActionsPage });
 
@@ -99,16 +101,30 @@ function sourceFromMetadata(
 function ActionsPage() {
   const fn = useServerFn(listAuditLogs);
   const hasSession = useHasSession();
+  const { enabled: demo } = useDemoMode();
   const [filter, setFilter] = useState<string>("all");
   const logsQ = useQuery({
     queryKey: ["audit-logs", filter],
     queryFn: () =>
       fn({ data: { action_prefix: filter === "all" ? undefined : filter, limit: 300 } }),
-    enabled: hasSession === true,
+    enabled: hasSession === true && !demo,
   });
   const [selected, setSelected] = useState<LogRow | null>(null);
 
-  const logs = useMemo(() => (logsQ.data?.logs ?? []) as LogRow[], [logsQ.data]);
+  const logs = useMemo(
+    () =>
+      demo
+        ? demoAILog.map((entry) => ({
+            id: entry.id,
+            action: `demo.${entry.action.toLowerCase().replace(/\s+/g, "_")}.generated`,
+            target_type: entry.action,
+            target_id: entry.target,
+            metadata: { model: entry.model, source: "demo sample data" },
+            created_at: new Date().toISOString(),
+          }))
+        : ((logsQ.data?.logs ?? []) as LogRow[]),
+    [demo, logsQ.data],
+  );
   const counts = useMemo(() => {
     const c = { total: logs.length, success: 0, failed: 0, attempted: 0, duplicate: 0 };
     for (const l of logs) {
@@ -147,7 +163,7 @@ function ActionsPage() {
       </div>
 
       <div className="panel rounded-xl overflow-hidden">
-        {logsQ.isLoading ? (
+        {logsQ.isLoading && !demo ? (
           <div className="p-10 text-center text-sm text-muted-foreground">
             <Loader2 className="size-4 animate-spin inline mr-2" />
             Loading…
