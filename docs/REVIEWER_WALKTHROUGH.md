@@ -38,7 +38,8 @@ In this order:
 Open <https://maintainer-os.lovable.app/demo> and follow
 [`docs/DEMO_SCRIPT.md`](./DEMO_SCRIPT.md). Demo mode runs on sample data
 only; no account or secret is needed. A repo-only review remains possible,
-but the hosted demo makes the review stronger.
+but the verified hosted demo makes the review stronger. Validated public-demo
+screenshots are available in [`docs/screenshots/`](./screenshots/README.md).
 
 Key surfaces to evaluate:
 
