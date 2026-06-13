@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { listConnectedRepos } from "@/lib/github.functions";
 import { getSupabase } from "@/integrations/supabase/safe-client";
-import { demoRepos } from "@/lib/demo-data";
+import { demoConnectedRepos } from "@/lib/demo-repositories";
 import { useDemoMode } from "@/hooks/use-demo-mode";
 
 const STORAGE_KEY = "maintainer-os.selected-repo-id";
@@ -25,26 +25,6 @@ export type ConnectedRepo = {
   default_branch: string | null;
   html_url: string | null;
 };
-
-export const demoConnectedRepos: ConnectedRepo[] = demoRepos.map((repo, index) => {
-  const [owner, name] = repo.fullName.split("/");
-  return {
-    id: `demo-${repo.id}`,
-    github_id: 900_000 + index,
-    owner,
-    name,
-    full_name: repo.fullName,
-    description: repo.description,
-    stars: repo.stars,
-    forks: repo.forks,
-    primary_language: repo.language,
-    visibility: "public",
-    open_issues: repo.openIssues,
-    pushed_at: new Date(Date.now() - (index + 1) * 86_400_000).toISOString(),
-    default_branch: "main",
-    html_url: null,
-  };
-});
 
 function readStored(): string | null {
   if (typeof window === "undefined") return null;
