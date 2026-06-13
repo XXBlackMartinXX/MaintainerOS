@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { demoConnectedRepos } from "./use-selected-repo";
+import { demoConnectedRepos } from "@/lib/demo-repositories";
 import { DEMO_MODE_EVENT, DEMO_MODE_STORAGE_KEY, enableDemoMode } from "./use-demo-mode";
 
 function readSource(rel: string): string {
