@@ -9,7 +9,7 @@ export function isDemoModeEnabled(): boolean {
 }
 
 export function useDemoMode() {
-  const [enabled, setEnabled] = useState<boolean>(false);
+  const [enabled, setEnabled] = useState<boolean>(() => isDemoModeEnabled());
 
   useEffect(() => {
     setEnabled(isDemoModeEnabled());
